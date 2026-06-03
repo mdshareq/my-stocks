@@ -1040,6 +1040,14 @@ def generate_dynamic_portfolios(stock_data, monthly_sip, risk_profile="Balanced"
                     # Filter out invalid/error rows before converting to DataFrame
                     valid_metrics = {k: v for k, v in raw_metrics.items() if "error" not in v}
                     universe_df = pd.DataFrame.from_dict(valid_metrics, orient='index')
+                    
+                    # Coerce columns to numeric to prevent TypeError during filtering
+                    for col in ['pe', 'beta', 'market_cap', 'price']:
+                        if col in universe_df.columns:
+                            universe_df[col] = pd.to_numeric(universe_df[col], errors='coerce').fillna(0)
+                    if 'dividend_yield' in universe_df.columns:
+                        universe_df['dividend_yield'] = pd.to_numeric(universe_df['dividend_yield'], errors='coerce').fillna(0)
+
     except Exception:
         pass
         
