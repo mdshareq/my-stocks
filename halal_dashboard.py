@@ -412,6 +412,22 @@ HALAL_STOCKS = {
     
 }
 REVERSE_LOOKUP = {info["name"]: ticker for ticker, info in HALAL_STOCKS.items()}
+
+import json
+FULL_UNIVERSE = {}
+try:
+    if os.path.exists("halal_universe.json"):
+        with open("halal_universe.json", "r", encoding="utf-8") as f:
+            FULL_UNIVERSE = json.load(f)
+    else:
+        for ticker, info in HALAL_STOCKS.items():
+            FULL_UNIVERSE[ticker] = info["name"]
+except Exception:
+    for ticker, info in HALAL_STOCKS.items():
+        FULL_UNIVERSE[ticker] = info["name"]
+
+REVERSE_FULL_UNIVERSE = {v: k for k, v in FULL_UNIVERSE.items()}
+
 KEY_FILE = ".env_gemini_key"
 
 # --- API KEY MANAGEMENT ---
@@ -1421,7 +1437,7 @@ if not stock_data.empty:
                 with st.form("add_portfolio_form", clear_on_submit=True):
                     cols = st.columns(3)
                     with cols[0]:
-                        sel_stock = st.selectbox("Select Asset", options=stock_data["Company Name"].tolist())
+                        sel_stock = st.selectbox("Select Asset from 2700+ Universe", options=sorted(list(FULL_UNIVERSE.values())))
                     with cols[1]:
                         qty = st.number_input("Quantity", min_value=1, step=1)
                     with cols[2]:
@@ -1429,10 +1445,21 @@ if not stock_data.empty:
                         submit_add = st.form_submit_button("Add to Portfolio", use_container_width=True)
                     
                     if submit_add:
-                        row_data = stock_data[stock_data["Company Name"] == sel_stock].iloc[0]
-                        symbol = row_data["Symbol"]
-                        live_price = float(row_data["Live Price (₹)"])
+                        symbol = REVERSE_FULL_UNIVERSE.get(sel_stock, "")
                         
+                        # Try to get live price from existing data first (fast)
+                        live_row = stock_data[stock_data["Symbol"] == symbol]
+                        if not live_row.empty:
+                            live_price = float(live_row.iloc[0]["Live Price (₹)"])
+                        else:
+                            # Fetch live price dynamically for small-caps
+                            try:
+                                import yfinance as yf
+                                tkr = yf.Ticker(symbol)
+                                live_price = float(tkr.fast_info.last_price)
+                            except Exception:
+                                live_price = 0.0
+                                
                         success, msg = add_to_portfolio(email, symbol, sel_stock, live_price, qty)
                         if success:
                             st.success(msg)
@@ -1457,11 +1484,17 @@ if not stock_data.empty:
                     invested = qty * buy_px
                     total_invested += invested
                     
-                    # Get live price from stock_data if available
-                    live_px = buy_px
+                    # Get live price from stock_data if available, otherwise fetch dynamically
                     live_row = stock_data[stock_data["Symbol"] == sym]
                     if not live_row.empty:
                         live_px = float(live_row.iloc[0]["Live Price (₹)"])
+                    else:
+                        try:
+                            import yfinance as yf
+                            tkr = yf.Ticker(sym)
+                            live_px = float(tkr.fast_info.last_price)
+                        except Exception:
+                            live_px = buy_px
                     
                     curr_val = qty * live_px
                     current_value += curr_val
