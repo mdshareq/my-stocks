@@ -780,7 +780,13 @@ if not stock_data.empty:
                 <div style='padding: 30px; text-align: center;'>
                     <div style='font-size: 2.2rem; margin-bottom: 12px;'>🔒</div>
                     <h4 style='color: var(--text-color); margin-bottom: 6px; font-family: "Space Grotesk", sans-serif; font-size: 0.95rem; letter-spacing: 1px;'>AUTHENTICATION REQUIRED</h4>
-                    <p style='font-size: 0.8rem; color: var(--text-color); opacity: 0.65; max-width: 300px; margin: 0 auto 15px; line-height: 1.4;'>Provide your Gemini API Key in the system settings sidebar to unlock the Shareq AI Core.</p>
+                    <p style='font-size: 0.8rem; color: var(--text-color); opacity: 0.65; max-width: 300px; margin: 0 auto 10px; line-height: 1.4;'>Provide your Gemini API Key in the system settings sidebar to unlock the Shareq AI Core.</p>
+                    <div style='background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px; font-size: 0.75rem; text-align: left; max-width: 320px; margin: 0 auto;'>
+                        <strong style='color: #00F0FF;'>How to get a free API Key:</strong><br>
+                        1. Go to <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color: #a78bfa; text-decoration: none;">Google AI Studio</a><br>
+                        2. Sign in with your Google account.<br>
+                        3. Click <b>"Create API Key"</b> and paste it in the sidebar.
+                    </div>
                 </div>
             </div>
             """, unsafe_allow_html=True)
