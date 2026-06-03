@@ -583,6 +583,57 @@ def run_ml_optimizer():
     except Exception as e:
         return False, str(e)
 
+
+# --- USER PORTFOLIO LOGIC ---
+def add_to_portfolio(email, symbol, company_name, price, qty):
+    if db is None: return False, "Firebase is offline."
+    try:
+        if qty <= 0: return False, "Quantity must be greater than 0."
+        portfolio_ref = db.collection("users").document(email).collection("portfolio").document(symbol)
+        doc = portfolio_ref.get()
+        
+        if doc.exists:
+            # Average out the buy price
+            data = doc.to_dict()
+            old_qty = data.get("quantity", 0)
+            old_price = data.get("buy_price", 0)
+            
+            new_qty = old_qty + qty
+            new_avg_price = ((old_qty * old_price) + (qty * price)) / new_qty
+            
+            portfolio_ref.update({
+                "quantity": new_qty,
+                "buy_price": new_avg_price,
+                "updated_at": firestore.SERVER_TIMESTAMP
+            })
+        else:
+            portfolio_ref.set({
+                "symbol": symbol,
+                "company_name": company_name,
+                "buy_price": float(price),
+                "quantity": int(qty),
+                "added_at": firestore.SERVER_TIMESTAMP
+            })
+        return True, f"Successfully added {qty} shares of {symbol}."
+    except Exception as e:
+        return False, str(e)
+
+def get_user_portfolio(email):
+    if db is None: return []
+    try:
+        docs = db.collection("users").document(email).collection("portfolio").stream()
+        return [doc.to_dict() for doc in docs]
+    except Exception:
+        return []
+
+def remove_from_portfolio(email, symbol):
+    if db is None: return False, "Firebase is offline."
+    try:
+        db.collection("users").document(email).collection("portfolio").document(symbol).delete()
+        return True, "Removed."
+    except Exception as e:
+        return False, str(e)
+
 @st.cache_data(ttl=86400)
 def fetch_fundamentals(ticker):
     # 1. Try Firestore Cache (7-day TTL)
@@ -1309,7 +1360,7 @@ if not stock_data.empty:
     st.markdown("<hr style='border: 1px solid #111; margin: 30px 0;'>", unsafe_allow_html=True)
 
     # --- TABS SYSTEM ---
-    tab_tracker, tab_portfolios, tab_accuracy, tab_charts, tab_news, tab_guide = st.tabs(["📊 LIVE TRACKER", "💼 PORTFOLIO COMBOS", "🎯 ALGO ACCURACY", "📈 ADVANCED CHARTS", "📰 NEWS RADAR", "📖 APP GUIDE"])
+    tab_tracker, tab_my_portfolio, tab_portfolios, tab_accuracy, tab_charts, tab_news, tab_guide = st.tabs(["📊 LIVE TRACKER", "💼 MY PORTFOLIO", "🤖 PORTFOLIO COMBOS", "🎯 ALGO ACCURACY", "📈 ADVANCED CHARTS", "📰 NEWS RADAR", "📖 APP GUIDE"])
     
     with tab_tracker:
         filtered_data = stock_data[
@@ -1358,6 +1409,120 @@ if not stock_data.empty:
             st.markdown("<br>", unsafe_allow_html=True)
             with st.expander("VIEW ALL QUALIFYING ASSETS", expanded=False):
                 render_cards_html(rest_data)
+
+
+    with tab_my_portfolio:
+        st.markdown("### My Personal Portfolio")
+        if not st.session_state.user:
+            st.warning("🔒 You must be logged in to view and manage your personal portfolio.")
+            st.info("Use the Secure Authentication Gateway on the main screen to log in or register.")
+        else:
+            email = st.session_state.user["email"]
+            st.markdown(f"<p style='color: #94a3b8;'>Logged in as: <strong>{email}</strong></p>", unsafe_allow_html=True)
+            
+            with st.expander("➕ Add Asset to Portfolio", expanded=False):
+                with st.form("add_portfolio_form", clear_on_submit=True):
+                    cols = st.columns(3)
+                    with cols[0]:
+                        sel_stock = st.selectbox("Select Asset", options=stock_data["Company Name"].tolist())
+                    with cols[1]:
+                        qty = st.number_input("Quantity", min_value=1, step=1)
+                    with cols[2]:
+                        st.markdown("<br>", unsafe_allow_html=True)
+                        submit_add = st.form_submit_button("Add to Portfolio", use_container_width=True)
+                    
+                    if submit_add:
+                        row_data = stock_data[stock_data["Company Name"] == sel_stock].iloc[0]
+                        symbol = row_data["Symbol"]
+                        live_price = float(row_data["Live Price (₹)"])
+                        
+                        success, msg = add_to_portfolio(email, symbol, sel_stock, live_price, qty)
+                        if success:
+                            st.success(msg)
+                        else:
+                            st.error(msg)
+                            
+            # Load Portfolio
+            holdings = get_user_portfolio(email)
+            if not holdings:
+                st.info("Your portfolio is currently empty. Add assets using the form above.")
+            else:
+                total_invested = 0
+                current_value = 0
+                
+                # Fetch live prices for holdings
+                portfolio_display = []
+                for h in holdings:
+                    sym = h["symbol"]
+                    qty = h["quantity"]
+                    buy_px = h["buy_price"]
+                    
+                    invested = qty * buy_px
+                    total_invested += invested
+                    
+                    # Get live price from stock_data if available
+                    live_px = buy_px
+                    live_row = stock_data[stock_data["Symbol"] == sym]
+                    if not live_row.empty:
+                        live_px = float(live_row.iloc[0]["Live Price (₹)"])
+                    
+                    curr_val = qty * live_px
+                    current_value += curr_val
+                    
+                    profit = curr_val - invested
+                    profit_pct = (profit / invested) * 100 if invested > 0 else 0
+                    
+                    portfolio_display.append({
+                        "Symbol": sym,
+                        "Company": h.get("company_name", sym),
+                        "Shares": qty,
+                        "Avg Buy (₹)": buy_px,
+                        "Live Price (₹)": live_px,
+                        "P&L (₹)": profit,
+                        "P&L (%)": profit_pct
+                    })
+                
+                # Summary Cards
+                total_profit = current_value - total_invested
+                total_profit_pct = (total_profit / total_invested) * 100 if total_invested > 0 else 0
+                
+                mc1, mc2, mc3 = st.columns(3)
+                with mc1:
+                    st.markdown(f"<div class='metric-card'><h4>Total Invested</h4><div class='metric-value'>₹{total_invested:,.2f}</div></div>", unsafe_allow_html=True)
+                with mc2:
+                    st.markdown(f"<div class='metric-card'><h4>Current Value</h4><div class='metric-value'>₹{current_value:,.2f}</div></div>", unsafe_allow_html=True)
+                with mc3:
+                    color = "#00F0FF" if total_profit >= 0 else "#FF0055"
+                    sign = "+" if total_profit >= 0 else ""
+                    st.markdown(f"<div class='metric-card' style='border-left-color: {color} !important;'><h4>Overall P&L</h4><div class='metric-value' style='color:{color};'>{sign}₹{total_profit:,.2f} ({sign}{total_profit_pct:.2f}%)</div></div>", unsafe_allow_html=True)
+                
+                st.markdown("<br>", unsafe_allow_html=True)
+                
+                import pandas as pd
+                df_port = pd.DataFrame(portfolio_display)
+                
+                # Display dataframe
+                st.dataframe(
+                    df_port.style.format({
+                        "Avg Buy (₹)": "{:.2f}",
+                        "Live Price (₹)": "{:.2f}",
+                        "P&L (₹)": "{:+.2f}",
+                        "P&L (%)": "{:+.2f}%"
+                    }).map(lambda x: "color: #00F0FF;" if isinstance(x, (int, float)) and x > 0 else "color: #FF0055;" if isinstance(x, (int, float)) and x < 0 else "", subset=["P&L (₹)", "P&L (%)"]),
+                    hide_index=True,
+                    use_container_width=True
+                )
+                
+                st.markdown("<br>", unsafe_allow_html=True)
+                with st.expander("Manage Holdings (Remove Asset)"):
+                    del_sym = st.selectbox("Select Asset to Remove", options=[h["Symbol"] for h in portfolio_display])
+                    if st.button("Remove Selected Asset", type="primary"):
+                        suc, m = remove_from_portfolio(email, del_sym)
+                        if suc:
+                            st.success(m)
+                            st.rerun()
+                        else:
+                            st.error(m)
 
     with tab_charts:
         st.markdown("### Technical Price Action (90 Days)")
