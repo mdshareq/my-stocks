@@ -7,6 +7,23 @@ import xml.etree.ElementTree as ET
 from urllib.parse import quote_plus
 import google.generativeai as genai
 import os
+import firebase_admin
+from firebase_admin import credentials, firestore
+from datetime import datetime, timedelta
+
+# --- FIREBASE INITIALIZATION ---
+try:
+    if not firebase_admin._apps:
+        if os.path.exists(".firebase_key.json"):
+            cred = credentials.Certificate(".firebase_key.json")
+            firebase_admin.initialize_app(cred)
+        elif "firebase" in st.secrets:
+            cred = credentials.Certificate(dict(st.secrets["firebase"]))
+            firebase_admin.initialize_app(cred)
+    db = firestore.client() if firebase_admin._apps else None
+except Exception as e:
+    db = None
+    print(f"Firebase Init Error: {e}")
 
 # Page Configuration
 st.set_page_config(
@@ -582,7 +599,59 @@ def fetch_live_and_spark_data():
 
 @st.cache_data(ttl=3600)
 def calculate_backtest_accuracy(days_ago=30):
-    """Simulates the Algo Score 30 days ago and checks if it successfully predicted a price increase."""
+    """Fetches real 30-day algorithmic accuracy from Firebase, falling back to simulated logic if unavailable."""
+    results = []
+    
+    # --- FIREBASE REAL-WORLD BACKTEST ---
+    if db is not None:
+        target_date = datetime.now() - timedelta(days=days_ago)
+        # Search backward up to 10 days if no snapshot exactly 30 days ago exists
+        for i in range(10):
+            search_date = (target_date - timedelta(days=i)).strftime("%Y-%m-%d")
+            try:
+                doc = db.collection("daily_predictions").document(search_date).get()
+                if doc.exists:
+                    data = doc.to_dict()
+                    predictions = data.get("predictions", [])
+                    strong_buys = [p for p in predictions if p["Buy Score"] >= 75][:10]
+                    
+                    if strong_buys:
+                        tickers_to_fetch = [p["Symbol"] + ".NS" for p in strong_buys]
+                        live_data = yf.download(tickers_to_fetch, period="5d", interval="1d", progress=False)
+                        
+                        for p in strong_buys:
+                            ticker_ns = p["Symbol"] + ".NS"
+                            price_t = p["Live Price (₹)"]
+                            try:
+                                if isinstance(live_data, pd.DataFrame) and "Close" in live_data.columns:
+                                    if isinstance(live_data.columns, pd.MultiIndex):
+                                        price_now = float(live_data["Close"][ticker_ns].iloc[-1])
+                                    else:
+                                        price_now = float(live_data["Close"].iloc[-1])
+                                else:
+                                    price_now = float(live_data.iloc[-1])
+                                    
+                                actual_return = ((price_now - price_t) / price_t) * 100
+                                success = "WIN" if actual_return > 0 else "LOSS"
+                                results.append({
+                                    "Asset": p["Symbol"],
+                                    "Historical Score": p["Buy Score"],
+                                    "Price 30d Ago": price_t,
+                                    "Price Today": price_now,
+                                    "Return (%)": actual_return,
+                                    "Outcome": success
+                                })
+                            except Exception:
+                                pass
+                        
+                        if results:
+                            return pd.DataFrame(results)
+                        break
+            except Exception as e:
+                print(f"Firebase Fetch Error: {e}")
+                break
+
+    # --- STATELESS SIMULATION FALLBACK ---
     tickers = list(HALAL_STOCKS.keys())
     try:
         # Fetch NIFTY for historical market trend
@@ -819,6 +888,28 @@ def generate_dynamic_portfolios(stock_data, monthly_sip):
     
     return portfolios
 
+def log_daily_predictions_to_firebase(df):
+    """Saves a daily snapshot of the algorithm's top predictions to Firestore."""
+    if db is None: return
+    
+    today_str = datetime.now().strftime("%Y-%m-%d")
+    doc_ref = db.collection("daily_predictions").document(today_str)
+    
+    try:
+        if doc_ref.get().exists:
+            return # Already logged today
+            
+        top_stocks = df.head(20).to_dict(orient="records")
+        payload = {
+            "date": today_str,
+            "timestamp": firestore.SERVER_TIMESTAMP,
+            "predictions": top_stocks
+        }
+        doc_ref.set(payload)
+        print(f"Successfully logged {today_str} predictions to Firebase.")
+    except Exception as e:
+        print(f"Firebase Logging Error: {e}")
+
 # --- UI LAYOUT ---
 # Header Area
 st.markdown("""
@@ -855,6 +946,8 @@ with st.sidebar:
 
 with st.spinner("Executing market scan & calculating metrics..."):
     stock_data, sparkline_data = fetch_live_and_spark_data()
+    if not stock_data.empty:
+        log_daily_predictions_to_firebase(stock_data)
 
 if not stock_data.empty:
     gainers = stock_data[stock_data["% Change"] > 0].shape[0]
