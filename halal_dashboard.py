@@ -1099,20 +1099,20 @@ if not stock_data.empty:
                 if not sparkline_data.empty and ticker in sparkline_data.columns:
                     svg_chart = generate_svg_sparkline(sparkline_data[ticker].dropna(), color_hex)
                 
-                html += f'''
-                <div class='stock-card {direction}'>
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                        <div>
-                            <div class='symbol'>{row['Symbol']}</div>
-                            <div class='company'>{row['Company Name']}</div>
-                        </div>
-                        <div style="margin-top: 4px;">{svg_chart}</div>
-                    </div>
-                    <div class='value'>₹{row['Live Price (₹)']:.2f}</div>
-                    <div class='delta'>{sign}{row['Change (₹)']:.2f} ({sign}{row['% Change']:.2f}%)</div>
-                    <div style='margin-top: 15px; font-size: 0.75rem; font-family: monospace; color: #555;'>RSI: {row['RSI']} &nbsp;|&nbsp; SCORE: {row['Buy Score']}</div>
-                </div>
-                '''
+                html += f"""
+<div class='stock-card {direction}'>
+    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+        <div>
+            <div class='symbol'>{row['Symbol']}</div>
+            <div class='company'>{row['Company Name']}</div>
+        </div>
+        <div style="margin-top: 4px;">{svg_chart}</div>
+    </div>
+    <div class='value'>₹{row['Live Price (₹)']:.2f}</div>
+    <div class='delta'>{sign}{row['Change (₹)']:.2f} ({sign}{row['% Change']:.2f}%)</div>
+    <div style='margin-top: 15px; font-size: 0.75rem; font-family: monospace; color: #555;'>RSI: {row['RSI']} &nbsp;|&nbsp; SCORE: {row['Buy Score']}</div>
+</div>
+"""
             html += "</div>"
             st.markdown(html, unsafe_allow_html=True)
                     
