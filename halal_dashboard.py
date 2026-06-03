@@ -1735,7 +1735,7 @@ if not stock_data.empty:
                 win_rate = (wins / total) * 100 if total > 0 else 0
                 
                 color = "#00F0FF" if win_rate > 50 else "#FF0055"
-                st.markdown(f"<div style='margin: 20px 0; padding: 20px; background: var(--secondary-background-color); border: 1px solid rgba(128, 128, 128, 0.15); border-left: 3px solid {color}; border-radius: 12px;'> <h3 style='margin:0; font-weight: 300; font-family: \"Space Grotesk\", sans-serif; color: var(--text-color);'>Win Rate: <span style='color:{color}'>{win_rate:.1f}%</span></h3> <p style='margin: 5px 0 0 0; color: var(--text-color); opacity: 0.6;'>{wins} successful predictions out of {total} strong buy signals triggered 30 days ago.</p> </div>", unsafe_allow_html=True)
+                st.markdown(f"<div style='margin: 20px 0; padding: 20px; background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(148, 163, 184, 0.1); border-left: 3px solid {color}; border-radius: 12px;'> <h3 style='margin:0; font-weight: 300; font-family: \"Space Grotesk\", sans-serif; color: var(--text-color);'>Win Rate: <span style='color:{color}'>{win_rate:.1f}%</span></h3> <p style='margin: 5px 0 0 0; color: var(--text-color); opacity: 0.6;'>{wins} successful predictions out of {total} strong buy signals triggered across the Universal Database exactly 30 days ago.</p> </div>", unsafe_allow_html=True)
                 
                 def style_outcome(val):
                     color = '#22c55e' if val == 'WIN' else '#ef4444' if val == 'LOSS' else 'inherit'
