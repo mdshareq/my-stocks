@@ -336,6 +336,20 @@ def calculate_rsi(data, periods=14):
     rsi = ma_up / ma_down
     return 100 - (100 / (1 + rsi))
 
+def calculate_macd(data, fast=12, slow=26, signal=9):
+    exp1 = data['Close'].ewm(span=fast, adjust=False).mean()
+    exp2 = data['Close'].ewm(span=slow, adjust=False).mean()
+    macd = exp1 - exp2
+    signal_line = macd.ewm(span=signal, adjust=False).mean()
+    return macd, signal_line
+
+def calculate_bollinger_bands(data, window=20, num_of_std=2):
+    sma = data['Close'].rolling(window=window).mean()
+    std = data['Close'].rolling(window=window).std()
+    upper_band = sma + (std * num_of_std)
+    lower_band = sma - (std * num_of_std)
+    return upper_band, lower_band
+
 def generate_svg_sparkline(prices, color):
     if len(prices) < 2: return ""
     price_list = prices.tolist()
@@ -399,7 +413,15 @@ def fetch_live_and_spark_data():
     sparklines = {}
     
     try:
-        live_data = yf.download(tickers, period="1y", interval="1d", progress=False, group_by="ticker")
+        # Broader Market Filter
+        nifty = yf.download("^NSEI", period="2y", interval="1d", progress=False)
+        market_healthy = True
+        if not nifty.empty and len(nifty) >= 50:
+            nifty_sma50 = nifty["Close"].rolling(window=50).mean().iloc[-1]
+            nifty_price = nifty["Close"].iloc[-1]
+            market_healthy = bool(nifty_price > nifty_sma50)
+            
+        live_data = yf.download(tickers, period="2y", interval="1d", progress=False, group_by="ticker")
         for ticker in tickers:
             ticker_obj = yf.Ticker(ticker)
             info = ticker_obj.info
@@ -417,7 +439,7 @@ def fetch_live_and_spark_data():
             else:
                 continue
                 
-            if hist.empty or len(hist) < 50: continue
+            if hist.empty or len(hist) < 200: continue
             
             # Save trailing 30-day closings for sparklines
             sparklines[ticker] = hist["Close"].tail(30)
@@ -428,7 +450,10 @@ def fetch_live_and_spark_data():
             change_pct = (change / prev_close) * 100
             
             sma_50 = hist["Close"].rolling(window=50).mean().iloc[-1]
+            sma_200 = hist["Close"].rolling(window=200).mean().iloc[-1]
             current_rsi = calculate_rsi(hist).iloc[-1]
+            macd, signal = calculate_macd(hist)
+            upper_bb, lower_bb = calculate_bollinger_bands(hist)
             
             try:
                 avg_vol = hist["Volume"].rolling(window=20).mean().iloc[-1]
@@ -437,14 +462,34 @@ def fetch_live_and_spark_data():
             except:
                 has_volume = False
                 
+            # ADVANCED SCORING LOGIC
             score = 50 
-            if current_price > sma_50: score += 15 
-            if current_rsi < 30: score += 20 
-            elif current_rsi < 40: score += 10
+            
+            # Base logic
+            if current_price > sma_50: score += 5
+            if current_rsi < 30: score += 10 
+            elif current_rsi < 40: score += 5
             elif current_rsi > 70: score -= 20 
             if has_volume: score += 10
-            if debt_to_equity < 33: score += 15 
+            if debt_to_equity < 33: score += 10 
             if cash_compliant and total_assets > 1: score += 10
+            
+            # Quantitative Filters
+            if current_price > sma_200: score += 10
+            
+            # MACD Bullish Crossover
+            if macd.iloc[-1] > signal.iloc[-1] and macd.iloc[-2] <= signal.iloc[-2]:
+                score += 15
+            elif macd.iloc[-1] > signal.iloc[-1]:
+                score += 5
+                
+            # Bollinger Band Oversold Bounce
+            if current_price <= lower_bb.iloc[-1] * 1.02:
+                score += 10
+                
+            # Broader Market Penalty
+            if not market_healthy:
+                score -= 15
             
             data.append({
                 "Symbol": ticker.replace(".NS", ""), "Company Name": HALAL_STOCKS[ticker],
@@ -464,10 +509,17 @@ def calculate_backtest_accuracy(days_ago=30):
     """Simulates the Algo Score 30 days ago and checks if it successfully predicted a price increase."""
     tickers = list(HALAL_STOCKS.keys())
     try:
-        hist_data = yf.download(tickers, period="1y", interval="1d", progress=False)
+        # Fetch NIFTY for historical market trend
+        nifty = yf.download("^NSEI", period="2y", interval="1d", progress=False)
+        if not nifty.empty:
+            nifty_sma50_series = nifty["Close"].rolling(50).mean()
+        else:
+            nifty_sma50_series = pd.Series(dtype='float64')
+
+        hist_data = yf.download(tickers, period="2y", interval="1d", progress=False)
         closes = hist_data['Close'] if 'Close' in hist_data else hist_data
         volumes = hist_data['Volume'] if 'Volume' in hist_data else pd.DataFrame()
-        if closes.empty or len(closes) < 80: return pd.DataFrame()
+        if closes.empty or len(closes) < 200: return pd.DataFrame()
         
         t_target_idx = -days_ago
         t_now_idx = -1
@@ -476,46 +528,71 @@ def calculate_backtest_accuracy(days_ago=30):
         for ticker in tickers:
             if ticker not in closes: continue
             col = closes[ticker].dropna()
-            if len(col) < 80: continue
+            if len(col) < 200: continue
             
             vol_col = volumes[ticker].dropna() if ticker in volumes else pd.Series(dtype='float64')
+            df = pd.DataFrame({'Close': col, 'Volume': vol_col})
             
-            # Calculate historical indicators leading up to T-30
-            sma_series = col.rolling(50).mean()
-            rsi_series = calculate_rsi(pd.DataFrame({'Close': col}))
-            vol_sma_series = vol_col.rolling(20).mean() if not vol_col.empty else pd.Series(dtype='float64')
+            # Calculate historical indicators
+            sma50 = df['Close'].rolling(50).mean()
+            sma200 = df['Close'].rolling(200).mean()
+            rsi = calculate_rsi(df)
+            macd, signal = calculate_macd(df)
+            upper_bb, lower_bb = calculate_bollinger_bands(df)
+            vol_sma = df['Volume'].rolling(20).mean() if not vol_col.empty else pd.Series(dtype='float64')
             
             try:
-                price_t_target = col.iloc[t_target_idx]
-                price_now = col.iloc[t_now_idx]
-                sma_t_target = sma_series.iloc[t_target_idx]
-                rsi_t_target = rsi_series.iloc[t_target_idx]
-                vol_t_target = vol_col.iloc[t_target_idx] if not vol_col.empty else 0
-                vol_sma_t_target = vol_sma_series.iloc[t_target_idx] if not vol_sma_series.empty else 0
+                price_t = df['Close'].iloc[t_target_idx]
+                price_now = df['Close'].iloc[t_now_idx]
+                
+                # Check broader market on t_target
+                market_healthy = True
+                if not nifty.empty and len(nifty) >= abs(t_target_idx):
+                    try:
+                        n_price = nifty["Close"].iloc[t_target_idx]
+                        n_sma = nifty_sma50_series.iloc[t_target_idx]
+                        market_healthy = bool(n_price > n_sma)
+                    except: pass
+                
+                # Recreate Algo logic for that day in the past
+                score = 50 
+                if price_t > sma50.iloc[t_target_idx]: score += 5 
+                if rsi.iloc[t_target_idx] < 30: score += 10 
+                elif rsi.iloc[t_target_idx] < 40: score += 5
+                elif rsi.iloc[t_target_idx] > 70: score -= 20 
+                if not vol_col.empty and vol_col.iloc[t_target_idx] > vol_sma.iloc[t_target_idx]: score += 10
+                
+                # NEW FILTERS
+                if price_t > sma200.iloc[t_target_idx]: score += 10
+                
+                if macd.iloc[t_target_idx] > signal.iloc[t_target_idx] and macd.iloc[t_target_idx-1] <= signal.iloc[t_target_idx-1]:
+                    score += 15
+                elif macd.iloc[t_target_idx] > signal.iloc[t_target_idx]:
+                    score += 5
+                    
+                if price_t <= lower_bb.iloc[t_target_idx] * 1.02:
+                    score += 10
+                    
+                if not market_healthy:
+                    score -= 15
+                    
+                score += 20 # Assumed baseline debt & cash compliance for backtest speed
+                
+                if score >= 85: # Only track "Strong Buys" for accuracy checking
+                    actual_return = ((price_now - price_t) / price_t) * 100
+                    success = "WIN" if actual_return > 0 else "LOSS"
+                    
+                    results.append({
+                        "Asset": ticker.replace(".NS", ""),
+                        "Historical Score": score,
+                        "Price 30d Ago": price_t,
+                        "Price Today": price_now,
+                        "Return (%)": actual_return,
+                        "Outcome": success
+                    })
             except IndexError:
                 continue
 
-            # Recreate Algo logic for that day in the past
-            score = 50 
-            if price_t_target > sma_t_target: score += 15 
-            if rsi_t_target < 30: score += 20 
-            elif rsi_t_target < 40: score += 10
-            elif rsi_t_target > 70: score -= 20 
-            if vol_t_target > vol_sma_t_target: score += 10
-            score += 25 # Assumed baseline debt & cash compliance for backtest speed
-            
-            if score >= 85: # Only track "Strong Buys" for accuracy checking
-                actual_return = ((price_now - price_t_target) / price_t_target) * 100
-                success = "WIN" if actual_return > 0 else "LOSS"
-                
-                results.append({
-                    "Asset": ticker.replace(".NS", ""),
-                    "Historical Score": score,
-                    "Price 30d Ago": price_t_target,
-                    "Price Today": price_now,
-                    "Return (%)": actual_return,
-                    "Outcome": success
-                })
         return pd.DataFrame(results)
     except Exception:
         return pd.DataFrame()

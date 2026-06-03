@@ -23,22 +23,25 @@ Shareq Equities is a modern, futuristic web dashboard built with Streamlit that 
 
 The screener evaluates each asset based on a proprietary algorithmic scoring system (Base: 50 points):
 
-- **Momentum Filter:** `+15` points if the current price is above the 50-day Simple Moving Average (SMA50).
-- **RSI Filter:** `+20` points if RSI < 40 (Oversold/Undervalued indicator); `-20` points if RSI > 70 (Overbought/Overvalued indicator).
-- **Debt Compliance:** `+15` points if the debt-to-equity ratio is below 33% (a core Shariah financial ratio screening parameter).
-- **Strong Buy Signal:** Achieved when the total score is `≥ 75`.
+- **Trend & Momentum:** `+5` points if Price > 50-Day SMA. `+10` points if Price > 200-Day SMA.
+- **MACD Crossover:** `+15` points for a fresh Bullish MACD Crossover, or `+5` points for ongoing bullish momentum.
+- **Oversold Indicators (RSI & Bollinger):** `+10` points if RSI < 30 (`+5` if RSI < 40); `-20` points if RSI > 70. `+10` points if Price is at or below the Lower Bollinger Band.
+- **Volume Surge:** `+10` points if current daily volume exceeds the 20-day average.
+- **Shariah Financials:** `+10` points if Debt/Equity < 33%; `+10` points if Cash/Assets < 33%.
+- **Broader Market Filter:** `-15` points penalty if the NIFTY 50 index is trading below its 50-Day SMA (protects against market crashes).
+- **Strong Buy Signal:** Achieved when the total score is `≥ 85`.
 
 ---
 
-## Installation & Setup
+## How to Run the App (Installation & Setup)
 
-Follow these steps to set up and run the application locally:
+Follow these steps to set up and run the application locally on your machine:
 
 ### 1. Clone or Download the Repository
-Extract the project files into your local directory.
+Open a terminal in the directory where you want the project to live, or extract the downloaded zip file into a folder.
 
 ### 2. Set Up a Virtual Environment (Recommended)
-Create and activate a virtual environment to manage dependencies:
+Create and activate a virtual environment to manage dependencies securely without breaking global Python packages:
 
 ```bash
 # Windows
@@ -51,7 +54,7 @@ source venv/bin/activate
 ```
 
 ### 3. Install Dependencies
-Install all required packages:
+Install all required Python packages via pip:
 ```bash
 pip install streamlit yfinance pandas plotly requests google-generativeai
 ```
@@ -59,10 +62,13 @@ pip install streamlit yfinance pandas plotly requests google-generativeai
 ### 4. Run the Application
 Execute the Streamlit application from your terminal:
 ```bash
-streamlit run halal_dashboard.py
+# Recommended command for Windows
 py -m streamlit run halal_dashboard.py
+
+# Alternative for macOS/Linux
+streamlit run halal_dashboard.py
 ```
-*(Alternatively, if Streamlit is not added to your PATH: `python -m streamlit run halal_dashboard.py`)*
+*(Once run, a browser tab will automatically open at `http://localhost:8501`)*
 
 ---
 
