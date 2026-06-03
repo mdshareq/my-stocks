@@ -493,8 +493,134 @@ def get_best_model(api_key):
         pass
     return 'gemini-2.5-flash'
 
+# --- ALGO WEIGHTS ENGINE ---
+DEFAULT_WEIGHTS = {
+    "sma_50_above": 5,
+    "rsi_below_30": 10,
+    "rsi_below_40": 5,
+    "rsi_above_70": -20,
+    "high_volume": 10,
+    "good_debt": 10,
+    "good_cash": 10,
+    "sma_200_above": 10,
+    "macd_crossover": 15,
+    "macd_bullish": 5,
+    "bb_bounce": 10,
+    "market_crash": -15
+}
+
+@st.cache_data(ttl=3600)
+def fetch_algo_weights():
+    if db is None: return DEFAULT_WEIGHTS
+    try:
+        doc = db.collection("system").document("algo_weights").get()
+        if doc.exists:
+            return doc.to_dict()
+        else:
+            db.collection("system").document("algo_weights").set(DEFAULT_WEIGHTS)
+            return DEFAULT_WEIGHTS
+    except Exception:
+        return DEFAULT_WEIGHTS
+
+def run_ml_optimizer():
+    if db is None: return False, "Database not connected."
+    try:
+        nifty = yf.download("^NSEI", period="1mo", interval="1d", progress=False)
+        if nifty.empty: return False, "Could not fetch market data."
+        
+        # Safely extract scalar values
+        nifty_close = nifty["Close"]
+        if isinstance(nifty_close, pd.DataFrame):
+            nifty_close = nifty_close.iloc[:, 0]
+            
+        nifty_start = float(nifty_close.iloc[0])
+        nifty_end = float(nifty_close.iloc[-1])
+        market_return = ((nifty_end - nifty_start) / nifty_start) * 100
+        
+        doc = db.collection("system").document("algo_weights").get()
+        weights = doc.to_dict() if doc.exists else DEFAULT_WEIGHTS.copy()
+        
+        # Auto-adjust logic based on market regime (Simple Heuristic ML)
+        if market_return < 0:
+            # Bear Market: Increase defense
+            weights["rsi_below_30"] = min(20, weights.get("rsi_below_30", 10) + 2)
+            weights["good_debt"] = min(15, weights.get("good_debt", 10) + 2)
+            weights["good_cash"] = min(15, weights.get("good_cash", 10) + 2)
+            # Decrease momentum
+            weights["macd_crossover"] = max(5, weights.get("macd_crossover", 15) - 3)
+            weights["sma_50_above"] = max(2, weights.get("sma_50_above", 5) - 1)
+        else:
+            # Bull Market: Increase momentum
+            weights["macd_crossover"] = min(25, weights.get("macd_crossover", 15) + 3)
+            weights["sma_50_above"] = min(10, weights.get("sma_50_above", 5) + 2)
+            weights["sma_200_above"] = min(15, weights.get("sma_200_above", 10) + 2)
+            # Decrease defense slightly
+            weights["rsi_below_30"] = max(5, weights.get("rsi_below_30", 10) - 2)
+            
+        db.collection("system").document("algo_weights").set(weights)
+        fetch_algo_weights.clear()
+        return True, f"Algorithm successfully recalibrated for a {'Bearish' if market_return < 0 else 'Bullish'} market."
+    except Exception as e:
+        return False, str(e)
+
+@st.cache_data(ttl=86400)
+def fetch_fundamentals(ticker):
+    # 1. Try Firestore Cache (7-day TTL)
+    if db is not None:
+        try:
+            doc = db.collection("fundamentals_cache").document(ticker).get()
+            if doc.exists:
+                data = doc.to_dict()
+                if "fetched_at" in data:
+                    # Handle both offset-naive and aware datetime
+                    fetched_date = data["fetched_at"]
+                    if hasattr(fetched_date, 'replace'): 
+                        fetched_date = fetched_date.replace(tzinfo=None)
+                    if (datetime.now() - fetched_date).days < 7:
+                        return data.get("debt_to_equity", 0), data.get("total_cash", 0), data.get("total_assets", 1)
+        except Exception:
+            pass
+            
+    # 2. Live Fetching with Fallbacks
+    debt_to_equity, total_cash, total_assets = 0, 0, 1
+    try:
+        t = yf.Ticker(ticker)
+        debt_to_equity = t.info.get("debtToEquity", 0) or 0
+        total_cash = t.info.get("totalCash", 0) or 0
+        total_assets = t.info.get("totalAssets", 0) or 1
+        
+        # Deep Fallback to Balance Sheet if basic info fails
+        if debt_to_equity == 0 or total_cash == 0:
+            bs = t.balance_sheet
+            if not bs.empty:
+                if 'Total Debt' in bs.index and 'Stockholders Equity' in bs.index:
+                    debt = bs.loc['Total Debt'].iloc[0]
+                    eq = bs.loc['Stockholders Equity'].iloc[0]
+                    if eq > 0: debt_to_equity = (debt / eq) * 100
+                if 'Cash And Cash Equivalents' in bs.index:
+                    total_cash = bs.loc['Cash And Cash Equivalents'].iloc[0]
+                if 'Total Assets' in bs.index:
+                    total_assets = bs.loc['Total Assets'].iloc[0]
+    except Exception:
+        pass
+        
+    # 3. Save to Cache
+    if db is not None:
+        try:
+            db.collection("fundamentals_cache").document(ticker).set({
+                "debt_to_equity": debt_to_equity,
+                "total_cash": total_cash,
+                "total_assets": total_assets,
+                "fetched_at": firestore.SERVER_TIMESTAMP
+            })
+        except Exception:
+            pass
+            
+    return debt_to_equity, total_cash, total_assets
+
 @st.cache_data(ttl=300)
 def fetch_live_and_spark_data():
+    algo_weights = fetch_algo_weights()
     tickers = list(HALAL_STOCKS.keys())
     data = []
     sparklines = {}
@@ -518,14 +644,11 @@ def fetch_live_and_spark_data():
                     ticker_obj = yf.Ticker(ticker)
                     info = ticker_obj.fast_info if hasattr(ticker_obj, 'fast_info') else ticker_obj.info
                     market_cap = info.get("marketCap", 0) or 0
-                    
-                    # Some versions of fast_info don't have debt/cash. Fallback to info.
                     if not market_cap: market_cap = ticker_obj.info.get("marketCap", 0) or 0
-                    debt_to_equity = ticker_obj.info.get("debtToEquity", 0) or 0
-                    total_cash = ticker_obj.info.get("totalCash", 0) or 0
-                    total_assets = ticker_obj.info.get("totalAssets", 0) or 1
                 except Exception:
-                    pass # Rate limited or data missing, use defaults
+                    market_cap = 0
+                    
+                debt_to_equity, total_cash, total_assets = fetch_fundamentals(ticker)
                     
                 cash_ratio = (total_cash / total_assets) * 100 if total_assets > 1 else 0
                 cash_compliant = cash_ratio < 33
@@ -568,30 +691,30 @@ def fetch_live_and_spark_data():
                 score = 50 
                 
                 # Base logic
-                if current_price > sma_50: score += 5
-                if current_rsi < 30: score += 10 
-                elif current_rsi < 40: score += 5
-                elif current_rsi > 70: score -= 20 
-                if has_volume: score += 10
-                if debt_to_equity > 0 and debt_to_equity < 33: score += 10 
-                if cash_compliant and total_assets > 1: score += 10
+                if current_price > sma_50: score += algo_weights.get("sma_50_above", 5)
+                if current_rsi < 30: score += algo_weights.get("rsi_below_30", 10)
+                elif current_rsi < 40: score += algo_weights.get("rsi_below_40", 5)
+                elif current_rsi > 70: score += algo_weights.get("rsi_above_70", -20)
+                if has_volume: score += algo_weights.get("high_volume", 10)
+                if debt_to_equity > 0 and debt_to_equity < 33: score += algo_weights.get("good_debt", 10)
+                if cash_compliant and total_assets > 1: score += algo_weights.get("good_cash", 10)
                 
                 # Quantitative Filters
-                if current_price > sma_200: score += 10
+                if current_price > sma_200: score += algo_weights.get("sma_200_above", 10)
                 
                 # MACD Bullish Crossover
                 if macd.iloc[-1] > signal.iloc[-1] and macd.iloc[-2] <= signal.iloc[-2]:
-                    score += 15
+                    score += algo_weights.get("macd_crossover", 15)
                 elif macd.iloc[-1] > signal.iloc[-1]:
-                    score += 5
+                    score += algo_weights.get("macd_bullish", 5)
                     
                 # Bollinger Band Oversold Bounce
                 if current_price <= lower_bb.iloc[-1] * 1.02:
-                    score += 10
+                    score += algo_weights.get("bb_bounce", 10)
                     
                 # Broader Market Penalty
                 if not market_healthy:
-                    score -= 15
+                    score += algo_weights.get("market_crash", -15)
                 
                 data.append({
                     "Symbol": ticker.replace(".NS", ""), "Company Name": HALAL_STOCKS[ticker]["name"],
@@ -922,6 +1045,61 @@ def log_daily_predictions_to_firebase(df):
     except Exception as e:
         print(f"Firebase Logging Error: {e}")
 
+# --- USER AUTHENTICATION ---
+import hashlib
+
+def hash_password(password):
+    return hashlib.sha256(password.encode()).hexdigest()
+
+if 'user' not in st.session_state:
+    st.session_state.user = None
+
+if db is not None and st.session_state.user is None:
+    st.markdown("<div class='page-title' style='text-align: center; display: block; margin-top: 100px;'>SHAREQ EQUITIES</div>", unsafe_allow_html=True)
+    st.markdown("<div style='text-align: center; margin-bottom: 30px; color: #94a3b8; font-family: \"Space Grotesk\", sans-serif; letter-spacing: 2px;'>SECURE AUTHENTICATION GATEWAY</div>", unsafe_allow_html=True)
+    
+    col1, col2, col3 = st.columns([1, 1.2, 1])
+    with col2:
+        with st.container():
+            st.markdown("<div style='padding: 20px; background: rgba(255,255,255,0.03); border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);'>", unsafe_allow_html=True)
+            auth_mode = st.radio("Access Mode", ["Login", "Register"], horizontal=True, label_visibility="collapsed")
+            st.markdown("<br>", unsafe_allow_html=True)
+            email = st.text_input("Email Address", placeholder="user@shareq.dev")
+            password = st.text_input("Password", type="password", placeholder="••••••••")
+            
+            st.markdown("<br>", unsafe_allow_html=True)
+            if st.button("Authenticate", use_container_width=True):
+                if not email or not password:
+                    st.error("Credentials required.")
+                else:
+                    users_ref = db.collection("users").document(email)
+                    doc = users_ref.get()
+                    
+                    if auth_mode == "Register":
+                        if doc.exists:
+                            st.error("Account already exists.")
+                        else:
+                            users_ref.set({
+                                "email": email,
+                                "password_hash": hash_password(password),
+                                "gemini_api_key": "",
+                                "created_at": firestore.SERVER_TIMESTAMP
+                            })
+                            st.session_state.user = {"email": email, "gemini_api_key": ""}
+                            st.rerun()
+                    else: # Login
+                        if not doc.exists:
+                            st.error("Invalid credentials.")
+                        else:
+                            user_data = doc.to_dict()
+                            if user_data.get("password_hash") == hash_password(password):
+                                st.session_state.user = user_data
+                                st.rerun()
+                            else:
+                                st.error("Invalid credentials.")
+            st.markdown("</div>", unsafe_allow_html=True)
+    st.stop()
+
 # --- UI LAYOUT ---
 # Header Area
 st.markdown("""
@@ -937,15 +1115,38 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-saved_api_key = load_saved_key()
+if st.session_state.user:
+    saved_api_key = st.session_state.user.get("gemini_api_key", "")
+else:
+    saved_api_key = load_saved_key()
 
 with st.sidebar:
+    if st.session_state.user:
+        st.markdown(f"<div style='font-size: 0.8rem; color: #00F0FF; margin-bottom: 15px;'>Logged in: {st.session_state.user['email']}</div>", unsafe_allow_html=True)
+        if st.button("Logout", key="logout_btn"):
+            st.session_state.user = None
+            st.rerun()
+            
     st.markdown("### SYSTEM SETTINGS")
     api_key = st.text_input("GEMINI API KEY", value=saved_api_key, type="password")
     
     if api_key != saved_api_key:
-        save_key(api_key)
-        st.success("API Key saved locally.")
+        if st.session_state.user and db:
+            db.collection("users").document(st.session_state.user["email"]).update({"gemini_api_key": api_key})
+            st.session_state.user["gemini_api_key"] = api_key
+            st.success("API Key securely saved to Cloud Profile.")
+        else:
+            save_key(api_key)
+            st.success("API Key saved locally.")
+            
+    if st.button("🧠 Auto-Optimize Algorithm", help="Run ML engine to adjust scoring weights based on market regime.", use_container_width=True):
+        with st.spinner("Training model & adjusting weights..."):
+            success, msg = run_ml_optimizer()
+            if success:
+                st.success(msg)
+                st.rerun()
+            else:
+                st.error(msg)
         
     st.markdown("### DYNAMIC FILTERS")
     min_score = st.slider("Min Algo Score", min_value=0, max_value=100, value=50, step=5)
