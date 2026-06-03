@@ -392,6 +392,8 @@ KEY_FILE = ".env_gemini_key"
 
 # --- API KEY MANAGEMENT ---
 def load_saved_key():
+    if "GEMINI_API_KEY" in st.secrets:
+        return st.secrets["GEMINI_API_KEY"]
     if os.path.exists(KEY_FILE):
         with open(KEY_FILE, "r") as f:
             return f.read().strip()
