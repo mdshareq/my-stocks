@@ -292,25 +292,43 @@ st.markdown(
 )
 
 
-# Top 50 Shariah-compliant Stocks
+# Expanded Shariah-compliant Stocks (60+ Assets)
 HALAL_STOCKS = {
+    # IT / Tech
     "TCS.NS": "Tata Consultancy Services", "INFY.NS": "Infosys", "HCLTECH.NS": "HCL Technologies",
     "WIPRO.NS": "Wipro", "KPITTECH.NS": "KPIT Technologies", "TECHM.NS": "Tech Mahindra",
     "PERSISTENT.NS": "Persistent Systems", "COFORGE.NS": "Coforge", "MPHASIS.NS": "Mphasis",
-    "LTTS.NS": "L&T Technology Services", "HINDUNILVR.NS": "Hindustan Unilever", "NESTLEIND.NS": "Nestle India", 
+    "LTTS.NS": "L&T Technology Services", "TATAELXSI.NS": "Tata Elxsi", "CYIENT.NS": "Cyient",
+    
+    # FMCG / Consumer / Retail
+    "HINDUNILVR.NS": "Hindustan Unilever", "NESTLEIND.NS": "Nestle India", 
     "BRITANNIA.NS": "Britannia Industries", "GODREJCP.NS": "Godrej Consumer Products", "DABUR.NS": "Dabur India", 
     "MARICO.NS": "Marico", "COLPAL.NS": "Colgate-Palmolive", "TATACONSUM.NS": "Tata Consumer Products", 
-    "HATSUN.NS": "Hatsun Agro", "BATAINDIA.NS": "Bata India", "SUNPHARMA.NS": "Sun Pharmaceuticals", 
-    "DIVISLAB.NS": "Divi's Laboratories", "CIPLA.NS": "Cipla", "DRREDDY.NS": "Dr. Reddy's Lab", 
-    "TORNTPHARM.NS": "Torrent Pharmaceuticals", "ZYDUSLIFE.NS": "Zydus Lifesciences", "LUPIN.NS": "Lupin", 
-    "AUROPHARMA.NS": "Aurobindo Pharma", "ALKEM.NS": "Alkem Laboratories", "BIOCON.NS": "Biocon", 
+    "HATSUN.NS": "Hatsun Agro", "BATAINDIA.NS": "Bata India", "DMART.NS": "Avenue Supermarts", 
+    "TRENT.NS": "Trent Ltd", "HAVELLS.NS": "Havells India", "VOLTAS.NS": "Voltas",
+    
+    # Pharma / Healthcare
+    "SUNPHARMA.NS": "Sun Pharmaceuticals", "DIVISLAB.NS": "Divi's Laboratories", "CIPLA.NS": "Cipla", 
+    "DRREDDY.NS": "Dr. Reddy's Lab", "TORNTPHARM.NS": "Torrent Pharmaceuticals", "ZYDUSLIFE.NS": "Zydus Lifesciences", 
+    "LUPIN.NS": "Lupin", "AUROPHARMA.NS": "Aurobindo Pharma", "ALKEM.NS": "Alkem Laboratories", 
+    "BIOCON.NS": "Biocon", "APOLLOHOSP.NS": "Apollo Hospitals", "SYNGENE.NS": "Syngene International",
+    
+    # Auto / Manufacturing
     "MARUTI.NS": "Maruti Suzuki", "BAJAJ-AUTO.NS": "Bajaj Auto", "EICHERMOT.NS": "Eicher Motors", 
-    "HEROMOTOCO.NS": "Hero MotoCorp", "TVSMOTOR.NS": "TVS Motor Company", "BOSCHLTD.NS": "Bosch Limited", 
-    "ULTRACEMCO.NS": "Ultratech Cement", "ASIANPAINT.NS": "Asian Paints", "SHREECEM.NS": "Shree Cement", 
-    "GRASIM.NS": "Grasim Industries", "AMBUJACEM.NS": "Ambuja Cements", "ACC.NS": "ACC Limited", 
-    "PIDILITIND.NS": "Pidilite Industries", "BERGEPAINT.NS": "Berger Paints", "SRF.NS": "SRF Limited", 
-    "DEEPAKNTR.NS": "Deepak Nitrite", "AARTIIND.NS": "Aarti Industries", "RELIANCE.NS": "Reliance Industries", 
-    "TITAN.NS": "Titan Company", "ONGC.NS": "Oil & Natural Gas Corp",
+    "HEROMOTOCO.NS": "Hero MotoCorp", "TVSMOTOR.NS": "TVS Motor Company", "BOSCHLTD.NS": "Bosch Limited",
+    
+    # Cement / Core
+    "ULTRACEMCO.NS": "Ultratech Cement", "SHREECEM.NS": "Shree Cement", "GRASIM.NS": "Grasim Industries", 
+    "AMBUJACEM.NS": "Ambuja Cements", "ACC.NS": "ACC Limited", 
+    
+    # Chemicals / Paints
+    "ASIANPAINT.NS": "Asian Paints", "BERGEPAINT.NS": "Berger Paints", 
+    "PIDILITIND.NS": "Pidilite Industries", "SRF.NS": "SRF Limited", "DEEPAKNTR.NS": "Deepak Nitrite", 
+    "AARTIIND.NS": "Aarti Industries", "PIIND.NS": "PI Industries", "NAVINFLUOR.NS": "Navin Fluorine", 
+    "TATACHEM.NS": "Tata Chemicals", "ATUL.NS": "Atul Ltd",
+    
+    # Energy / Miscellaneous
+    "RELIANCE.NS": "Reliance Industries", "ONGC.NS": "Oil & Natural Gas Corp", "TITAN.NS": "Titan Company",
 }
 REVERSE_LOOKUP = {name: ticker for ticker, name in HALAL_STOCKS.items()}
 KEY_FILE = ".env_gemini_key"
@@ -417,9 +435,10 @@ def fetch_live_and_spark_data():
         nifty = yf.download("^NSEI", period="2y", interval="1d", progress=False)
         market_healthy = True
         if not nifty.empty and len(nifty) >= 50:
-            nifty_sma50 = nifty["Close"].rolling(window=50).mean().iloc[-1]
-            nifty_price = nifty["Close"].iloc[-1]
-            market_healthy = bool(nifty_price > nifty_sma50)
+            nifty_close = nifty["Close"].squeeze()
+            nifty_sma50 = nifty_close.rolling(window=50).mean().iloc[-1]
+            nifty_price = nifty_close.iloc[-1]
+            market_healthy = bool(float(nifty_price) > float(nifty_sma50))
             
         live_data = yf.download(tickers, period="2y", interval="1d", progress=False, group_by="ticker")
         for ticker in tickers:
@@ -512,8 +531,10 @@ def calculate_backtest_accuracy(days_ago=30):
         # Fetch NIFTY for historical market trend
         nifty = yf.download("^NSEI", period="2y", interval="1d", progress=False)
         if not nifty.empty:
-            nifty_sma50_series = nifty["Close"].rolling(50).mean()
+            nifty_close = nifty["Close"].squeeze()
+            nifty_sma50_series = nifty_close.rolling(50).mean()
         else:
+            nifty_close = pd.Series(dtype='float64')
             nifty_sma50_series = pd.Series(dtype='float64')
 
         hist_data = yf.download(tickers, period="2y", interval="1d", progress=False)
@@ -549,9 +570,9 @@ def calculate_backtest_accuracy(days_ago=30):
                 market_healthy = True
                 if not nifty.empty and len(nifty) >= abs(t_target_idx):
                     try:
-                        n_price = nifty["Close"].iloc[t_target_idx]
+                        n_price = nifty_close.iloc[t_target_idx]
                         n_sma = nifty_sma50_series.iloc[t_target_idx]
-                        market_healthy = bool(n_price > n_sma)
+                        market_healthy = bool(float(n_price) > float(n_sma))
                     except: pass
                 
                 # Recreate Algo logic for that day in the past
@@ -767,7 +788,7 @@ if not stock_data.empty:
     st.markdown("<hr style='border: 1px solid #111; margin: 30px 0;'>", unsafe_allow_html=True)
 
     # --- TABS SYSTEM ---
-    tab_tracker, tab_charts, tab_news, tab_accuracy = st.tabs(["📊 LIVE TRACKER", "📈 ADVANCED CHARTS", "📰 NEWS RADAR", "🎯 ALGO ACCURACY"])
+    tab_tracker, tab_charts, tab_news, tab_accuracy, tab_portfolios = st.tabs(["📊 LIVE TRACKER", "📈 ADVANCED CHARTS", "📰 NEWS RADAR", "🎯 ALGO ACCURACY", "💼 PORTFOLIO COMBOS"])
     
     with tab_tracker:
         filtered_data = stock_data[
@@ -862,3 +883,45 @@ if not stock_data.empty:
                 )
             else:
                 st.info("No 'Strong Buy' signals were triggered 30 days ago by the algorithm parameters.")
+                
+    with tab_portfolios:
+        st.markdown("### Pre-built Model Portfolios")
+        st.write("These automated portfolios aggregate algorithmic signals and momentum from specific Shariah-compliant sectors.")
+        
+        portfolios = {
+            "🛡️ The Defensive Yield Combo": ["HINDUNILVR", "NESTLEIND", "BRITANNIA", "SUNPHARMA", "CIPLA", "COLPAL"],
+            "🚀 The Tech Growth Combo": ["TCS", "INFY", "KPITTECH", "TATAELXSI", "PERSISTENT", "COFORGE"],
+            "💎 The Core Compounders": ["ASIANPAINT", "TITAN", "PIDILITIND", "BAJAJ-AUTO", "DMART", "TRENT"]
+        }
+        
+        for p_name, p_tickers in portfolios.items():
+            p_data = stock_data[stock_data["Symbol"].isin(p_tickers)]
+            if not p_data.empty:
+                avg_score = p_data["Buy Score"].mean()
+                avg_return = p_data["% Change"].mean()
+                
+                # Determine color based on average score
+                if avg_score >= 75: p_color = "#00F0FF"
+                elif avg_score >= 50: p_color = "#F0B90B"
+                else: p_color = "#FF0055"
+                
+                return_color = "#00F0FF" if avg_return > 0 else "#FF0055"
+                
+                st.markdown(f"""
+                <div style='margin-bottom: 20px; padding: 20px; background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(128, 128, 128, 0.15); border-left: 4px solid {p_color}; border-radius: 12px;'>
+                    <div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;'>
+                        <h3 style='margin:0; font-family: "Space Grotesk", sans-serif; color: #fafafa;'>{p_name}</h3>
+                        <div style='text-align: right;'>
+                            <div style='font-size: 0.8rem; color: #94a3b8; letter-spacing: 1px; text-transform: uppercase;'>Avg Algo Score</div>
+                            <div style='font-size: 1.8rem; font-weight: bold; color: {p_color};'>{avg_score:.1f}</div>
+                        </div>
+                    </div>
+                    <div style='display: flex; gap: 25px; margin-bottom: 15px; background: rgba(0,0,0,0.2); padding: 10px 15px; border-radius: 8px;'>
+                        <div><span style='color: #94a3b8; font-size: 0.85rem;'>24H Momentum: </span> <span style='font-weight: 600; color: {return_color}'>{avg_return:+.2f}%</span></div>
+                        <div><span style='color: #94a3b8; font-size: 0.85rem;'>Active Assets: </span> <span style='font-weight: 600; color: #fafafa;'>{len(p_data)}</span></div>
+                    </div>
+                    <div style='font-size: 0.9rem; color: #cbd5e1; line-height: 1.5;'>
+                        <strong style='color: #94a3b8;'>Holdings:</strong> {", ".join(p_data["Company Name"].tolist())}
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
