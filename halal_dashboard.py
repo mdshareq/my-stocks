@@ -1128,14 +1128,18 @@ def generate_dynamic_portfolios(stock_data, monthly_sip, risk_profile="Balanced"
 
     # If the 2700+ universe exists, filter it!
     if universe_df is not None and not universe_df.empty:
+        # Globally remove dangerous penny stocks and micro-caps (< ₹250 Crores) from the screener
+        universe_df = universe_df[universe_df['market_cap'] >= 2500000000]
+        
         if "Conservative" in risk_profile:
-            filtered_df = universe_df[(universe_df['beta'] < 1.0) & (universe_df['beta'] > 0)]
+            # Conservative: Strictly Mid & Large-Cap (> ₹5,000 Crores) and low Beta
+            filtered_df = universe_df[(universe_df['beta'] < 1.0) & (universe_df['beta'] > 0) & (universe_df['market_cap'] >= 50000000000)]
             title_prefix = "🛡️ Safe"
         elif "Aggressive" in risk_profile:
-            filtered_df = universe_df[universe_df['beta'] > 1.2]
+            filtered_df = universe_df[(universe_df['beta'] > 1.2) & (universe_df['market_cap'] >= 5000000000)]
             title_prefix = "🚀 Aggressive"
         else:
-            filtered_df = universe_df[(universe_df['beta'] >= 0.8) & (universe_df['beta'] <= 1.2)]
+            filtered_df = universe_df[(universe_df['beta'] >= 0.8) & (universe_df['beta'] <= 1.2) & (universe_df['market_cap'] >= 15000000000)]
             title_prefix = "⚖️ Balanced"
             
         if "Value" in strategy:
