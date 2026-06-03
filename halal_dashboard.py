@@ -1129,7 +1129,7 @@ if st.session_state.user is None:
             st.session_state["demo_prefill"] = True
             st.rerun()
         if st.session_state.get("demo_prefill"):
-            st.info("\U0001f511 **Demo:** Username: `Shareq` \u00b7 Password: `Shareq12345`")
+            st.info("\U0001f511 **Demo:** Username: `Shareq`")
         st.markdown("</div>", unsafe_allow_html=True)
     st.stop()
 
