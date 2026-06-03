@@ -1339,10 +1339,14 @@ with st.sidebar:
     stock_filter = st.multiselect("ASSET FILTER (Optional)", options=ordered_companies, default=[])
     if st.button("EXECUTE SCAN"): st.rerun()
 
-with st.spinner("Executing market scan & calculating metrics..."):
+with st.status("Initializing Shareq Matrix Core...", expanded=True) as status:
+    st.write("📡 Establishing uplink to primary exchanges...")
     stock_data, sparkline_data = fetch_live_and_spark_data()
+    st.write("📊 Synchronizing Shariah-compliant universe...")
     if not stock_data.empty:
         log_daily_predictions_to_firebase(stock_data)
+    st.write("🧠 Calibrating algorithmic models...")
+    status.update(label="System Ready", state="complete", expanded=False)
 
 if not stock_data.empty:
     gainers = stock_data[stock_data["% Change"] > 0].shape[0]
@@ -1724,7 +1728,8 @@ if not stock_data.empty:
             submitted = st.form_submit_button("🚀 Run Universal Screener", type="primary", use_container_width=True)
             
         if submitted:
-            portfolios = generate_dynamic_portfolios(stock_data, monthly_sip, risk_profile, strategy)
+            with st.spinner("Synthesizing algorithmic portfolios..."):
+                portfolios = generate_dynamic_portfolios(stock_data, monthly_sip, risk_profile, strategy)
         else:
             st.info("Set your parameters and click Run Universal Screener to generate custom portfolios.")
             portfolios = {}
