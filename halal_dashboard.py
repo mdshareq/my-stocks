@@ -1013,21 +1013,7 @@ if not stock_data.empty:
                 holdings_html = "<div style='display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 15px;'>"
                 for h in holding_defs:
                     alloc_amt = monthly_sip * (h['weight'] / 100)
-                    holdings_html += f"""
-                    <div style='background: rgba(0,0,0,0.3); padding: 10px 15px; border-radius: 6px; border-left: 3px solid {h['color']};'>
-                        <div style='display: flex; justify-content: space-between; margin-bottom: 5px;'>
-                            <strong style='color: #fafafa; font-size: 0.9rem;'>{h['ticker']}</strong>
-                            <span style='color: #00F0FF; font-weight: bold; font-size: 0.9rem;'>₹{alloc_amt:,.0f}</span>
-                        </div>
-                        <div style='display: flex; justify-content: space-between; align-items: center;'>
-                            <div style='display: flex; align-items: center; gap: 5px;'>
-                                <div style='width: 8px; height: 8px; border-radius: 50%; background: {h['color']};'></div>
-                                <span style='color: #94a3b8; font-size: 0.75rem;'>{h['sector']}</span>
-                            </div>
-                            <span style='color: #94a3b8; font-size: 0.75rem;'>{h['weight']}% Alloc</span>
-                        </div>
-                    </div>
-                    """
+                    holdings_html += f"<div style='background: rgba(0,0,0,0.3); padding: 10px 15px; border-radius: 6px; border-left: 3px solid {h['color']};'><div style='display: flex; justify-content: space-between; margin-bottom: 5px;'><strong style='color: #fafafa; font-size: 0.9rem;'>{h['ticker']}</strong><span style='color: #00F0FF; font-weight: bold; font-size: 0.9rem;'>₹{alloc_amt:,.0f}</span></div><div style='display: flex; justify-content: space-between; align-items: center;'><div style='display: flex; align-items: center; gap: 5px;'><div style='width: 8px; height: 8px; border-radius: 50%; background: {h['color']};'></div><span style='color: #94a3b8; font-size: 0.75rem;'>{h['sector']}</span></div><span style='color: #94a3b8; font-size: 0.75rem;'>{h['weight']}% Alloc</span></div></div>"
                 holdings_html += "</div>"
                 
                 st.markdown(f"""
