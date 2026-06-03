@@ -295,42 +295,82 @@ st.markdown(
 # Expanded Shariah-compliant Stocks (60+ Assets)
 HALAL_STOCKS = {
     # IT / Tech
-    "TCS.NS": "Tata Consultancy Services", "INFY.NS": "Infosys", "HCLTECH.NS": "HCL Technologies",
-    "WIPRO.NS": "Wipro", "KPITTECH.NS": "KPIT Technologies", "TECHM.NS": "Tech Mahindra",
-    "PERSISTENT.NS": "Persistent Systems", "COFORGE.NS": "Coforge", "MPHASIS.NS": "Mphasis",
-    "LTTS.NS": "L&T Technology Services", "TATAELXSI.NS": "Tata Elxsi", "CYIENT.NS": "Cyient",
+    "TCS.NS": {"name": "Tata Consultancy Services", "sector": "IT", "color": "#0ea5e9"}, 
+    "INFY.NS": {"name": "Infosys", "sector": "IT", "color": "#0ea5e9"}, 
+    "HCLTECH.NS": {"name": "HCL Technologies", "sector": "IT", "color": "#0ea5e9"},
+    "WIPRO.NS": {"name": "Wipro", "sector": "IT", "color": "#0ea5e9"}, 
+    "KPITTECH.NS": {"name": "KPIT Technologies", "sector": "IT", "color": "#0ea5e9"}, 
+    "TECHM.NS": {"name": "Tech Mahindra", "sector": "IT", "color": "#0ea5e9"},
+    "PERSISTENT.NS": {"name": "Persistent Systems", "sector": "IT", "color": "#0ea5e9"}, 
+    "COFORGE.NS": {"name": "Coforge", "sector": "IT", "color": "#0ea5e9"}, 
+    "MPHASIS.NS": {"name": "Mphasis", "sector": "IT", "color": "#0ea5e9"},
+    "LTTS.NS": {"name": "L&T Technology Services", "sector": "IT", "color": "#0ea5e9"}, 
+    "TATAELXSI.NS": {"name": "Tata Elxsi", "sector": "IT", "color": "#0ea5e9"}, 
+    "CYIENT.NS": {"name": "Cyient", "sector": "IT", "color": "#0ea5e9"},
     
     # FMCG / Consumer / Retail
-    "HINDUNILVR.NS": "Hindustan Unilever", "NESTLEIND.NS": "Nestle India", 
-    "BRITANNIA.NS": "Britannia Industries", "GODREJCP.NS": "Godrej Consumer Products", "DABUR.NS": "Dabur India", 
-    "MARICO.NS": "Marico", "COLPAL.NS": "Colgate-Palmolive", "TATACONSUM.NS": "Tata Consumer Products", 
-    "HATSUN.NS": "Hatsun Agro", "BATAINDIA.NS": "Bata India", "DMART.NS": "Avenue Supermarts", 
-    "TRENT.NS": "Trent Ltd", "HAVELLS.NS": "Havells India", "VOLTAS.NS": "Voltas",
+    "HINDUNILVR.NS": {"name": "Hindustan Unilever", "sector": "FMCG", "color": "#ec4899"}, 
+    "NESTLEIND.NS": {"name": "Nestle India", "sector": "FMCG", "color": "#ec4899"}, 
+    "BRITANNIA.NS": {"name": "Britannia Industries", "sector": "FMCG", "color": "#ec4899"}, 
+    "GODREJCP.NS": {"name": "Godrej Consumer Products", "sector": "FMCG", "color": "#ec4899"}, 
+    "DABUR.NS": {"name": "Dabur India", "sector": "FMCG", "color": "#ec4899"}, 
+    "MARICO.NS": {"name": "Marico", "sector": "FMCG", "color": "#ec4899"}, 
+    "COLPAL.NS": {"name": "Colgate-Palmolive", "sector": "FMCG", "color": "#ec4899"}, 
+    "TATACONSUM.NS": {"name": "Tata Consumer Products", "sector": "FMCG", "color": "#ec4899"}, 
+    "HATSUN.NS": {"name": "Hatsun Agro", "sector": "FMCG", "color": "#ec4899"}, 
+    "BATAINDIA.NS": {"name": "Bata India", "sector": "Consumer", "color": "#eab308"}, 
+    "DMART.NS": {"name": "Avenue Supermarts", "sector": "Retail", "color": "#f43f5e"}, 
+    "TRENT.NS": {"name": "Trent Ltd", "sector": "Retail", "color": "#f43f5e"}, 
+    "HAVELLS.NS": {"name": "Havells India", "sector": "Consumer", "color": "#eab308"}, 
+    "VOLTAS.NS": {"name": "Voltas", "sector": "Consumer", "color": "#eab308"},
     
     # Pharma / Healthcare
-    "SUNPHARMA.NS": "Sun Pharmaceuticals", "DIVISLAB.NS": "Divi's Laboratories", "CIPLA.NS": "Cipla", 
-    "DRREDDY.NS": "Dr. Reddy's Lab", "TORNTPHARM.NS": "Torrent Pharmaceuticals", "ZYDUSLIFE.NS": "Zydus Lifesciences", 
-    "LUPIN.NS": "Lupin", "AUROPHARMA.NS": "Aurobindo Pharma", "ALKEM.NS": "Alkem Laboratories", 
-    "BIOCON.NS": "Biocon", "APOLLOHOSP.NS": "Apollo Hospitals", "SYNGENE.NS": "Syngene International",
+    "SUNPHARMA.NS": {"name": "Sun Pharmaceuticals", "sector": "Pharma", "color": "#10b981"}, 
+    "DIVISLAB.NS": {"name": "Divi's Laboratories", "sector": "Pharma", "color": "#10b981"}, 
+    "CIPLA.NS": {"name": "Cipla", "sector": "Pharma", "color": "#10b981"}, 
+    "DRREDDY.NS": {"name": "Dr. Reddy's Lab", "sector": "Pharma", "color": "#10b981"}, 
+    "TORNTPHARM.NS": {"name": "Torrent Pharmaceuticals", "sector": "Pharma", "color": "#10b981"}, 
+    "ZYDUSLIFE.NS": {"name": "Zydus Lifesciences", "sector": "Pharma", "color": "#10b981"}, 
+    "LUPIN.NS": {"name": "Lupin", "sector": "Pharma", "color": "#10b981"}, 
+    "AUROPHARMA.NS": {"name": "Aurobindo Pharma", "sector": "Pharma", "color": "#10b981"}, 
+    "ALKEM.NS": {"name": "Alkem Laboratories", "sector": "Pharma", "color": "#10b981"}, 
+    "BIOCON.NS": {"name": "Biocon", "sector": "Pharma", "color": "#10b981"}, 
+    "APOLLOHOSP.NS": {"name": "Apollo Hospitals", "sector": "Healthcare", "color": "#14b8a6"}, 
+    "SYNGENE.NS": {"name": "Syngene International", "sector": "Healthcare", "color": "#14b8a6"},
     
     # Auto / Manufacturing
-    "MARUTI.NS": "Maruti Suzuki", "BAJAJ-AUTO.NS": "Bajaj Auto", "EICHERMOT.NS": "Eicher Motors", 
-    "HEROMOTOCO.NS": "Hero MotoCorp", "TVSMOTOR.NS": "TVS Motor Company", "BOSCHLTD.NS": "Bosch Limited",
+    "MARUTI.NS": {"name": "Maruti Suzuki", "sector": "Auto", "color": "#8b5cf6"}, 
+    "BAJAJ-AUTO.NS": {"name": "Bajaj Auto", "sector": "Auto", "color": "#8b5cf6"}, 
+    "EICHERMOT.NS": {"name": "Eicher Motors", "sector": "Auto", "color": "#8b5cf6"}, 
+    "HEROMOTOCO.NS": {"name": "Hero MotoCorp", "sector": "Auto", "color": "#8b5cf6"}, 
+    "TVSMOTOR.NS": {"name": "TVS Motor Company", "sector": "Auto", "color": "#8b5cf6"}, 
+    "BOSCHLTD.NS": {"name": "Bosch Limited", "sector": "Auto", "color": "#8b5cf6"},
     
     # Cement / Core
-    "ULTRACEMCO.NS": "Ultratech Cement", "SHREECEM.NS": "Shree Cement", "GRASIM.NS": "Grasim Industries", 
-    "AMBUJACEM.NS": "Ambuja Cements", "ACC.NS": "ACC Limited", 
+    "ULTRACEMCO.NS": {"name": "Ultratech Cement", "sector": "Core", "color": "#f59e0b"}, 
+    "SHREECEM.NS": {"name": "Shree Cement", "sector": "Core", "color": "#f59e0b"}, 
+    "GRASIM.NS": {"name": "Grasim Industries", "sector": "Core", "color": "#f59e0b"}, 
+    "AMBUJACEM.NS": {"name": "Ambuja Cements", "sector": "Core", "color": "#f59e0b"}, 
+    "ACC.NS": {"name": "ACC Limited", "sector": "Core", "color": "#f59e0b"}, 
     
     # Chemicals / Paints
-    "ASIANPAINT.NS": "Asian Paints", "BERGEPAINT.NS": "Berger Paints", 
-    "PIDILITIND.NS": "Pidilite Industries", "SRF.NS": "SRF Limited", "DEEPAKNTR.NS": "Deepak Nitrite", 
-    "AARTIIND.NS": "Aarti Industries", "PIIND.NS": "PI Industries", "NAVINFLUOR.NS": "Navin Fluorine", 
-    "TATACHEM.NS": "Tata Chemicals", "ATUL.NS": "Atul Ltd",
+    "ASIANPAINT.NS": {"name": "Asian Paints", "sector": "Chemicals", "color": "#06b6d4"}, 
+    "BERGEPAINT.NS": {"name": "Berger Paints", "sector": "Chemicals", "color": "#06b6d4"}, 
+    "PIDILITIND.NS": {"name": "Pidilite Industries", "sector": "Chemicals", "color": "#06b6d4"}, 
+    "SRF.NS": {"name": "SRF Limited", "sector": "Chemicals", "color": "#06b6d4"}, 
+    "DEEPAKNTR.NS": {"name": "Deepak Nitrite", "sector": "Chemicals", "color": "#06b6d4"}, 
+    "AARTIIND.NS": {"name": "Aarti Industries", "sector": "Chemicals", "color": "#06b6d4"}, 
+    "PIIND.NS": {"name": "PI Industries", "sector": "Chemicals", "color": "#06b6d4"}, 
+    "NAVINFLUOR.NS": {"name": "Navin Fluorine", "sector": "Chemicals", "color": "#06b6d4"}, 
+    "TATACHEM.NS": {"name": "Tata Chemicals", "sector": "Chemicals", "color": "#06b6d4"}, 
+    "ATUL.NS": {"name": "Atul Ltd", "sector": "Chemicals", "color": "#06b6d4"},
     
     # Energy / Miscellaneous
-    "RELIANCE.NS": "Reliance Industries", "ONGC.NS": "Oil & Natural Gas Corp", "TITAN.NS": "Titan Company",
+    "RELIANCE.NS": {"name": "Reliance Industries", "sector": "Energy", "color": "#f97316"}, 
+    "ONGC.NS": {"name": "Oil & Natural Gas Corp", "sector": "Energy", "color": "#f97316"}, 
+    "TITAN.NS": {"name": "Titan Company", "sector": "Consumer", "color": "#eab308"},
 }
-REVERSE_LOOKUP = {name: ticker for ticker, name in HALAL_STOCKS.items()}
+REVERSE_LOOKUP = {info["name"]: ticker for ticker, info in HALAL_STOCKS.items()}
 KEY_FILE = ".env_gemini_key"
 
 # --- API KEY MANAGEMENT ---
@@ -478,6 +518,10 @@ def fetch_live_and_spark_data():
                 change = current_price - prev_close
                 change_pct = (change / prev_close) * 100
                 
+                # 14 Day Return (2 Weeks)
+                price_14d_ago = hist["Close"].iloc[-15] if len(hist) >= 15 else prev_close
+                return_14d = ((current_price - price_14d_ago) / price_14d_ago) * 100
+                
                 sma_50 = hist["Close"].rolling(window=50).mean().iloc[-1]
                 sma_200 = hist["Close"].rolling(window=200).mean().iloc[-1]
                 current_rsi = calculate_rsi(hist).iloc[-1]
@@ -521,9 +565,9 @@ def fetch_live_and_spark_data():
                     score -= 15
                 
                 data.append({
-                    "Symbol": ticker.replace(".NS", ""), "Company Name": HALAL_STOCKS[ticker],
+                    "Symbol": ticker.replace(".NS", ""), "Company Name": HALAL_STOCKS[ticker]["name"],
                     "Live Price (₹)": round(current_price, 2), "Change (₹)": round(change, 2),
-                    "% Change": round(change_pct, 2), "Market Cap": market_cap,
+                    "% Change": round(change_pct, 2), "14D Return": round(return_14d, 2), "Market Cap": market_cap,
                     "RSI": round(current_rsi, 2), "SMA50": round(sma_50, 2), "Buy Score": score
                 })
             except Exception:
@@ -692,6 +736,60 @@ def calculate_future_value(monthly_sip, cagr, years):
     fv = monthly_sip * (((1 + monthly_rate)**months - 1) / monthly_rate) * (1 + monthly_rate)
     return fv
 
+def generate_dynamic_portfolios(stock_data):
+    """Dynamically generates portfolios (5-12 assets) based on live algorithmic data."""
+    if stock_data.empty: return {}
+    portfolios = {}
+    
+    # ⚡ Short-Term Momentum (6 Months): RSI 40-75, high 14D return, sorted by Buy Score
+    momentum_pool = stock_data[(stock_data["RSI"] >= 40) & (stock_data["RSI"] <= 75)].copy()
+    if not momentum_pool.empty:
+        momentum_pool = momentum_pool.sort_values(by=["14D Return", "Buy Score"], ascending=[False, False])
+    momentum_assets = momentum_pool.head(12)
+    if len(momentum_assets) < 5: 
+        momentum_assets = stock_data.sort_values(by="14D Return", ascending=False).head(5)
+    
+    m_holdings = []
+    for _, row in momentum_assets.iterrows():
+        ticker_base = row["Symbol"]
+        ticker_ns = ticker_base + ".NS"
+        info = HALAL_STOCKS.get(ticker_ns, {"sector": "Unknown", "color": "#94a3b8"})
+        m_holdings.append({"ticker": ticker_base, "weight": 100 / len(momentum_assets), "sector": info["sector"], "color": info["color"]})
+        
+    portfolios["⚡ Short-Term Momentum (6 Months)"] = {"horizon": 0.5, "holdings": m_holdings}
+    
+    # ⚖️ Mid-Term Balanced (3 Years): Absolute highest Buy Score, capped 5-12
+    mid_pool = stock_data.sort_values(by="Buy Score", ascending=False).head(10)
+    if len(mid_pool) < 5: mid_pool = stock_data.head(5)
+    
+    mid_holdings = []
+    for _, row in mid_pool.iterrows():
+        ticker_base = row["Symbol"]
+        ticker_ns = ticker_base + ".NS"
+        info = HALAL_STOCKS.get(ticker_ns, {"sector": "Unknown", "color": "#94a3b8"})
+        mid_holdings.append({"ticker": ticker_base, "weight": 100 / len(mid_pool), "sector": info["sector"], "color": info["color"]})
+        
+    portfolios["⚖️ Mid-Term Balanced (3 Years)"] = {"horizon": 3.0, "holdings": mid_holdings}
+    
+    # 💎 Long-Term Compounders (10 Years): Defensive sectors, highest Buy Score
+    defensive_sectors = ["FMCG", "Pharma", "Core", "Healthcare"]
+    long_pool = stock_data[stock_data["Symbol"].apply(lambda x: HALAL_STOCKS.get(x+".NS", {}).get("sector") in defensive_sectors)].copy()
+    if not long_pool.empty:
+        long_pool = long_pool.sort_values(by="Buy Score", ascending=False).head(12)
+    if len(long_pool) < 5:
+        long_pool = stock_data.sort_values(by="Market Cap", ascending=False).head(8)
+        
+    long_holdings = []
+    for _, row in long_pool.iterrows():
+        ticker_base = row["Symbol"]
+        ticker_ns = ticker_base + ".NS"
+        info = HALAL_STOCKS.get(ticker_ns, {"sector": "Unknown", "color": "#94a3b8"})
+        long_holdings.append({"ticker": ticker_base, "weight": 100 / len(long_pool), "sector": info["sector"], "color": info["color"]})
+        
+    portfolios["💎 Long-Term Compounders (10 Years)"] = {"horizon": 10.0, "holdings": long_holdings}
+    
+    return portfolios
+
 # --- UI LAYOUT ---
 # Header Area
 st.markdown("""
@@ -722,7 +820,7 @@ with st.sidebar:
     max_rsi = st.slider("Max RSI", min_value=10, max_value=90, value=70, step=5)
     min_mcap_cr = st.slider("Min Market Cap (₹ Cr)", min_value=0, max_value=1000000, value=0, step=10000)
     
-    ordered_companies = list(HALAL_STOCKS.values())
+    ordered_companies = [info["name"] for info in HALAL_STOCKS.values()]
     stock_filter = st.multiselect("ASSET FILTER (Optional)", options=ordered_companies, default=[])
     if st.button("EXECUTE SCAN"): st.rerun()
 
@@ -855,32 +953,44 @@ if not stock_data.empty:
         if stock_filter:
             filtered_data = filtered_data[filtered_data["Company Name"].isin(stock_filter)]
             
-        card_cols = st.columns(4)
-        for idx, row in enumerate(filtered_data.to_dict(orient="records")):
-            with card_cols[idx % 4]:
-                direction = "positive" if row["% Change"] > 0 else "negative" if row["% Change"] < 0 else "neutral"
-                sign = "+" if row["% Change"] > 0 else ""
-                color_hex = "#00F0FF" if row["% Change"] > 0 else "#FF0055" if row["% Change"] < 0 else "#555555"
-                
-                ticker = REVERSE_LOOKUP[row['Company Name']]
-                svg_chart = ""
-                if not sparkline_data.empty and ticker in sparkline_data.columns:
-                    svg_chart = generate_svg_sparkline(sparkline_data[ticker].dropna(), color_hex)
-                
-                st.markdown(f"""
-                <div class='stock-card {direction}'>
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                        <div>
-                            <div class='symbol'>{row['Symbol']}</div>
-                            <div class='company'>{row['Company Name']}</div>
+        def render_cards(df_chunk, cols):
+            for idx, row in enumerate(df_chunk.to_dict(orient="records")):
+                with cols[idx % 4]:
+                    direction = "positive" if row["% Change"] > 0 else "negative" if row["% Change"] < 0 else "neutral"
+                    sign = "+" if row["% Change"] > 0 else ""
+                    color_hex = "#00F0FF" if row["% Change"] > 0 else "#FF0055" if row["% Change"] < 0 else "#555555"
+                    
+                    ticker = REVERSE_LOOKUP[row['Company Name']]
+                    svg_chart = ""
+                    if not sparkline_data.empty and ticker in sparkline_data.columns:
+                        svg_chart = generate_svg_sparkline(sparkline_data[ticker].dropna(), color_hex)
+                    
+                    st.markdown(f"""
+                    <div class='stock-card {direction}'>
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                            <div>
+                                <div class='symbol'>{row['Symbol']}</div>
+                                <div class='company'>{row['Company Name']}</div>
+                            </div>
+                            <div style="margin-top: 4px;">{svg_chart}</div>
                         </div>
-                        <div style="margin-top: 4px;">{svg_chart}</div>
+                        <div class='value'>₹{row['Live Price (₹)']:.2f}</div>
+                        <div class='delta'>{sign}{row['Change (₹)']:.2f} ({sign}{row['% Change']:.2f}%)</div>
+                        <div style='margin-top: 15px; font-size: 0.75rem; font-family: monospace; color: #555;'>RSI: {row['RSI']} &nbsp;|&nbsp; SCORE: {row['Buy Score']}</div>
                     </div>
-                    <div class='value'>₹{row['Live Price (₹)']:.2f}</div>
-                    <div class='delta'>{sign}{row['Change (₹)']:.2f} ({sign}{row['% Change']:.2f}%)</div>
-                    <div style='margin-top: 15px; font-size: 0.75rem; font-family: monospace; color: #555;'>RSI: {row['RSI']} &nbsp;|&nbsp; SCORE: {row['Buy Score']}</div>
-                </div>
-                """, unsafe_allow_html=True)
+                    """, unsafe_allow_html=True)
+                    
+        top_data = filtered_data.head(8)
+        rest_data = filtered_data.iloc[8:]
+        
+        main_cols = st.columns(4)
+        render_cards(top_data, main_cols)
+        
+        if not rest_data.empty:
+            st.markdown("<br>", unsafe_allow_html=True)
+            with st.expander("VIEW ALL QUALIFYING ASSETS", expanded=False):
+                expander_cols = st.columns(4)
+                render_cards(rest_data, expander_cols)
 
     with tab_charts:
         st.markdown("### Technical Price Action (90 Days)")
@@ -952,41 +1062,7 @@ if not stock_data.empty:
         
         monthly_sip = st.slider("Monthly SIP Investment (₹)", min_value=1000, max_value=100000, value=10000, step=1000)
         
-        portfolios = {
-            "⚡ Short-Term Momentum (6 Months)": {
-                "horizon": 0.5,
-                "holdings": [
-                    {"ticker": "KPITTECH", "weight": 20, "sector": "IT", "color": "#0ea5e9"},
-                    {"ticker": "TRENT", "weight": 20, "sector": "Retail", "color": "#f43f5e"},
-                    {"ticker": "ZYDUSLIFE", "weight": 20, "sector": "Pharma", "color": "#10b981"},
-                    {"ticker": "TATAELXSI", "weight": 20, "sector": "IT", "color": "#0ea5e9"},
-                    {"ticker": "COFORGE", "weight": 10, "sector": "IT", "color": "#0ea5e9"},
-                    {"ticker": "VOLTAS", "weight": 10, "sector": "Consumer", "color": "#eab308"}
-                ]
-            },
-            "⚖️ Mid-Term Balanced (3 Years)": {
-                "horizon": 3.0,
-                "holdings": [
-                    {"ticker": "TCS", "weight": 25, "sector": "IT", "color": "#0ea5e9"},
-                    {"ticker": "SUNPHARMA", "weight": 20, "sector": "Pharma", "color": "#10b981"},
-                    {"ticker": "MARUTI", "weight": 15, "sector": "Auto", "color": "#8b5cf6"},
-                    {"ticker": "TITAN", "weight": 15, "sector": "Consumer", "color": "#eab308"},
-                    {"ticker": "RELIANCE", "weight": 15, "sector": "Energy", "color": "#f97316"},
-                    {"ticker": "ONGC", "weight": 10, "sector": "Energy", "color": "#f97316"}
-                ]
-            },
-            "💎 Long-Term Compounders (10 Years)": {
-                "horizon": 10.0,
-                "holdings": [
-                    {"ticker": "ASIANPAINT", "weight": 25, "sector": "Core", "color": "#f59e0b"},
-                    {"ticker": "PIDILITIND", "weight": 20, "sector": "Chemicals", "color": "#06b6d4"},
-                    {"ticker": "HINDUNILVR", "weight": 20, "sector": "FMCG", "color": "#ec4899"},
-                    {"ticker": "NESTLEIND", "weight": 15, "sector": "FMCG", "color": "#ec4899"},
-                    {"ticker": "DMART", "weight": 10, "sector": "Retail", "color": "#f43f5e"},
-                    {"ticker": "HAVELLS", "weight": 10, "sector": "Consumer", "color": "#eab308"}
-                ]
-            }
-        }
+        portfolios = generate_dynamic_portfolios(stock_data)
         
         for p_name, p_data_info in portfolios.items():
             holding_defs = p_data_info["holdings"]
