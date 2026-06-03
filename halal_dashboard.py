@@ -1275,24 +1275,19 @@ if not stock_data.empty:
         
         Welcome to **Shareq Equities**, an institutional-grade, Shariah-compliant algorithmic screener. This dashboard does not just show you prices; it uses complex mathematics to find the absolute best assets to buy *today*.
         
-        #### 1. The Algorithmic Buy Score (Base: 50)
-        Every asset starts with 50 points. The system then analyzes live market data and adds/subtracts points based on momentum:
-        - **+15 Points**: Bullish MACD Crossover (The trend is reversing upwards).
-        - **+10 Points**: Price is trading above the 200-Day Moving Average.
-        - **+10 Points**: RSI is below 30 (The asset is heavily oversold and due for a bounce).
-        - **-15 Points**: The broader NIFTY 50 market is crashing (Risk mitigation).
-        - *Any stock scoring **85 or higher** is flagged as a Strong Buy.*
+        #### 1. The Algorithmic Buy Score
+        The LIVE TRACKER tab displays the top Shariah-compliant assets, ranked by our proprietary Buy Score. 
+        - **How to use it:** Look for assets with a score of 85 or higher—these are flagged as "Strong Buys". You can use the sliders in the left sidebar to filter the dashboard and find stocks that match your exact risk profile.
         
-        #### 2. Portfolio Combos (Smart Waterfall Allocator)
-        In the **Portfolio Combos** tab, you can enter your monthly SIP budget. Instead of giving you arbitrary percentages, the **Smart Waterfall Engine**:
-        1. Ranks the stocks by their Algo Score.
-        2. Iteratively buys exactly 1 share of the best stocks, cascading down the list.
-        3. Skips any stock that is too expensive for your remaining budget.
-        4. Calculates the *exact* share quantity you need to buy and tells you exactly how much uninvested cash will be leftover.
+        #### 2. Portfolio Combos (Smart SIP Allocator)
+        The PORTFOLIO COMBOS tab builds complete investment portfolios for you based on different time horizons.
+        - **How to use it:** Simply drag the "Monthly SIP Investment" slider to match your budget. The Smart Engine will automatically calculate exactly how many shares of each stock you should buy today so that you don't waste a single rupee. It even calculates your projected 5-year returns!
         
-        #### 3. Real-World Backtesting & Firebase
-        The **Algo Accuracy** tab is connected to a live Firebase database. Every day, the algorithm pushes its top predictions to the cloud. When you open the Accuracy tab, it looks back exactly 30 days, pulls what the algorithm predicted, and compares it to live prices today to give you a mathematically verified Win/Loss percentage.
+        #### 3. Real-World Backtesting
+        The ALGO ACCURACY tab proves whether the algorithm actually works by tracking its historical performance.
+        - **How to use it:** Click the tab to see a verified Win/Loss percentage. The system automatically looks back exactly 30 days into our live cloud database, checks what the algorithm recommended back then, and compares it to the live prices today.
         
         #### 4. Shareq AI Core
-        Powered by Google Gemini Pro. Enter your API Key in the sidebar to unlock the terminal. You can ask it to analyze any stock (e.g., "Analyze TCS financials and debt"), and it will respond with institutional-grade insights based on the live data grid.
+        The Shareq AI Core acts as your personal, institutional-grade quantitative analyst.
+        - **How to use it:** Enter your free Google Gemini API Key into the left sidebar to unlock the AI terminal. You can ask it to analyze any stock on the dashboard (e.g., "Give me a breakdown of TCS financials"), and it will instantly respond with deep, context-aware insights.
         """)
