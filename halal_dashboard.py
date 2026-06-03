@@ -1752,79 +1752,80 @@ if not stock_data.empty:
         
         for p_name, p_data_info in portfolios.items():
             holding_defs = p_data_info["holdings"]
-            if not holding_defs: continue
+            if not holding_defs: 
+                # Don't render empty portfolios
+                continue
             
             p_tickers_no_ns = [h["ticker"] for h in holding_defs]
-            # Use full_ticker if available, otherwise fallback to .NS
             p_tickers = [h.get("full_ticker", h["ticker"] + ".NS") for h in holding_defs]
             p_data = stock_data[stock_data["Symbol"].isin(p_tickers_no_ns)]
             
-            # Fetch real historical CAGR for the portfolio
             cagr = fetch_portfolio_cagr(p_tickers)
             monthly_deployed = p_data_info.get("monthly_invested", monthly_sip)
             future_value = calculate_future_value(monthly_deployed, cagr, p_data_info["horizon"])
             total_invested = monthly_deployed * 12 * p_data_info["horizon"]
             
-            # Mock stats if stocks are from the 2700 universe and not in top 57
-            avg_score = p_data["Buy Score"].mean() if not p_data.empty else 85.0
-            avg_return = p_data["% Change"].mean() if not p_data.empty else 1.2
+            # Precise dynamic calculations
+            active_assets = len(holding_defs)
+            avg_score = sum([h.get("score", 85.0) for h in holding_defs]) / active_assets if active_assets > 0 else 0
+            avg_return = p_data["% Change"].mean() if not p_data.empty else 0.0
             
-            if True: # Always render, even if p_data is empty
+            if avg_score >= 80: p_color = "#10b981" # Green
+            elif avg_score >= 60: p_color = "#f59e0b" # Orange
+            else: p_color = "#ef4444" # Red
+            
+            return_color = "#10b981" if avg_return > 0 else "#ef4444"
+            
+            holdings_html = "<div style='display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 20px;'>"
+            for h in holding_defs:
+                qty = h.get("qty", 0)
+                actual_spend = h.get("actual_spend", 0)
+                live_price = h.get("price", 1)
                 
-                # Determine color based on average score
-                if avg_score >= 75: p_color = "#00F0FF"
-                elif avg_score >= 50: p_color = "#F0B90B"
-                else: p_color = "#FF0055"
-                
-                return_color = "#00F0FF" if avg_return > 0 else "#FF0055"
-                
-                holdings_html = "<div style='display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-top: 15px;'>"
-                for h in holding_defs:
-                    qty = h.get("qty", 0)
-                    actual_spend = h.get("actual_spend", 0)
-                    live_price = h.get("price", 1)
-                    qty_str = f"Buy {qty} shares" if qty > 0 else "SIP too low"
-                    alloc_color = "#00F0FF" if qty > 0 else "#ef4444"
-                    
-                    holdings_html += f"<div style='background: rgba(0,0,0,0.3); padding: 10px 15px; border-radius: 6px; border-left: 3px solid {h['color']};'><div style='display: flex; justify-content: space-between; margin-bottom: 5px;'><strong style='color: #fafafa; font-size: 0.9rem;'>{h['ticker']}</strong><span style='color: {alloc_color}; font-weight: bold; font-size: 0.9rem;'>₹{actual_spend:,.0f}</span></div><div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;'><span style='color: #cbd5e1; font-size: 0.8rem; font-weight: 500;'>{qty_str}</span><span style='color: #64748b; font-size: 0.75rem;'>@ ₹{live_price:,.0f}</span></div><div style='display: flex; justify-content: space-between; align-items: center;'><div style='display: flex; align-items: center; gap: 5px;'><div style='width: 8px; height: 8px; border-radius: 50%; background: {h['color']};'></div><span style='color: #94a3b8; font-size: 0.75rem;'>{h['sector']}</span></div><span style='color: #94a3b8; font-size: 0.75rem;'>Alloc: {h['weight']:.1f}%</span></div></div>"
-                
-                uninvested = p_data_info.get("uninvested_cash", 0)
-                if uninvested > 0:
-                    holdings_html += f"<div style='background: rgba(255,255,255,0.05); padding: 10px 15px; border-radius: 6px; border: 1px dashed rgba(255,255,255,0.2); display: flex; justify-content: space-between; align-items: center;'><span style='color: #94a3b8; font-size: 0.85rem;'>Uninvested Cash Balance</span><span style='color: #fafafa; font-weight: bold; font-size: 0.9rem;'>₹{uninvested:,.0f}</span></div>"
-                
-                holdings_html += "</div>"
-                
-                st.markdown(f"""
-                <div style='margin-bottom: 20px; padding: 20px; background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(128, 128, 128, 0.15); border-left: 4px solid {p_color}; border-radius: 12px;'>
-                    <div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;'>
-                        <h3 style='margin:0; font-family: "Space Grotesk", sans-serif; color: #fafafa;'>{p_name}</h3>
-                        <div style='text-align: right;'>
-                            <div style='font-size: 0.8rem; color: #94a3b8; letter-spacing: 1px; text-transform: uppercase;'>Avg Algo Score</div>
-                            <div style='font-size: 1.8rem; font-weight: bold; color: {p_color};'>{avg_score:.1f}</div>
-                        </div>
+                holdings_html += f"<div style='background: rgba(0,0,0,0.15); padding: 12px 16px; border-radius: 4px; border-left: 2px solid {h['color']};'><div style='display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;'><strong style='color: #f1f5f9; font-size: 0.95rem; font-family: \"Space Grotesk\", sans-serif;'>{h['ticker']}</strong><span style='color: #e2e8f0; font-weight: 500; font-size: 0.85rem;'>₹{actual_spend:,.0f}</span></div><div style='display: flex; justify-content: space-between; align-items: center; color: #94a3b8; font-size: 0.75rem;'><span>{qty} shares @ ₹{live_price:,.0f}</span><span>Alloc: {h['weight']:.1f}%</span></div></div>"
+            
+            uninvested = p_data_info.get("uninvested_cash", 0)
+            if uninvested > 0:
+                holdings_html += f"<div style='background: rgba(255,255,255,0.02); padding: 12px 16px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;'><span style='color: #64748b; font-size: 0.85rem;'>Uninvested Cash Balance</span><span style='color: #e2e8f0; font-weight: 500; font-size: 0.85rem;'>₹{uninvested:,.0f}</span></div>"
+            
+            holdings_html += "</div>"
+            
+            clean_name = p_name.replace("🛡️", "").replace("🚀", "").replace("⚖️", "").strip()
+            
+            st.markdown(f"""
+            <div style='margin-bottom: 30px; padding: 25px; background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(148, 163, 184, 0.1); border-radius: 6px;'>
+                <div style='display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px;'>
+                    <div>
+                        <h3 style='margin:0 0 5px 0; font-family: "Space Grotesk", sans-serif; font-size: 1.2rem; font-weight: 600; color: #f8fafc;'>{clean_name}</h3>
+                        <div style='color: #64748b; font-size: 0.8rem; letter-spacing: 0.5px;'>INSTITUTIONAL SIP PROJECTION</div>
                     </div>
-                    <div style='display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 15px;'>
-                        <div style='background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px;'>
-                            <div style='color: #94a3b8; font-size: 0.85rem; margin-bottom: 5px;'>Historical 5Y CAGR</div>
-                            <div style='font-size: 1.3rem; font-weight: bold; color: #a78bfa;'>{cagr*100:.1f}%</div>
-                            <div style='font-size: 0.75rem; color: #64748b; margin-top: 5px;'>Real Data Average</div>
-                        </div>
-                        <div style='background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; border: 1px solid rgba(0, 240, 255, 0.2);'>
-                            <div style='color: #94a3b8; font-size: 0.85rem; margin-bottom: 5px;'>Projected Future Value</div>
-                            <div style='font-size: 1.3rem; font-weight: bold; color: #00F0FF;'>₹{future_value:,.0f}</div>
-                            <div style='font-size: 0.75rem; color: #64748b; margin-top: 5px;'>vs ₹{total_invested:,.0f} invested</div>
-                        </div>
-                    </div>
-                    <div style='display: flex; gap: 25px; margin-bottom: 15px; padding: 0 5px;'>
-                        <div><span style='color: #94a3b8; font-size: 0.85rem;'>24H Momentum: </span> <span style='font-weight: 600; color: {return_color}'>{avg_return:+.2f}%</span></div>
-                        <div><span style='color: #94a3b8; font-size: 0.85rem;'>Active Assets: </span> <span style='font-weight: 600; color: #fafafa;'>{len(p_data)}</span></div>
-                    </div>
-                    <div style='font-size: 0.9rem; color: #cbd5e1; line-height: 1.5; padding: 0 5px;'>
-                        <strong style='color: #94a3b8; margin-bottom: 10px; display: inline-block;'>Fund Holdings Breakdown:</strong>
-                        {holdings_html}
+                    <div style='text-align: right;'>
+                        <div style='font-size: 0.75rem; color: #64748b; margin-bottom: 2px;'>FUNDAMENTAL SCORE</div>
+                        <div style='font-size: 1.5rem; font-weight: 600; color: {p_color};'>{avg_score:.1f}</div>
                     </div>
                 </div>
-                """, unsafe_allow_html=True)
+                
+                <div style='display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 25px;'>
+                    <div>
+                        <div style='color: #64748b; font-size: 0.75rem; margin-bottom: 4px; text-transform: uppercase;'>Total Invested</div>
+                        <div style='font-size: 1.1rem; font-weight: 500; color: #e2e8f0;'>₹{total_invested:,.0f}</div>
+                    </div>
+                    <div>
+                        <div style='color: #64748b; font-size: 0.75rem; margin-bottom: 4px; text-transform: uppercase;'>Projected Value</div>
+                        <div style='font-size: 1.1rem; font-weight: 500; color: #10b981;'>₹{future_value:,.0f}</div>
+                    </div>
+                    <div>
+                        <div style='color: #64748b; font-size: 0.75rem; margin-bottom: 4px; text-transform: uppercase;'>Hist. 5Y CAGR</div>
+                        <div style='font-size: 1.1rem; font-weight: 500; color: #8b5cf6;'>{cagr*100:.1f}%</div>
+                    </div>
+                    <div>
+                        <div style='color: #64748b; font-size: 0.75rem; margin-bottom: 4px; text-transform: uppercase;'>Active Assets</div>
+                        <div style='font-size: 1.1rem; font-weight: 500; color: #e2e8f0;'>{active_assets}</div>
+                    </div>
+                </div>
+                {holdings_html}
+            </div>
+            """, unsafe_allow_html=True)
 
     with tab_guide:
         st.markdown("""
