@@ -1455,20 +1455,30 @@ if not stock_data.empty:
         st.markdown("### TOP 10 ALGORITHMIC PICKS")
         if not UNIVERSE_METRICS_DF.empty:
             st.markdown("<span style='font-size:0.8rem; color:var(--primary-color);'>Scanning the 2,700+ Master Database</span>", unsafe_allow_html=True)
-            # Ensure the TOP 10 picks are strictly highly liquid Mid/Large Caps (> ₹2,000 Crores) to avoid suggesting penny stocks
             safe_universe = UNIVERSE_METRICS_DF[UNIVERSE_METRICS_DF['market_cap'] >= 20000000000]
             top_10 = safe_universe.sort_values(by='Buy Score', ascending=False).head(10)
+            
+            st.dataframe(
+                top_10[['Symbol', 'Company Name', 'Live Price (₹)', 'pe', 'beta', 'Buy Score']],
+                column_config={
+                    "Symbol": "Asset", "Company Name": "Entity",
+                    "Live Price (₹)": st.column_config.NumberColumn("Price (₹)", format="%.2f"),
+                    "pe": st.column_config.NumberColumn("P/E Ratio", format="%.1f"),
+                    "beta": st.column_config.NumberColumn("Beta (Risk)", format="%.2f"),
+                    "Buy Score": st.column_config.ProgressColumn("Signal Strength", min_value=0, max_value=100),
+                }, hide_index=True, width="stretch"
+            )
         else:
             top_10 = stock_data.head(10)
-        st.dataframe(
-            top_10[['Symbol', 'Company Name', 'Live Price (₹)', 'RSI', 'Buy Score']],
-            column_config={
-                "Symbol": "Asset", "Company Name": "Entity",
-                "Live Price (₹)": st.column_config.NumberColumn("Price (₹)", format="%.2f"),
-                "RSI": st.column_config.NumberColumn("RSI", format="%.1f"),
-                "Buy Score": st.column_config.ProgressColumn("Signal Strength", min_value=0, max_value=100),
-            }, hide_index=True, width="stretch"
-        )
+            st.dataframe(
+                top_10[['Symbol', 'Company Name', 'Live Price (₹)', 'RSI', 'Buy Score']],
+                column_config={
+                    "Symbol": "Asset", "Company Name": "Entity",
+                    "Live Price (₹)": st.column_config.NumberColumn("Price (₹)", format="%.2f"),
+                    "RSI": st.column_config.NumberColumn("RSI", format="%.1f"),
+                    "Buy Score": st.column_config.ProgressColumn("Signal Strength", min_value=0, max_value=100),
+                }, hide_index=True, width="stretch"
+            )
 
     st.markdown("<hr style='border: 1px solid #111; margin: 30px 0;'>", unsafe_allow_html=True)
 
