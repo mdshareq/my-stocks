@@ -95,6 +95,26 @@ st.markdown(
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Outfit:wght@200;300;400;500;600;700&family=JetBrains+Mono:wght@100;300;400;500;700&display=swap');
 
+        /* Minimalist Institutional Form Submit Button */
+        div[data-testid="stFormSubmitButton"] button {
+            background-color: transparent !important;
+            border: 1px solid rgba(148, 163, 184, 0.4) !important;
+            color: #94a3b8 !important;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-size: 0.85rem !important;
+            font-weight: 500 !important;
+            font-family: 'Space Grotesk', sans-serif !important;
+            transition: all 0.2s ease !important;
+            box-shadow: none !important;
+        }
+        div[data-testid="stFormSubmitButton"] button:hover {
+            border-color: #00F0FF !important;
+            color: #00F0FF !important;
+            background-color: rgba(0, 240, 255, 0.05) !important;
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.1) !important;
+        }
+
         body, .stApp {
             background: radial-gradient(circle at 50% 0%, #1c1e26 0%, #0a0b12 70%) !important;
             color: #fafafa;
@@ -1747,7 +1767,7 @@ if not stock_data.empty:
             with col3:
                 strategy = st.selectbox("Strategy Goal", ["Growth (Momentum)", "Value (Low P/E)", "Income (Dividends)"])
                 
-            submitted = st.form_submit_button("🚀 Run Universal Screener", type="primary", use_container_width=True)
+            submitted = st.form_submit_button("Execute Global Market Scan", use_container_width=True)
             
         if submitted:
             with st.spinner("Synthesizing algorithmic portfolios..."):
