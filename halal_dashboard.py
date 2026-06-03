@@ -736,11 +736,58 @@ def calculate_future_value(monthly_sip, cagr, years):
     fv = monthly_sip * (((1 + monthly_rate)**months - 1) / monthly_rate) * (1 + monthly_rate)
     return fv
 
-def generate_dynamic_portfolios(stock_data):
-    """Dynamically generates portfolios (5-12 assets) based on live algorithmic data."""
+def generate_dynamic_portfolios(stock_data, monthly_sip):
+    """Dynamically generates portfolios (5-12 assets) based on live algorithmic data with a Smart Waterfall allocator."""
     if stock_data.empty: return {}
     portfolios = {}
     
+    def waterfall_allocate(pool_df):
+        pool_df = pool_df.sort_values(by="Buy Score", ascending=False)
+        holdings_dict = {}
+        for _, row in pool_df.iterrows():
+            sym = row["Symbol"]
+            holdings_dict[sym] = {
+                "qty": 0, 
+                "price": row["Live Price (₹)"], 
+                "sector": HALAL_STOCKS.get(sym+".NS", {}).get("sector", "Unknown"), 
+                "color": HALAL_STOCKS.get(sym+".NS", {}).get("color", "#94a3b8")
+            }
+            
+        remaining_budget = monthly_sip
+        cheapest_price = pool_df["Live Price (₹)"].min()
+        
+        while remaining_budget >= cheapest_price:
+            bought_anything = False
+            for _, row in pool_df.iterrows():
+                sym = row["Symbol"]
+                price = row["Live Price (₹)"]
+                if remaining_budget >= price:
+                    holdings_dict[sym]["qty"] += 1
+                    remaining_budget -= price
+                    bought_anything = True
+            if not bought_anything:
+                break
+                
+        final_holdings = []
+        total_invested = monthly_sip - remaining_budget
+        
+        for sym, data in holdings_dict.items():
+            if data["qty"] > 0:
+                weight = ((data["qty"] * data["price"]) / total_invested) * 100
+                final_holdings.append({
+                    "ticker": sym,
+                    "weight": weight,
+                    "sector": data["sector"],
+                    "color": data["color"],
+                    "price": data["price"],
+                    "qty": data["qty"],
+                    "actual_spend": data["qty"] * data["price"]
+                })
+                
+        # Sort holdings by weight descending
+        final_holdings = sorted(final_holdings, key=lambda x: x["weight"], reverse=True)
+        return final_holdings, total_invested, remaining_budget
+
     # ⚡ Short-Term Momentum (6 Months): RSI 40-75, high 14D return, sorted by Buy Score
     momentum_pool = stock_data[(stock_data["RSI"] >= 40) & (stock_data["RSI"] <= 75)].copy()
     if not momentum_pool.empty:
@@ -749,27 +796,15 @@ def generate_dynamic_portfolios(stock_data):
     if len(momentum_assets) < 5: 
         momentum_assets = stock_data.sort_values(by="14D Return", ascending=False).head(5)
     
-    m_holdings = []
-    for _, row in momentum_assets.iterrows():
-        ticker_base = row["Symbol"]
-        ticker_ns = ticker_base + ".NS"
-        info = HALAL_STOCKS.get(ticker_ns, {"sector": "Unknown", "color": "#94a3b8"})
-        m_holdings.append({"ticker": ticker_base, "weight": 100 / len(momentum_assets), "sector": info["sector"], "color": info["color"], "price": row["Live Price (₹)"]})
-        
-    portfolios["⚡ Short-Term Momentum (6 Months)"] = {"horizon": 0.5, "holdings": m_holdings}
+    m_holdings, m_invested, m_rem = waterfall_allocate(momentum_assets)
+    portfolios["⚡ Short-Term Momentum (6 Months)"] = {"horizon": 0.5, "holdings": m_holdings, "monthly_invested": m_invested, "uninvested_cash": m_rem}
     
     # ⚖️ Mid-Term Balanced (3 Years): Absolute highest Buy Score, capped 5-12
     mid_pool = stock_data.sort_values(by="Buy Score", ascending=False).head(10)
     if len(mid_pool) < 5: mid_pool = stock_data.head(5)
     
-    mid_holdings = []
-    for _, row in mid_pool.iterrows():
-        ticker_base = row["Symbol"]
-        ticker_ns = ticker_base + ".NS"
-        info = HALAL_STOCKS.get(ticker_ns, {"sector": "Unknown", "color": "#94a3b8"})
-        mid_holdings.append({"ticker": ticker_base, "weight": 100 / len(mid_pool), "sector": info["sector"], "color": info["color"], "price": row["Live Price (₹)"]})
-        
-    portfolios["⚖️ Mid-Term Balanced (3 Years)"] = {"horizon": 3.0, "holdings": mid_holdings}
+    mid_holdings, mid_invested, mid_rem = waterfall_allocate(mid_pool)
+    portfolios["⚖️ Mid-Term Balanced (3 Years)"] = {"horizon": 3.0, "holdings": mid_holdings, "monthly_invested": mid_invested, "uninvested_cash": mid_rem}
     
     # 💎 Long-Term Compounders (10 Years): Defensive sectors, highest Buy Score
     defensive_sectors = ["FMCG", "Pharma", "Core", "Healthcare"]
@@ -779,14 +814,8 @@ def generate_dynamic_portfolios(stock_data):
     if len(long_pool) < 5:
         long_pool = stock_data.sort_values(by="Market Cap", ascending=False).head(8)
         
-    long_holdings = []
-    for _, row in long_pool.iterrows():
-        ticker_base = row["Symbol"]
-        ticker_ns = ticker_base + ".NS"
-        info = HALAL_STOCKS.get(ticker_ns, {"sector": "Unknown", "color": "#94a3b8"})
-        long_holdings.append({"ticker": ticker_base, "weight": 100 / len(long_pool), "sector": info["sector"], "color": info["color"], "price": row["Live Price (₹)"]})
-        
-    portfolios["💎 Long-Term Compounders (10 Years)"] = {"horizon": 10.0, "holdings": long_holdings}
+    long_holdings, long_invested, long_rem = waterfall_allocate(long_pool)
+    portfolios["💎 Long-Term Compounders (10 Years)"] = {"horizon": 10.0, "holdings": long_holdings, "monthly_invested": long_invested, "uninvested_cash": long_rem}
     
     return portfolios
 
@@ -1062,7 +1091,7 @@ if not stock_data.empty:
         
         monthly_sip = st.slider("Monthly SIP Investment (₹)", min_value=1000, max_value=100000, value=10000, step=1000)
         
-        portfolios = generate_dynamic_portfolios(stock_data)
+        portfolios = generate_dynamic_portfolios(stock_data, monthly_sip)
         
         for p_name, p_data_info in portfolios.items():
             holding_defs = p_data_info["holdings"]
@@ -1072,8 +1101,9 @@ if not stock_data.empty:
             
             # Fetch real historical CAGR for the portfolio
             cagr = fetch_portfolio_cagr(p_tickers)
-            future_value = calculate_future_value(monthly_sip, cagr, p_data_info["horizon"])
-            total_invested = monthly_sip * 12 * p_data_info["horizon"]
+            monthly_deployed = p_data_info.get("monthly_invested", monthly_sip)
+            future_value = calculate_future_value(monthly_deployed, cagr, p_data_info["horizon"])
+            total_invested = monthly_deployed * 12 * p_data_info["horizon"]
             
             if not p_data.empty:
                 avg_score = p_data["Buy Score"].mean()
@@ -1088,14 +1118,18 @@ if not stock_data.empty:
                 
                 holdings_html = "<div style='display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-top: 15px;'>"
                 for h in holding_defs:
-                    alloc_amt = monthly_sip * (h['weight'] / 100)
-                    live_price = h.get('price', 1)
-                    qty = int(alloc_amt // live_price)
-                    actual_spend = qty * live_price
+                    qty = h.get("qty", 0)
+                    actual_spend = h.get("actual_spend", 0)
+                    live_price = h.get("price", 1)
                     qty_str = f"Buy {qty} shares" if qty > 0 else "SIP too low"
                     alloc_color = "#00F0FF" if qty > 0 else "#ef4444"
                     
-                    holdings_html += f"<div style='background: rgba(0,0,0,0.3); padding: 10px 15px; border-radius: 6px; border-left: 3px solid {h['color']};'><div style='display: flex; justify-content: space-between; margin-bottom: 5px;'><strong style='color: #fafafa; font-size: 0.9rem;'>{h['ticker']}</strong><span style='color: {alloc_color}; font-weight: bold; font-size: 0.9rem;'>₹{actual_spend:,.0f}</span></div><div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;'><span style='color: #cbd5e1; font-size: 0.8rem; font-weight: 500;'>{qty_str}</span><span style='color: #64748b; font-size: 0.75rem;'>@ ₹{live_price:,.0f}</span></div><div style='display: flex; justify-content: space-between; align-items: center;'><div style='display: flex; align-items: center; gap: 5px;'><div style='width: 8px; height: 8px; border-radius: 50%; background: {h['color']};'></div><span style='color: #94a3b8; font-size: 0.75rem;'>{h['sector']}</span></div><span style='color: #94a3b8; font-size: 0.75rem;'>Target: {h['weight']:.1f}%</span></div></div>"
+                    holdings_html += f"<div style='background: rgba(0,0,0,0.3); padding: 10px 15px; border-radius: 6px; border-left: 3px solid {h['color']};'><div style='display: flex; justify-content: space-between; margin-bottom: 5px;'><strong style='color: #fafafa; font-size: 0.9rem;'>{h['ticker']}</strong><span style='color: {alloc_color}; font-weight: bold; font-size: 0.9rem;'>₹{actual_spend:,.0f}</span></div><div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;'><span style='color: #cbd5e1; font-size: 0.8rem; font-weight: 500;'>{qty_str}</span><span style='color: #64748b; font-size: 0.75rem;'>@ ₹{live_price:,.0f}</span></div><div style='display: flex; justify-content: space-between; align-items: center;'><div style='display: flex; align-items: center; gap: 5px;'><div style='width: 8px; height: 8px; border-radius: 50%; background: {h['color']};'></div><span style='color: #94a3b8; font-size: 0.75rem;'>{h['sector']}</span></div><span style='color: #94a3b8; font-size: 0.75rem;'>Alloc: {h['weight']:.1f}%</span></div></div>"
+                
+                uninvested = p_data_info.get("uninvested_cash", 0)
+                if uninvested > 0:
+                    holdings_html += f"<div style='background: rgba(255,255,255,0.05); padding: 10px 15px; border-radius: 6px; border: 1px dashed rgba(255,255,255,0.2); display: flex; justify-content: space-between; align-items: center;'><span style='color: #94a3b8; font-size: 0.85rem;'>Uninvested Cash Balance</span><span style='color: #fafafa; font-weight: bold; font-size: 0.9rem;'>₹{uninvested:,.0f}</span></div>"
+                
                 holdings_html += "</div>"
                 
                 st.markdown(f"""
