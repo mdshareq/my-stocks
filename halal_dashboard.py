@@ -1154,7 +1154,7 @@ if st.session_state.user is None:
         password_val = st.text_input("Password", type="password", placeholder="\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022")
         st.markdown("<br>", unsafe_allow_html=True)
 
-        if st.button("Authenticate \u2192", use_container_width=True):
+        if st.button("Authenticate \u2192", width="stretch"):
             if not email_val or not password_val:
                 st.error("Both fields are required.")
             elif db is None:
@@ -1188,7 +1188,7 @@ if st.session_state.user is None:
 
         st.markdown("<hr style='border-color:rgba(255,255,255,0.08);margin:16px 0;'>", unsafe_allow_html=True)
         st.markdown("<div style='text-align:center;font-size:0.75rem;color:#64748b;margin-bottom:8px;'>\u2014 or try the demo \u2014</div>", unsafe_allow_html=True)
-        if st.button("\u26a1 Show Demo Credentials", use_container_width=True):
+        if st.button("\u26a1 Show Demo Credentials", width="stretch"):
             st.session_state["demo_prefill"] = True
             st.rerun()
         if st.session_state.get("demo_prefill"):
@@ -1235,7 +1235,7 @@ with st.sidebar:
             save_key(api_key)
             st.success("API Key saved locally.")
             
-    if st.button("🧠 Auto-Optimize Algorithm", help="Run ML engine to adjust scoring weights based on market regime.", use_container_width=True):
+    if st.button("🧠 Auto-Optimize Algorithm", help="Run ML engine to adjust scoring weights based on market regime.", width="stretch"):
         with st.spinner("Training model & adjusting weights..."):
             success, msg = run_ml_optimizer()
             if success:
@@ -1442,7 +1442,7 @@ if not stock_data.empty:
                         qty = st.number_input("Quantity", min_value=1, step=1)
                     with cols[2]:
                         st.markdown("<br>", unsafe_allow_html=True)
-                        submit_add = st.form_submit_button("Add to Portfolio", use_container_width=True)
+                        submit_add = st.form_submit_button("Add to Portfolio", width="stretch")
                     
                     if submit_add:
                         symbol = REVERSE_FULL_UNIVERSE.get(sel_stock, "")
@@ -1540,7 +1540,7 @@ if not stock_data.empty:
                         "P&L (%)": "{:+.2f}%"
                     }).map(lambda x: "color: #00F0FF;" if isinstance(x, (int, float)) and x > 0 else "color: #FF0055;" if isinstance(x, (int, float)) and x < 0 else "", subset=["P&L (₹)", "P&L (%)"]),
                     hide_index=True,
-                    use_container_width=True
+                    width="stretch"
                 )
                 
                 st.markdown("<br>", unsafe_allow_html=True)
@@ -1572,7 +1572,7 @@ if not stock_data.empty:
                     margin=dict(l=0, r=0, t=10, b=0), xaxis=dict(showgrid=False),
                     yaxis=dict(showgrid=True, gridcolor="rgba(128,128,128,0.15)")
                 )
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width="stretch")
 
     with tab_news:
         st.markdown("### Algorithmic News Radar")
