@@ -844,7 +844,7 @@ if not stock_data.empty:
     st.markdown("<hr style='border: 1px solid #111; margin: 30px 0;'>", unsafe_allow_html=True)
 
     # --- TABS SYSTEM ---
-    tab_tracker, tab_charts, tab_news, tab_accuracy, tab_portfolios = st.tabs(["📊 LIVE TRACKER", "📈 ADVANCED CHARTS", "📰 NEWS RADAR", "🎯 ALGO ACCURACY", "💼 PORTFOLIO COMBOS"])
+    tab_tracker, tab_portfolios, tab_accuracy, tab_charts, tab_news = st.tabs(["📊 LIVE TRACKER", "💼 PORTFOLIO COMBOS", "🎯 ALGO ACCURACY", "📈 ADVANCED CHARTS", "📰 NEWS RADAR"])
     
     with tab_tracker:
         filtered_data = stock_data[
@@ -929,8 +929,14 @@ if not stock_data.empty:
                 color = "#00F0FF" if win_rate > 50 else "#FF0055"
                 st.markdown(f"<div style='margin: 20px 0; padding: 20px; background: var(--secondary-background-color); border: 1px solid rgba(128, 128, 128, 0.15); border-left: 3px solid {color}; border-radius: 12px;'> <h3 style='margin:0; font-weight: 300; font-family: \"Space Grotesk\", sans-serif; color: var(--text-color);'>Win Rate: <span style='color:{color}'>{win_rate:.1f}%</span></h3> <p style='margin: 5px 0 0 0; color: var(--text-color); opacity: 0.6;'>{wins} successful predictions out of {total} strong buy signals triggered 30 days ago.</p> </div>", unsafe_allow_html=True)
                 
+                def style_outcome(val):
+                    color = '#22c55e' if val == 'WIN' else '#ef4444' if val == 'LOSS' else 'inherit'
+                    return f'color: {color}; font-weight: bold;'
+                
+                styled_df = backtest_df.style.map(style_outcome, subset=['Outcome'])
+                
                 st.dataframe(
-                    backtest_df,
+                    styled_df,
                     column_config={
                         "Price 30d Ago": st.column_config.NumberColumn(format="₹%.2f"),
                         "Price Today": st.column_config.NumberColumn(format="₹%.2f"),
@@ -948,22 +954,45 @@ if not stock_data.empty:
         
         portfolios = {
             "⚡ Short-Term Momentum (6 Months)": {
-                "tickers": ["KPITTECH", "TRENT", "ZYDUSLIFE", "TATAELXSI", "COFORGE", "VOLTAS"],
-                "horizon": 0.5
+                "horizon": 0.5,
+                "holdings": [
+                    {"ticker": "KPITTECH", "weight": 20, "sector": "IT", "color": "#0ea5e9"},
+                    {"ticker": "TRENT", "weight": 20, "sector": "Retail", "color": "#f43f5e"},
+                    {"ticker": "ZYDUSLIFE", "weight": 20, "sector": "Pharma", "color": "#10b981"},
+                    {"ticker": "TATAELXSI", "weight": 20, "sector": "IT", "color": "#0ea5e9"},
+                    {"ticker": "COFORGE", "weight": 10, "sector": "IT", "color": "#0ea5e9"},
+                    {"ticker": "VOLTAS", "weight": 10, "sector": "Consumer", "color": "#eab308"}
+                ]
             },
             "⚖️ Mid-Term Balanced (3 Years)": {
-                "tickers": ["TCS", "SUNPHARMA", "MARUTI", "TITAN", "RELIANCE", "ONGC"],
-                "horizon": 3.0
+                "horizon": 3.0,
+                "holdings": [
+                    {"ticker": "TCS", "weight": 25, "sector": "IT", "color": "#0ea5e9"},
+                    {"ticker": "SUNPHARMA", "weight": 20, "sector": "Pharma", "color": "#10b981"},
+                    {"ticker": "MARUTI", "weight": 15, "sector": "Auto", "color": "#8b5cf6"},
+                    {"ticker": "TITAN", "weight": 15, "sector": "Consumer", "color": "#eab308"},
+                    {"ticker": "RELIANCE", "weight": 15, "sector": "Energy", "color": "#f97316"},
+                    {"ticker": "ONGC", "weight": 10, "sector": "Energy", "color": "#f97316"}
+                ]
             },
             "💎 Long-Term Compounders (10 Years)": {
-                "tickers": ["ASIANPAINT", "PIDILITIND", "HINDUNILVR", "NESTLEIND", "DMART", "HAVELLS"],
-                "horizon": 10.0
+                "horizon": 10.0,
+                "holdings": [
+                    {"ticker": "ASIANPAINT", "weight": 25, "sector": "Core", "color": "#f59e0b"},
+                    {"ticker": "PIDILITIND", "weight": 20, "sector": "Chemicals", "color": "#06b6d4"},
+                    {"ticker": "HINDUNILVR", "weight": 20, "sector": "FMCG", "color": "#ec4899"},
+                    {"ticker": "NESTLEIND", "weight": 15, "sector": "FMCG", "color": "#ec4899"},
+                    {"ticker": "DMART", "weight": 10, "sector": "Retail", "color": "#f43f5e"},
+                    {"ticker": "HAVELLS", "weight": 10, "sector": "Consumer", "color": "#eab308"}
+                ]
             }
         }
         
         for p_name, p_data_info in portfolios.items():
-            p_tickers = [t + ".NS" for t in p_data_info["tickers"]]
-            p_data = stock_data[stock_data["Symbol"].isin(p_data_info["tickers"])]
+            holding_defs = p_data_info["holdings"]
+            p_tickers_no_ns = [h["ticker"] for h in holding_defs]
+            p_tickers = [t + ".NS" for t in p_tickers_no_ns]
+            p_data = stock_data[stock_data["Symbol"].isin(p_tickers_no_ns)]
             
             # Fetch real historical CAGR for the portfolio
             cagr = fetch_portfolio_cagr(p_tickers)
@@ -980,6 +1009,26 @@ if not stock_data.empty:
                 else: p_color = "#FF0055"
                 
                 return_color = "#00F0FF" if avg_return > 0 else "#FF0055"
+                
+                holdings_html = "<div style='display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 15px;'>"
+                for h in holding_defs:
+                    alloc_amt = monthly_sip * (h['weight'] / 100)
+                    holdings_html += f"""
+                    <div style='background: rgba(0,0,0,0.3); padding: 10px 15px; border-radius: 6px; border-left: 3px solid {h['color']};'>
+                        <div style='display: flex; justify-content: space-between; margin-bottom: 5px;'>
+                            <strong style='color: #fafafa; font-size: 0.9rem;'>{h['ticker']}</strong>
+                            <span style='color: #00F0FF; font-weight: bold; font-size: 0.9rem;'>₹{alloc_amt:,.0f}</span>
+                        </div>
+                        <div style='display: flex; justify-content: space-between; align-items: center;'>
+                            <div style='display: flex; align-items: center; gap: 5px;'>
+                                <div style='width: 8px; height: 8px; border-radius: 50%; background: {h['color']};'></div>
+                                <span style='color: #94a3b8; font-size: 0.75rem;'>{h['sector']}</span>
+                            </div>
+                            <span style='color: #94a3b8; font-size: 0.75rem;'>{h['weight']}% Alloc</span>
+                        </div>
+                    </div>
+                    """
+                holdings_html += "</div>"
                 
                 st.markdown(f"""
                 <div style='margin-bottom: 20px; padding: 20px; background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(128, 128, 128, 0.15); border-left: 4px solid {p_color}; border-radius: 12px;'>
@@ -1007,7 +1056,8 @@ if not stock_data.empty:
                         <div><span style='color: #94a3b8; font-size: 0.85rem;'>Active Assets: </span> <span style='font-weight: 600; color: #fafafa;'>{len(p_data)}</span></div>
                     </div>
                     <div style='font-size: 0.9rem; color: #cbd5e1; line-height: 1.5; padding: 0 5px;'>
-                        <strong style='color: #94a3b8;'>Holdings:</strong> {", ".join(p_data["Company Name"].tolist())}
+                        <strong style='color: #94a3b8; margin-bottom: 10px; display: inline-block;'>Fund Holdings Breakdown:</strong>
+                        {holdings_html}
                     </div>
                 </div>
                 """, unsafe_allow_html=True)
