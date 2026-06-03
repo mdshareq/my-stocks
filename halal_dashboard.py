@@ -1066,7 +1066,7 @@ if not stock_data.empty:
     st.markdown("<hr style='border: 1px solid #111; margin: 30px 0;'>", unsafe_allow_html=True)
 
     # --- TABS SYSTEM ---
-    tab_tracker, tab_portfolios, tab_accuracy, tab_charts, tab_news = st.tabs(["📊 LIVE TRACKER", "💼 PORTFOLIO COMBOS", "🎯 ALGO ACCURACY", "📈 ADVANCED CHARTS", "📰 NEWS RADAR"])
+    tab_tracker, tab_portfolios, tab_accuracy, tab_charts, tab_news, tab_guide = st.tabs(["📊 LIVE TRACKER", "💼 PORTFOLIO COMBOS", "🎯 ALGO ACCURACY", "📈 ADVANCED CHARTS", "📰 NEWS RADAR", "📖 APP GUIDE"])
     
     with tab_tracker:
         filtered_data = stock_data[
@@ -1258,3 +1258,31 @@ if not stock_data.empty:
                     </div>
                 </div>
                 """, unsafe_allow_html=True)
+
+    with tab_guide:
+        st.markdown("""
+        ### 📖 How Shareq Equities Works
+        
+        Welcome to **Shareq Equities**, an institutional-grade, Shariah-compliant algorithmic screener. This dashboard does not just show you prices; it uses complex mathematics to find the absolute best assets to buy *today*.
+        
+        #### 1. The Algorithmic Buy Score (Base: 50)
+        Every asset starts with 50 points. The system then analyzes live market data and adds/subtracts points based on momentum:
+        - **+15 Points**: Bullish MACD Crossover (The trend is reversing upwards).
+        - **+10 Points**: Price is trading above the 200-Day Moving Average.
+        - **+10 Points**: RSI is below 30 (The asset is heavily oversold and due for a bounce).
+        - **-15 Points**: The broader NIFTY 50 market is crashing (Risk mitigation).
+        - *Any stock scoring **85 or higher** is flagged as a Strong Buy.*
+        
+        #### 2. Portfolio Combos (Smart Waterfall Allocator)
+        In the **Portfolio Combos** tab, you can enter your monthly SIP budget. Instead of giving you arbitrary percentages, the **Smart Waterfall Engine**:
+        1. Ranks the stocks by their Algo Score.
+        2. Iteratively buys exactly 1 share of the best stocks, cascading down the list.
+        3. Skips any stock that is too expensive for your remaining budget.
+        4. Calculates the *exact* share quantity you need to buy and tells you exactly how much uninvested cash will be leftover.
+        
+        #### 3. Real-World Backtesting & Firebase
+        The **Algo Accuracy** tab is connected to a live Firebase database. Every day, the algorithm pushes its top predictions to the cloud. When you open the Accuracy tab, it looks back exactly 30 days, pulls what the algorithm predicted, and compares it to live prices today to give you a mathematically verified Win/Loss percentage.
+        
+        #### 4. Shareq AI Core
+        Powered by Google Gemini Pro. Enter your API Key in the sidebar to unlock the terminal. You can ask it to analyze any stock (e.g., "Analyze TCS financials and debt"), and it will respond with institutional-grade insights based on the live data grid.
+        """)
