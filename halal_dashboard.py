@@ -1819,39 +1819,38 @@ if not stock_data.empty:
             clean_name = p_name.replace("🛡️", "").replace("🚀", "").replace("⚖️", "").strip()
             
             st.markdown(f"""
-            <div style='margin-bottom: 30px; padding: 25px; background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(148, 163, 184, 0.1); border-radius: 6px;'>
-                <div style='display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px;'>
-                    <div>
-                        <h3 style='margin:0 0 5px 0; font-family: "Space Grotesk", sans-serif; font-size: 1.2rem; font-weight: 600; color: #f8fafc;'>{clean_name}</h3>
-                        <div style='color: #64748b; font-size: 0.8rem; letter-spacing: 0.5px;'>INSTITUTIONAL SIP PROJECTION</div>
-                    </div>
-                    <div style='text-align: right;'>
-                        <div style='font-size: 0.75rem; color: #64748b; margin-bottom: 2px;'>FUNDAMENTAL SCORE</div>
-                        <div style='font-size: 1.5rem; font-weight: 600; color: {p_color};'>{avg_score:.1f}</div>
-                    </div>
-                </div>
-                
-                <div style='display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 25px;'>
-                    <div>
-                        <div style='color: #64748b; font-size: 0.75rem; margin-bottom: 4px; text-transform: uppercase;'>Total Invested</div>
-                        <div style='font-size: 1.1rem; font-weight: 500; color: #e2e8f0;'>₹{total_invested:,.0f}</div>
-                    </div>
-                    <div>
-                        <div style='color: #64748b; font-size: 0.75rem; margin-bottom: 4px; text-transform: uppercase;'>Projected Value</div>
-                        <div style='font-size: 1.1rem; font-weight: 500; color: #10b981;'>₹{future_value:,.0f}</div>
-                    </div>
-                    <div>
-                        <div style='color: #64748b; font-size: 0.75rem; margin-bottom: 4px; text-transform: uppercase;'>Hist. 5Y CAGR</div>
-                        <div style='font-size: 1.1rem; font-weight: 500; color: #8b5cf6;'>{cagr*100:.1f}%</div>
-                    </div>
-                    <div>
-                        <div style='color: #64748b; font-size: 0.75rem; margin-bottom: 4px; text-transform: uppercase;'>Active Assets</div>
-                        <div style='font-size: 1.1rem; font-weight: 500; color: #e2e8f0;'>{active_assets}</div>
-                    </div>
-                </div>
-                {holdings_html}
-            </div>
-            """, unsafe_allow_html=True)
+<div style='margin-bottom: 30px; padding: 25px; background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(148, 163, 184, 0.1); border-radius: 6px;'>
+    <div style='display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px;'>
+        <div>
+            <h3 style='margin:0 0 5px 0; font-family: "Space Grotesk", sans-serif; font-size: 1.2rem; font-weight: 600; color: #f8fafc;'>{clean_name}</h3>
+            <div style='color: #64748b; font-size: 0.8rem; letter-spacing: 0.5px;'>INSTITUTIONAL SIP PROJECTION</div>
+        </div>
+        <div style='text-align: right;'>
+            <div style='font-size: 0.75rem; color: #64748b; margin-bottom: 2px;'>FUNDAMENTAL SCORE</div>
+            <div style='font-size: 1.5rem; font-weight: 600; color: {p_color};'>{avg_score:.1f}</div>
+        </div>
+    </div>
+    <div style='display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 25px;'>
+        <div>
+            <div style='color: #64748b; font-size: 0.75rem; margin-bottom: 4px; text-transform: uppercase;'>Total Invested</div>
+            <div style='font-size: 1.1rem; font-weight: 500; color: #e2e8f0;'>₹{total_invested:,.0f}</div>
+        </div>
+        <div>
+            <div style='color: #64748b; font-size: 0.75rem; margin-bottom: 4px; text-transform: uppercase;'>Projected Value</div>
+            <div style='font-size: 1.1rem; font-weight: 500; color: #10b981;'>₹{future_value:,.0f}</div>
+        </div>
+        <div>
+            <div style='color: #64748b; font-size: 0.75rem; margin-bottom: 4px; text-transform: uppercase;'>Hist. 5Y CAGR</div>
+            <div style='font-size: 1.1rem; font-weight: 500; color: #8b5cf6;'>{cagr*100:.1f}%</div>
+        </div>
+        <div>
+            <div style='color: #64748b; font-size: 0.75rem; margin-bottom: 4px; text-transform: uppercase;'>Active Assets</div>
+            <div style='font-size: 1.1rem; font-weight: 500; color: #e2e8f0;'>{active_assets}</div>
+        </div>
+    </div>
+    {holdings_html}
+</div>
+""", unsafe_allow_html=True)
 
     with tab_guide:
         st.markdown("""
