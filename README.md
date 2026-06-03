@@ -18,17 +18,6 @@ Shareq Equities is a modern, futuristic web dashboard built with Streamlit that 
 
 ---
 
-## 🛠️ How it Works
-
-The backend engine processes data in four distinct phases:
-
-1. **Market Scanning:** The app pulls live trading data from Yahoo Finance for over 60 pre-vetted Shariah-compliant assets.
-2. **Technical Telemetry:** It calculates rolling indicators like the 50-Day & 200-Day SMA, 14-Day RSI, MACD histograms, and Bollinger Bands.
-3. **Scoring & Matrixing:** It assigns points (from a baseline of 50) based on momentum signals. For example, a fresh bullish MACD crossover grants +15 points, while an oversold RSI grants +10. A penalty is applied if the broader NIFTY 50 index is crashing.
-4. **Data Persistence:** The Top 20 "Strong Buy" predictions are packaged into a JSON snapshot and pushed silently to your Firebase database to serve as a historical record for future backtesting.
-
----
-
 ## 📖 How to Use the App
 
 ### The Core Modules
