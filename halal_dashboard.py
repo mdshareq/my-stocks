@@ -990,7 +990,6 @@ if not stock_data.empty:
                             <div style='font-size: 1.8rem; font-weight: bold; color: {p_color};'>{avg_score:.1f}</div>
                         </div>
                     </div>
-                    
                     <div style='display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;'>
                         <div style='background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px;'>
                             <div style='color: #94a3b8; font-size: 0.85rem; margin-bottom: 5px;'>Historical 5Y CAGR</div>
@@ -1003,12 +1002,10 @@ if not stock_data.empty:
                             <div style='font-size: 0.75rem; color: #64748b; margin-top: 5px;'>vs ₹{total_invested:,.0f} invested</div>
                         </div>
                     </div>
-                    
                     <div style='display: flex; gap: 25px; margin-bottom: 15px; padding: 0 5px;'>
                         <div><span style='color: #94a3b8; font-size: 0.85rem;'>24H Momentum: </span> <span style='font-weight: 600; color: {return_color}'>{avg_return:+.2f}%</span></div>
                         <div><span style='color: #94a3b8; font-size: 0.85rem;'>Active Assets: </span> <span style='font-weight: 600; color: #fafafa;'>{len(p_data)}</span></div>
                     </div>
-                    
                     <div style='font-size: 0.9rem; color: #cbd5e1; line-height: 1.5; padding: 0 5px;'>
                         <strong style='color: #94a3b8;'>Holdings:</strong> {", ".join(p_data["Company Name"].tolist())}
                     </div>
