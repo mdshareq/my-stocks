@@ -442,80 +442,93 @@ def fetch_live_and_spark_data():
             
         live_data = yf.download(tickers, period="2y", interval="1d", progress=False, group_by="ticker")
         for ticker in tickers:
-            ticker_obj = yf.Ticker(ticker)
-            info = ticker_obj.info
-            market_cap = info.get("marketCap", 0) or 0
-            debt_to_equity = info.get("debtToEquity", 0) or 0
-            total_cash = info.get("totalCash", 0) or 0
-            total_assets = info.get("totalAssets", 0) or 1
-            cash_ratio = (total_cash / total_assets) * 100 if total_assets > 1 else 0
-            cash_compliant = cash_ratio < 33
-            
-            if isinstance(live_data.columns, pd.MultiIndex) and ticker in live_data.columns.levels[0]:
-                hist = live_data[ticker].copy()
-            elif "Close" in live_data.columns and len(tickers) == 1:
-                hist = live_data.copy()
-            else:
-                continue
-                
-            if hist.empty or len(hist) < 200: continue
-            
-            # Save trailing 30-day closings for sparklines
-            sparklines[ticker] = hist["Close"].tail(30)
-            
-            current_price = hist["Close"].iloc[-1]
-            prev_close = hist["Close"].iloc[-2]
-            change = current_price - prev_close
-            change_pct = (change / prev_close) * 100
-            
-            sma_50 = hist["Close"].rolling(window=50).mean().iloc[-1]
-            sma_200 = hist["Close"].rolling(window=200).mean().iloc[-1]
-            current_rsi = calculate_rsi(hist).iloc[-1]
-            macd, signal = calculate_macd(hist)
-            upper_bb, lower_bb = calculate_bollinger_bands(hist)
-            
             try:
-                avg_vol = hist["Volume"].rolling(window=20).mean().iloc[-1]
-                current_vol = hist["Volume"].iloc[-1]
-                has_volume = current_vol > avg_vol
-            except:
-                has_volume = False
+                # Safely fetch info, default to 0 if rate limited
+                market_cap = 0; debt_to_equity = 0; total_cash = 0; total_assets = 1
+                try:
+                    ticker_obj = yf.Ticker(ticker)
+                    info = ticker_obj.fast_info if hasattr(ticker_obj, 'fast_info') else ticker_obj.info
+                    market_cap = info.get("marketCap", 0) or 0
+                    
+                    # Some versions of fast_info don't have debt/cash. Fallback to info.
+                    if not market_cap: market_cap = ticker_obj.info.get("marketCap", 0) or 0
+                    debt_to_equity = ticker_obj.info.get("debtToEquity", 0) or 0
+                    total_cash = ticker_obj.info.get("totalCash", 0) or 0
+                    total_assets = ticker_obj.info.get("totalAssets", 0) or 1
+                except Exception:
+                    pass # Rate limited or data missing, use defaults
+                    
+                cash_ratio = (total_cash / total_assets) * 100 if total_assets > 1 else 0
+                cash_compliant = cash_ratio < 33
+            
+                if isinstance(live_data.columns, pd.MultiIndex) and ticker in live_data.columns.levels[0]:
+                    hist = live_data[ticker].copy()
+                elif "Close" in live_data.columns and len(tickers) == 1:
+                    hist = live_data.copy()
+                else:
+                    continue
+                    
+                if hist.empty or len(hist) < 200: continue
                 
-            # ADVANCED SCORING LOGIC
-            score = 50 
-            
-            # Base logic
-            if current_price > sma_50: score += 5
-            if current_rsi < 30: score += 10 
-            elif current_rsi < 40: score += 5
-            elif current_rsi > 70: score -= 20 
-            if has_volume: score += 10
-            if debt_to_equity < 33: score += 10 
-            if cash_compliant and total_assets > 1: score += 10
-            
-            # Quantitative Filters
-            if current_price > sma_200: score += 10
-            
-            # MACD Bullish Crossover
-            if macd.iloc[-1] > signal.iloc[-1] and macd.iloc[-2] <= signal.iloc[-2]:
-                score += 15
-            elif macd.iloc[-1] > signal.iloc[-1]:
-                score += 5
+                # Save trailing 30-day closings for sparklines
+                sparklines[ticker] = hist["Close"].tail(30)
                 
-            # Bollinger Band Oversold Bounce
-            if current_price <= lower_bb.iloc[-1] * 1.02:
-                score += 10
+                current_price = hist["Close"].iloc[-1]
+                prev_close = hist["Close"].iloc[-2]
+                change = current_price - prev_close
+                change_pct = (change / prev_close) * 100
                 
-            # Broader Market Penalty
-            if not market_healthy:
-                score -= 15
-            
-            data.append({
-                "Symbol": ticker.replace(".NS", ""), "Company Name": HALAL_STOCKS[ticker],
-                "Live Price (₹)": round(current_price, 2), "Change (₹)": round(change, 2),
-                "% Change": round(change_pct, 2), "Market Cap": market_cap,
-                "RSI": round(current_rsi, 2), "SMA50": round(sma_50, 2), "Buy Score": score
-            })
+                sma_50 = hist["Close"].rolling(window=50).mean().iloc[-1]
+                sma_200 = hist["Close"].rolling(window=200).mean().iloc[-1]
+                current_rsi = calculate_rsi(hist).iloc[-1]
+                macd, signal = calculate_macd(hist)
+                upper_bb, lower_bb = calculate_bollinger_bands(hist)
+                
+                try:
+                    avg_vol = hist["Volume"].rolling(window=20).mean().iloc[-1]
+                    current_vol = hist["Volume"].iloc[-1]
+                    has_volume = current_vol > avg_vol
+                except Exception:
+                    has_volume = False
+                    
+                # ADVANCED SCORING LOGIC
+                score = 50 
+                
+                # Base logic
+                if current_price > sma_50: score += 5
+                if current_rsi < 30: score += 10 
+                elif current_rsi < 40: score += 5
+                elif current_rsi > 70: score -= 20 
+                if has_volume: score += 10
+                if debt_to_equity > 0 and debt_to_equity < 33: score += 10 
+                if cash_compliant and total_assets > 1: score += 10
+                
+                # Quantitative Filters
+                if current_price > sma_200: score += 10
+                
+                # MACD Bullish Crossover
+                if macd.iloc[-1] > signal.iloc[-1] and macd.iloc[-2] <= signal.iloc[-2]:
+                    score += 15
+                elif macd.iloc[-1] > signal.iloc[-1]:
+                    score += 5
+                    
+                # Bollinger Band Oversold Bounce
+                if current_price <= lower_bb.iloc[-1] * 1.02:
+                    score += 10
+                    
+                # Broader Market Penalty
+                if not market_healthy:
+                    score -= 15
+                
+                data.append({
+                    "Symbol": ticker.replace(".NS", ""), "Company Name": HALAL_STOCKS[ticker],
+                    "Live Price (₹)": round(current_price, 2), "Change (₹)": round(change, 2),
+                    "% Change": round(change_pct, 2), "Market Cap": market_cap,
+                    "RSI": round(current_rsi, 2), "SMA50": round(sma_50, 2), "Buy Score": score
+                })
+            except Exception:
+                # If this specific ticker fails, just skip it and continue
+                continue
     except Exception:
         pass
     
