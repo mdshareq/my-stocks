@@ -1037,7 +1037,9 @@ def generate_dynamic_portfolios(stock_data, monthly_sip, risk_profile="Balanced"
             with open("halal_metrics.json", "r", encoding="utf-8") as f:
                 raw_metrics = json.load(f)
                 if raw_metrics:
-                    universe_df = pd.DataFrame.from_dict(raw_metrics, orient='index')
+                    # Filter out invalid/error rows before converting to DataFrame
+                    valid_metrics = {k: v for k, v in raw_metrics.items() if "error" not in v}
+                    universe_df = pd.DataFrame.from_dict(valid_metrics, orient='index')
     except Exception:
         pass
         

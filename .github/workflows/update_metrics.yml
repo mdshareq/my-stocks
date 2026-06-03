@@ -2,8 +2,8 @@ name: Update Halal Metrics
 
 on:
   schedule:
-    # Run at 00:00 every Saturday
-    - cron: '0 0 * * 6'
+    # Run at 00:00 every day
+    - cron: '0 0 * * *'
   workflow_dispatch: # Allow manual trigger
 
 jobs:
@@ -36,4 +36,5 @@ jobs:
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add halal_metrics.json
           git commit -m "Auto-update: Fetch latest Halal metrics [skip ci]" || echo "No changes to commit"
+          git pull --rebase || echo "Pull failed"
           git push

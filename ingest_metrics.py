@@ -2,12 +2,14 @@ import json
 import time
 import yfinance as yf
 import os
+import random
 
 def main():
-    print("Starting Halal Metrics Ingestion (Safe Mode)...")
-    start_time = time.time()
+    print("Starting Halal Metrics Ingestion (Incremental Safe Mode)...")
     
     universe_path = "halal_universe.json"
+    metrics_path = "halal_metrics.json"
+    
     if not os.path.exists(universe_path):
         print(f"Error: {universe_path} not found.")
         return
@@ -17,14 +19,42 @@ def main():
         
     print(f"Loaded {len(universe)} symbols from universe.")
     
-    results = {}
-    count = 0
+    metrics = {}
+    if os.path.exists(metrics_path):
+        with open(metrics_path, "r", encoding="utf-8") as f:
+            try:
+                metrics = json.load(f)
+            except json.JSONDecodeError:
+                metrics = {}
+                
+    print(f"Found {len(metrics)} symbols already in metrics database.")
     
-    # Process sequentially to avoid Yahoo Finance 401 Unauthorized / Crumb errors
-    for symbol, name in universe.items():
+    # Find symbols that haven't been successfully processed or explicitly marked invalid
+    pending_symbols = []
+    for sym in universe.keys():
+        if sym not in metrics:
+            pending_symbols.append(sym)
+        elif "error" in metrics[sym] and metrics[sym]["error"] != "invalid":
+            # Retry if it was a transient error (like a firewall block)
+            pending_symbols.append(sym)
+            
+    print(f"Remaining symbols to fetch: {len(pending_symbols)}")
+    
+    # Limit to 350 to absolutely guarantee we don't hit the 500-request Yahoo Firewall
+    # Since this runs daily, it will chunk through the database perfectly!
+    batch_size = min(350, len(pending_symbols))
+    batch_symbols = pending_symbols[:batch_size]
+    
+    print(f"Processing batch of {batch_size} symbols...")
+    
+    count = 0
+    success_count = 0
+    
+    for symbol in batch_symbols:
+        name = universe[symbol]
         count += 1
-        if count % 50 == 0:
-            print(f"Processed {count}/{len(universe)}... (Success: {len(results)})")
+        if count % 25 == 0:
+            print(f"Processed {count}/{batch_size} in this batch... (Success: {success_count})")
             
         try:
             t = yf.Ticker(symbol)
@@ -35,7 +65,7 @@ def main():
             mcap = fast.market_cap if hasattr(fast, 'market_cap') else info.get('marketCap', 0.0)
             
             if price is not None and price > 0:
-                results[symbol] = {
+                metrics[symbol] = {
                     "symbol": symbol,
                     "name": name,
                     "price": price,
@@ -46,19 +76,26 @@ def main():
                     "industry": info.get("industry", "Unknown"),
                     "dividend_yield": info.get("dividendYield", 0.0) if info.get("dividendYield") is not None else 0.0
                 }
+                success_count += 1
+            else:
+                # Genuinely delisted or no data available
+                metrics[symbol] = {"symbol": symbol, "error": "invalid"}
         except Exception as e:
-            # Ignore delisted/missing symbols silently to avoid console spam
-            pass
-            
-        # Add a small delay to respect rate limits
-        time.sleep(0.1)
+            err_msg = str(e).lower()
+            if "delisted" in err_msg or "not found" in err_msg or "404" in err_msg:
+                metrics[symbol] = {"symbol": symbol, "error": "invalid"}
+            else:
+                # Transient error (rate limit, timeout, 401)
+                metrics[symbol] = {"symbol": symbol, "error": "transient_failed"}
+                
+        # Random sleep between 0.2 and 0.6 seconds to mimic human behavior
+        time.sleep(random.uniform(0.2, 0.6))
 
-    end_time = time.time()
-    print(f"Finished processing in {end_time - start_time:.2f} seconds.")
-    print(f"Successfully fetched data for {len(results)} / {len(universe)} symbols.")
-    
-    with open("halal_metrics.json", "w", encoding="utf-8") as f:
-        json.dump(results, f, indent=4)
+    # Save the updated database
+    with open(metrics_path, "w", encoding="utf-8") as f:
+        json.dump(metrics, f, indent=4)
+        
+    print(f"Batch complete. Total metrics database size: {len(metrics)}")
     print("Saved to halal_metrics.json")
 
 if __name__ == "__main__":
