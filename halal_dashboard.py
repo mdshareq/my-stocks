@@ -908,6 +908,12 @@ def calculate_backtest_accuracy(days_ago=30):
 
     # --- STATELESS SIMULATION FALLBACK ---
     tickers = list(HALAL_STOCKS.keys())
+    # Expand the backtest simulation using the top 100 highly rated stocks from the 2700-stock master database
+    if 'UNIVERSE_METRICS_DF' in globals() and not UNIVERSE_METRICS_DF.empty:
+        safe_universe = UNIVERSE_METRICS_DF[UNIVERSE_METRICS_DF['market_cap'] >= 15000000000]
+        top_100_symbols = safe_universe.sort_values(by='Buy Score', ascending=False).head(100)['Symbol'].tolist()
+        top_100_tickers = [sym + ".NS" for sym in top_100_symbols]
+        tickers = list(set(tickers + top_100_tickers))
     try:
         # Fetch NIFTY for historical market trend
         nifty = yf.download("^NSEI", period="2y", interval="1d", progress=False)
@@ -1465,7 +1471,7 @@ if not stock_data.empty:
                     "Live Price (₹)": st.column_config.NumberColumn("Price (₹)", format="%.2f"),
                     "pe": st.column_config.NumberColumn("P/E Ratio", format="%.1f"),
                     "beta": st.column_config.NumberColumn("Beta (Risk)", format="%.2f"),
-                    "Buy Score": st.column_config.ProgressColumn("Signal Strength", min_value=0, max_value=100),
+                    "Buy Score": st.column_config.ProgressColumn("Signal Strength", min_value=0, max_value=100, format="%.1f"),
                 }, hide_index=True, width="stretch"
             )
         else:
@@ -1476,7 +1482,7 @@ if not stock_data.empty:
                     "Symbol": "Asset", "Company Name": "Entity",
                     "Live Price (₹)": st.column_config.NumberColumn("Price (₹)", format="%.2f"),
                     "RSI": st.column_config.NumberColumn("RSI", format="%.1f"),
-                    "Buy Score": st.column_config.ProgressColumn("Signal Strength", min_value=0, max_value=100),
+                    "Buy Score": st.column_config.ProgressColumn("Signal Strength", min_value=0, max_value=100, format="%.1f"),
                 }, hide_index=True, width="stretch"
             )
 
