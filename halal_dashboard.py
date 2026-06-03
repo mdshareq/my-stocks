@@ -754,7 +754,7 @@ def generate_dynamic_portfolios(stock_data):
         ticker_base = row["Symbol"]
         ticker_ns = ticker_base + ".NS"
         info = HALAL_STOCKS.get(ticker_ns, {"sector": "Unknown", "color": "#94a3b8"})
-        m_holdings.append({"ticker": ticker_base, "weight": 100 / len(momentum_assets), "sector": info["sector"], "color": info["color"]})
+        m_holdings.append({"ticker": ticker_base, "weight": 100 / len(momentum_assets), "sector": info["sector"], "color": info["color"], "price": row["Live Price (₹)"]})
         
     portfolios["⚡ Short-Term Momentum (6 Months)"] = {"horizon": 0.5, "holdings": m_holdings}
     
@@ -767,7 +767,7 @@ def generate_dynamic_portfolios(stock_data):
         ticker_base = row["Symbol"]
         ticker_ns = ticker_base + ".NS"
         info = HALAL_STOCKS.get(ticker_ns, {"sector": "Unknown", "color": "#94a3b8"})
-        mid_holdings.append({"ticker": ticker_base, "weight": 100 / len(mid_pool), "sector": info["sector"], "color": info["color"]})
+        mid_holdings.append({"ticker": ticker_base, "weight": 100 / len(mid_pool), "sector": info["sector"], "color": info["color"], "price": row["Live Price (₹)"]})
         
     portfolios["⚖️ Mid-Term Balanced (3 Years)"] = {"horizon": 3.0, "holdings": mid_holdings}
     
@@ -784,7 +784,7 @@ def generate_dynamic_portfolios(stock_data):
         ticker_base = row["Symbol"]
         ticker_ns = ticker_base + ".NS"
         info = HALAL_STOCKS.get(ticker_ns, {"sector": "Unknown", "color": "#94a3b8"})
-        long_holdings.append({"ticker": ticker_base, "weight": 100 / len(long_pool), "sector": info["sector"], "color": info["color"]})
+        long_holdings.append({"ticker": ticker_base, "weight": 100 / len(long_pool), "sector": info["sector"], "color": info["color"], "price": row["Live Price (₹)"]})
         
     portfolios["💎 Long-Term Compounders (10 Years)"] = {"horizon": 10.0, "holdings": long_holdings}
     
@@ -1089,7 +1089,12 @@ if not stock_data.empty:
                 holdings_html = "<div style='display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-top: 15px;'>"
                 for h in holding_defs:
                     alloc_amt = monthly_sip * (h['weight'] / 100)
-                    holdings_html += f"<div style='background: rgba(0,0,0,0.3); padding: 10px 15px; border-radius: 6px; border-left: 3px solid {h['color']};'><div style='display: flex; justify-content: space-between; margin-bottom: 5px;'><strong style='color: #fafafa; font-size: 0.9rem;'>{h['ticker']}</strong><span style='color: #00F0FF; font-weight: bold; font-size: 0.9rem;'>₹{alloc_amt:,.0f}</span></div><div style='display: flex; justify-content: space-between; align-items: center;'><div style='display: flex; align-items: center; gap: 5px;'><div style='width: 8px; height: 8px; border-radius: 50%; background: {h['color']};'></div><span style='color: #94a3b8; font-size: 0.75rem;'>{h['sector']}</span></div><span style='color: #94a3b8; font-size: 0.75rem;'>{h['weight']}% Alloc</span></div></div>"
+                    live_price = h.get('price', 1)
+                    qty = int(alloc_amt // live_price)
+                    qty_str = f"Buy {qty} shares" if qty > 0 else "SIP too low"
+                    alloc_color = "#00F0FF" if qty > 0 else "#ef4444"
+                    
+                    holdings_html += f"<div style='background: rgba(0,0,0,0.3); padding: 10px 15px; border-radius: 6px; border-left: 3px solid {h['color']};'><div style='display: flex; justify-content: space-between; margin-bottom: 5px;'><strong style='color: #fafafa; font-size: 0.9rem;'>{h['ticker']}</strong><span style='color: {alloc_color}; font-weight: bold; font-size: 0.9rem;'>₹{alloc_amt:,.0f}</span></div><div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;'><span style='color: #cbd5e1; font-size: 0.8rem; font-weight: 500;'>{qty_str}</span><span style='color: #64748b; font-size: 0.75rem;'>@ ₹{live_price:,.0f}</span></div><div style='display: flex; justify-content: space-between; align-items: center;'><div style='display: flex; align-items: center; gap: 5px;'><div style='width: 8px; height: 8px; border-radius: 50%; background: {h['color']};'></div><span style='color: #94a3b8; font-size: 0.75rem;'>{h['sector']}</span></div><span style='color: #94a3b8; font-size: 0.75rem;'>{h['weight']:.2f}% Alloc</span></div></div>"
                 holdings_html += "</div>"
                 
                 st.markdown(f"""
