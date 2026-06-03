@@ -11,19 +11,23 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 from datetime import datetime, timedelta
 
-# Resolve firebase key path relative to this script's location (not CWD)
-_SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-_FIREBASE_KEY_PATH = os.path.join(_SCRIPT_DIR, ".firebase_key.json")
+# Try multiple known locations for the Firebase key file
+_KEY_CANDIDATES = [
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), ".firebase_key.json"),
+    os.path.join(os.getcwd(), ".firebase_key.json"),
+    r"E:\my-stocks\.firebase_key.json",
+]
+_FIREBASE_KEY_PATH = next((p for p in _KEY_CANDIDATES if os.path.exists(p)), None)
 
 # --- FIREBASE INITIALIZATION ---
 db = None
 _firebase_error = None
 try:
     if not firebase_admin._apps:
-        if os.path.exists(_FIREBASE_KEY_PATH):
+        if _FIREBASE_KEY_PATH:
             cred = credentials.Certificate(_FIREBASE_KEY_PATH)
             firebase_admin.initialize_app(cred)
-            print("Firebase: Initialized from local key file.")
+            print(f"Firebase: Initialized from {_FIREBASE_KEY_PATH}")
         else:
             try:
                 if "firebase" in st.secrets:
@@ -36,7 +40,7 @@ try:
         db = firestore.client()
         print("Firebase: Firestore client connected.")
     else:
-        _firebase_error = "No credentials found (.firebase_key.json or st.secrets)."
+        _firebase_error = "Key not found in any candidate path."
 except Exception as e:
     db = None
     _firebase_error = str(e)
@@ -1072,73 +1076,62 @@ if 'user' not in st.session_state:
     st.session_state.user = None
 
 if st.session_state.user is None:
-    if db is None:
-        st.markdown("<div class='page-title' style='text-align: center; display: block; margin-top: 60px;'>SHAREQ EQUITIES</div>", unsafe_allow_html=True)
-        col1, col2, col3 = st.columns([1, 1.2, 1])
-        with col2:
-            err_msg = _firebase_error if _firebase_error else "Unknown error."
-            st.error(f"""🔴 **Firebase connection failed**
+    st.markdown("<div class='page-title' style='text-align:center;display:block;margin-top:80px;'>SHAREQ EQUITIES</div>", unsafe_allow_html=True)
+    st.markdown("<div style='text-align:center;margin-bottom:25px;color:#94a3b8;font-family:\"Space Grotesk\",sans-serif;letter-spacing:2px;'>SECURE AUTHENTICATION GATEWAY</div>", unsafe_allow_html=True)
 
-`{err_msg}`
+    col1, col2, col3 = st.columns([1, 1.2, 1])
+    with col2:
+        if db is None:
+            st.warning(f"\u26a0\ufe0f Firebase offline \u2014 entering local mode. ({_firebase_error})")
 
-Check that `.firebase_key.json` exists in `E:\\my-stocks\\` and is a valid JSON credential file.""")
-            if st.button("Continue in Local Mode (no Auth)", use_container_width=True):
-                st.session_state.user = {"email": "local_user", "gemini_api_key": ""}
+        st.markdown("<div style='padding:24px;background:rgba(255,255,255,0.03);border-radius:14px;border:1px solid rgba(255,255,255,0.1);'>", unsafe_allow_html=True)
+        auth_mode = st.radio("Mode", ["Login", "Register"], horizontal=True, label_visibility="collapsed")
+        st.markdown("<br>", unsafe_allow_html=True)
+        email_val = st.text_input("Username / Email", placeholder="e.g. Shareq")
+        password_val = st.text_input("Password", type="password", placeholder="\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022")
+        st.markdown("<br>", unsafe_allow_html=True)
+
+        if st.button("Authenticate \u2192", use_container_width=True):
+            if not email_val or not password_val:
+                st.error("Both fields are required.")
+            elif db is None:
+                st.session_state.user = {"email": email_val, "gemini_api_key": ""}
                 st.rerun()
-        st.stop()
-    else:
-        st.markdown("<div class='page-title' style='text-align: center; display: block; margin-top: 100px;'>SHAREQ EQUITIES</div>", unsafe_allow_html=True)
-        st.markdown("<div style='text-align: center; margin-bottom: 30px; color: #94a3b8; font-family: \"Space Grotesk\", sans-serif; letter-spacing: 2px;'>SECURE AUTHENTICATION GATEWAY</div>", unsafe_allow_html=True)
-        
-        col1, col2, col3 = st.columns([1, 1.2, 1])
-        with col2:
-            with st.container():
-                st.markdown("<div style='padding: 20px; background: rgba(255,255,255,0.03); border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);'>", unsafe_allow_html=True)
-                auth_mode = st.radio("Access Mode", ["Login", "Register"], horizontal=True, label_visibility="collapsed")
-                st.markdown("<br>", unsafe_allow_html=True)
-                email = st.text_input("Email Address", placeholder="user@shareq.dev")
-                password = st.text_input("Password", type="password", placeholder="••••••••")
-                
-                st.markdown("<br>", unsafe_allow_html=True)
-                if st.button("Authenticate", use_container_width=True):
-                    if not email or not password:
-                        st.error("Credentials required.")
+            else:
+                users_ref = db.collection("users").document(email_val)
+                doc = users_ref.get()
+                if auth_mode == "Register":
+                    if doc.exists:
+                        st.error("Account already exists. Please log in.")
                     else:
-                        users_ref = db.collection("users").document(email)
-                        doc = users_ref.get()
-                        
-                        if auth_mode == "Register":
-                            if doc.exists:
-                                st.error("Account already exists.")
-                            else:
-                                users_ref.set({
-                                    "email": email,
-                                    "password_hash": hash_password(password),
-                                    "gemini_api_key": "",
-                                    "created_at": firestore.SERVER_TIMESTAMP
-                                })
-                                st.session_state.user = {"email": email, "gemini_api_key": ""}
-                                st.rerun()
-                        else: # Login
-                            if not doc.exists:
-                                st.error("Invalid credentials.")
-                            else:
-                                user_data = doc.to_dict()
-                                if user_data.get("password_hash") == hash_password(password):
-                                    st.session_state.user = user_data
-                                    st.rerun()
-                                else:
-                                    st.error("Invalid credentials.")
+                        users_ref.set({
+                            "email": email_val,
+                            "password_hash": hash_password(password_val),
+                            "gemini_api_key": "",
+                            "created_at": firestore.SERVER_TIMESTAMP
+                        })
+                        st.session_state.user = {"email": email_val, "gemini_api_key": ""}
+                        st.rerun()
+                else:
+                    if not doc.exists:
+                        st.error("Account not found. Please register first.")
+                    else:
+                        user_data = doc.to_dict()
+                        if user_data.get("password_hash") == hash_password(password_val):
+                            st.session_state.user = user_data
+                            st.rerun()
+                        else:
+                            st.error("Incorrect password.")
 
-                st.markdown("<hr style='border-color: rgba(255,255,255,0.08); margin: 15px 0;'>", unsafe_allow_html=True)
-                st.markdown("<div style='text-align:center; font-size:0.75rem; color:#64748b; margin-bottom:8px;'>— or try the demo —</div>", unsafe_allow_html=True)
-                if st.button("⚡ Use Demo Credentials", use_container_width=True):
-                    st.session_state["demo_prefill"] = True
-                    st.rerun()
-                if st.session_state.get("demo_prefill"):
-                    st.info("**Demo login:** Username: `Shareq` · Password: `Shareq12345`")
-                st.markdown("</div>", unsafe_allow_html=True)
-        st.stop()
+        st.markdown("<hr style='border-color:rgba(255,255,255,0.08);margin:16px 0;'>", unsafe_allow_html=True)
+        st.markdown("<div style='text-align:center;font-size:0.75rem;color:#64748b;margin-bottom:8px;'>\u2014 or try the demo \u2014</div>", unsafe_allow_html=True)
+        if st.button("\u26a1 Show Demo Credentials", use_container_width=True):
+            st.session_state["demo_prefill"] = True
+            st.rerun()
+        if st.session_state.get("demo_prefill"):
+            st.info("\U0001f511 **Demo:** Username: `Shareq` \u00b7 Password: `Shareq12345`")
+        st.markdown("</div>", unsafe_allow_html=True)
+    st.stop()
 
 # --- UI LAYOUT ---
 # Header Area
