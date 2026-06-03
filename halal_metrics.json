@@ -1,37 +1,4 @@
 {
-    "AARTECH.NS": {
-        "symbol": "AARTECH.NS",
-        "name": "AARTECH SOLONICS LTD",
-        "price": 42.650001525878906,
-        "market_cap": 1355006542.227745,
-        "beta": 0.902,
-        "pe": 34.120003,
-        "sector": "Industrials",
-        "industry": "Electrical Equipment & Parts",
-        "dividend_yield": 0.3
-    },
-    "AAKASH.NS": {
-        "symbol": "AAKASH.NS",
-        "name": "Aakash Exploration Services Ltd",
-        "price": 9.529999732971191,
-        "market_cap": 964912472.9633331,
-        "beta": -0.301,
-        "pe": 27.22857,
-        "sector": "Energy",
-        "industry": "Oil & Gas Equipment & Services",
-        "dividend_yield": 0.0
-    },
-    "3IINFOLTD.NS": {
-        "symbol": "3IINFOLTD.NS",
-        "name": "3I INFOTECH LTD.",
-        "price": 17.15999984741211,
-        "market_cap": 3559048610.0726967,
-        "beta": -0.174,
-        "pe": 9.428571,
-        "sector": "Technology",
-        "industry": "Information Technology Services",
-        "dividend_yield": 0.0
-    },
     "20MICRONS.NS": {
         "symbol": "20MICRONS.NS",
         "name": "20 MICRONS LTD.",
@@ -43,59 +10,26 @@
         "industry": "Other Industrial Metals & Mining",
         "dividend_yield": 0.68
     },
-    "ABATEAS.BO": {
-        "symbol": "ABATEAS.BO",
-        "name": "Abate As Industries Ltd",
-        "price": 10.520000457763672,
-        "market_cap": 1658019989.26651,
-        "beta": 0.124,
-        "pe": 13.316456,
-        "sector": "Financial Services",
-        "industry": "Capital Markets",
+    "3CIT.BO": {
+        "symbol": "3CIT.BO",
+        "name": "3C IT Solutions and Telecoms (India) Ltd",
+        "price": 16.55,
+        "market_cap": 99631000.0,
+        "beta": 1.0,
+        "pe": 40.365852,
+        "sector": "Technology",
+        "industry": "Information Technology Services",
         "dividend_yield": 0.0
     },
-    "AAYUSH.BO": {
-        "symbol": "AAYUSH.BO",
-        "name": "Aayush Wellness Ltd",
-        "price": 29.8700008392334,
-        "market_cap": 1453823689.9769154,
-        "beta": 0.967,
-        "pe": 32.467392,
-        "sector": "Consumer Defensive",
-        "industry": "Packaged Foods",
-        "dividend_yield": 0.16
-    },
-    "AARON.NS": {
-        "symbol": "AARON.NS",
-        "name": "AARON INDUSTRIES",
-        "price": 117.9000015258789,
-        "market_cap": 2469589788.161789,
-        "beta": 0.087,
-        "pe": 35.299404,
-        "sector": "Industrials",
-        "industry": "Specialty Industrial Machinery",
-        "dividend_yield": 0.51
-    },
-    "ABINFRA.NS": {
-        "symbol": "ABINFRA.NS",
-        "name": "A B INFRABUILD",
-        "price": 10.59000015258789,
-        "market_cap": 6764779419.871521,
-        "beta": 1.0,
-        "pe": 35.3,
-        "sector": "Industrials",
-        "industry": "Engineering & Construction",
-        "dividend_yield": 0.04
-    },
-    "AAREYDRUGS.NS": {
-        "symbol": "AAREYDRUGS.NS",
-        "name": "AAREY DRUGS & PHARMACEUTICALS LTD.",
-        "price": 76.76000213623047,
-        "market_cap": 2176476358.851326,
-        "beta": 1.302,
-        "pe": 62.918034,
-        "sector": "Healthcare",
-        "industry": "Drug Manufacturers - Specialty & Generic",
+    "3IINFOLTD.NS": {
+        "symbol": "3IINFOLTD.NS",
+        "name": "3I INFOTECH LTD.",
+        "price": 17.15999984741211,
+        "market_cap": 3559048610.0726967,
+        "beta": -0.174,
+        "pe": 9.428571,
+        "sector": "Technology",
+        "industry": "Information Technology Services",
         "dividend_yield": 0.0
     },
     "3MINDIA.NS": {
@@ -120,38 +54,60 @@
         "industry": "Apparel Retail",
         "dividend_yield": 0.0
     },
-    "3CIT.BO": {
-        "symbol": "3CIT.BO",
-        "name": "3C IT Solutions and Telecoms (India) Ltd",
-        "price": 16.55,
-        "market_cap": 99631000.0,
+    "ABINFRA.NS": {
+        "symbol": "ABINFRA.NS",
+        "name": "A B INFRABUILD",
+        "price": 10.59000015258789,
+        "market_cap": 6764779419.871521,
         "beta": 1.0,
-        "pe": 40.365852,
-        "sector": "Technology",
-        "industry": "Information Technology Services",
+        "pe": 35.3,
+        "sector": "Industrials",
+        "industry": "Engineering & Construction",
+        "dividend_yield": 0.04
+    },
+    "AAKASH.NS": {
+        "symbol": "AAKASH.NS",
+        "name": "Aakash Exploration Services Ltd",
+        "price": 9.529999732971191,
+        "market_cap": 964912472.9633331,
+        "beta": -0.301,
+        "pe": 27.22857,
+        "sector": "Energy",
+        "industry": "Oil & Gas Equipment & Services",
         "dividend_yield": 0.0
     },
-    "AARTIIND.NS": {
-        "symbol": "AARTIIND.NS",
-        "name": "AARTI INDUSTRIES LTD.",
-        "price": 463.79998779296875,
-        "market_cap": 168389313450.86023,
-        "beta": 0.656,
-        "pe": 40.121105,
-        "sector": "Basic Materials",
-        "industry": "Specialty Chemicals",
-        "dividend_yield": 0.21
+    "AAREYDRUGS.NS": {
+        "symbol": "AAREYDRUGS.NS",
+        "name": "AAREY DRUGS & PHARMACEUTICALS LTD.",
+        "price": 76.76000213623047,
+        "market_cap": 2176476358.851326,
+        "beta": 1.302,
+        "pe": 62.918034,
+        "sector": "Healthcare",
+        "industry": "Drug Manufacturers - Specialty & Generic",
+        "dividend_yield": 0.0
     },
-    "AARVI.NS": {
-        "symbol": "AARVI.NS",
-        "name": "AARVI ENCON",
-        "price": 131.94000244140625,
-        "market_cap": 1954123794.1589355,
-        "beta": -0.066,
-        "pe": 12.307836,
+    "AARON.NS": {
+        "symbol": "AARON.NS",
+        "name": "AARON INDUSTRIES",
+        "price": 117.9000015258789,
+        "market_cap": 2469589788.161789,
+        "beta": 0.087,
+        "pe": 35.299404,
         "sector": "Industrials",
-        "industry": "Staffing & Employment Services",
-        "dividend_yield": 1.52
+        "industry": "Specialty Industrial Machinery",
+        "dividend_yield": 0.51
+    },
+    "AARTECH.NS": {
+        "symbol": "AARTECH.NS",
+        "name": "AARTECH SOLONICS LTD",
+        "price": 42.650001525878906,
+        "market_cap": 1355006542.227745,
+        "beta": 0.902,
+        "pe": 34.120003,
+        "sector": "Industrials",
+        "industry": "Electrical Equipment & Parts",
+        "dividend_yield": 0.3
     },
     "AARTIDRUGS.NS": {
         "symbol": "AARTIDRUGS.NS",
@@ -164,16 +120,27 @@
         "industry": "Drug Manufacturers - Specialty & Generic",
         "dividend_yield": 0.53
     },
-    "ABCOTS.NS": {
-        "symbol": "ABCOTS.NS",
-        "name": "AB Cotspin",
-        "price": 205.30999755859375,
-        "market_cap": 4509350768.577881,
-        "beta": 1.0,
-        "pe": 34.447987,
-        "sector": "Consumer Cyclical",
-        "industry": "Textile Manufacturing",
-        "dividend_yield": 0.0
+    "AARTIIND.NS": {
+        "symbol": "AARTIIND.NS",
+        "name": "AARTI INDUSTRIES LTD.",
+        "price": 463.79998779296875,
+        "market_cap": 168389313450.86023,
+        "beta": 0.656,
+        "pe": 40.121105,
+        "sector": "Basic Materials",
+        "industry": "Specialty Chemicals",
+        "dividend_yield": 0.21
+    },
+    "AARTIPHARM.NS": {
+        "symbol": "AARTIPHARM.NS",
+        "name": "Aarti Pharmalabs Ltd1",
+        "price": 621.8499755859375,
+        "market_cap": 56375520246.026,
+        "beta": 0.399,
+        "pe": 32.303894,
+        "sector": "Healthcare",
+        "industry": "Drug Manufacturers - Specialty & Generic",
+        "dividend_yield": 0.63
     },
     "AARTISURF.NS": {
         "symbol": "AARTISURF.NS",
@@ -186,16 +153,60 @@
         "industry": "Specialty Chemicals",
         "dividend_yield": 0.26
     },
-    "AARTIPHARM.NS": {
-        "symbol": "AARTIPHARM.NS",
-        "name": "Aarti Pharmalabs Ltd1",
-        "price": 621.8499755859375,
-        "market_cap": 56375520246.026,
-        "beta": 0.399,
-        "pe": 32.303894,
-        "sector": "Healthcare",
-        "industry": "Drug Manufacturers - Specialty & Generic",
-        "dividend_yield": 0.63
+    "AARVI.NS": {
+        "symbol": "AARVI.NS",
+        "name": "AARVI ENCON",
+        "price": 131.94000244140625,
+        "market_cap": 1954123794.1589355,
+        "beta": -0.066,
+        "pe": 12.307836,
+        "sector": "Industrials",
+        "industry": "Staffing & Employment Services",
+        "dividend_yield": 1.52
+    },
+    "AAYUSH.BO": {
+        "symbol": "AAYUSH.BO",
+        "name": "Aayush Wellness Ltd",
+        "price": 29.8700008392334,
+        "market_cap": 1453823689.9769154,
+        "beta": 0.967,
+        "pe": 32.467392,
+        "sector": "Consumer Defensive",
+        "industry": "Packaged Foods",
+        "dividend_yield": 0.16
+    },
+    "ABCOTS.NS": {
+        "symbol": "ABCOTS.NS",
+        "name": "AB Cotspin",
+        "price": 205.30999755859375,
+        "market_cap": 4509350768.577881,
+        "beta": 1.0,
+        "pe": 34.447987,
+        "sector": "Consumer Cyclical",
+        "industry": "Textile Manufacturing",
+        "dividend_yield": 0.0
+    },
+    "ABATEAS.BO": {
+        "symbol": "ABATEAS.BO",
+        "name": "Abate As Industries Ltd",
+        "price": 10.520000457763672,
+        "market_cap": 1658019989.26651,
+        "beta": 0.124,
+        "pe": 13.316456,
+        "sector": "Financial Services",
+        "industry": "Capital Markets",
+        "dividend_yield": 0.0
+    },
+    "ABB.NS": {
+        "symbol": "ABB.NS",
+        "name": "ABB INDIA LIMITED",
+        "price": 7196.0,
+        "market_cap": 1524892666500.0,
+        "beta": 0.574,
+        "pe": 97.77174,
+        "sector": "Industrials",
+        "industry": "Specialty Industrial Machinery",
+        "dividend_yield": 0.55
     },
     "POWERINDIA.NS": {
         "symbol": "POWERINDIA.NS",
@@ -219,27 +230,16 @@
         "industry": "Drug Manufacturers - Specialty & Generic",
         "dividend_yield": 2.0
     },
-    "ABSMARINE.NS": {
-        "symbol": "ABSMARINE.NS",
-        "name": "ABS MARINE SERVICES LIMITED",
-        "price": 329.0,
-        "market_cap": 8076950000.0,
+    "ABCINDQ.BO": {
+        "symbol": "ABCINDQ.BO",
+        "name": "ABC INDIA LTD.",
+        "price": 63.400001525878906,
+        "market_cap": 343452517.06604004,
         "beta": 1.0,
-        "pe": 15.970874,
-        "sector": "Unknown",
-        "industry": "Unknown",
-        "dividend_yield": 0.0
-    },
-    "ACCEDERE.BO": {
-        "symbol": "ACCEDERE.BO",
-        "name": "Accedere Ltd",
-        "price": 56.15999984741211,
-        "market_cap": 277232154.44675446,
-        "beta": -0.402,
-        "pe": 181.16129,
-        "sector": "Technology",
-        "industry": "Information Technology Services",
-        "dividend_yield": 0.0
+        "pe": 0.0,
+        "sector": "Industrials",
+        "industry": "Trucking",
+        "dividend_yield": 0.78
     },
     "ABMINTLLTD.NS": {
         "symbol": "ABMINTLLTD.NS",
@@ -252,49 +252,16 @@
         "industry": "Specialty Chemicals",
         "dividend_yield": 0.0
     },
-    "ABCINDQ.BO": {
-        "symbol": "ABCINDQ.BO",
-        "name": "ABC INDIA LTD.",
-        "price": 63.400001525878906,
-        "market_cap": 343452517.06604004,
-        "beta": 1.0,
-        "pe": 0.0,
-        "sector": "Industrials",
-        "industry": "Trucking",
-        "dividend_yield": 0.78
-    },
-    "ACCORDTS.BO": {
-        "symbol": "ACCORDTS.BO",
-        "name": "Accord Transformer & Switchgear Ltd",
-        "price": 58.400001525878906,
-        "market_cap": 1201480108.9923477,
-        "beta": 1.0,
-        "pe": 19.863945,
-        "sector": "Industrials",
-        "industry": "Electrical Equipment & Parts",
-        "dividend_yield": 0.0
-    },
-    "ABB.NS": {
-        "symbol": "ABB.NS",
-        "name": "ABB INDIA LIMITED",
-        "price": 7196.0,
-        "market_cap": 1524892666500.0,
-        "beta": 0.574,
-        "pe": 97.77174,
-        "sector": "Industrials",
-        "industry": "Specialty Industrial Machinery",
-        "dividend_yield": 0.55
-    },
-    "ABRIL.BO": {
-        "symbol": "ABRIL.BO",
-        "name": "Abril Paper Tech Ltd",
-        "price": 38.5,
-        "market_cap": 307300840.0,
-        "beta": 1.0,
-        "pe": 20.478724,
-        "sector": "Basic Materials",
-        "industry": "Paper & Paper Products",
-        "dividend_yield": 0.0
+    "ABMKNO.BO": {
+        "symbol": "ABMKNO.BO",
+        "name": "ABM KNOWLEDGEWARE LTD.",
+        "price": 218.0,
+        "market_cap": 4360479600.0,
+        "beta": 0.431,
+        "pe": 38.312828,
+        "sector": "Technology",
+        "industry": "Software - Application",
+        "dividend_yield": 0.6
     },
     "ABRFL.BO": {
         "symbol": "ABRFL.BO",
@@ -307,6 +274,28 @@
         "industry": "Packaged Foods",
         "dividend_yield": 0.0
     },
+    "ABRIL.BO": {
+        "symbol": "ABRIL.BO",
+        "name": "Abril Paper Tech Ltd",
+        "price": 38.5,
+        "market_cap": 307300840.0,
+        "beta": 1.0,
+        "pe": 20.478724,
+        "sector": "Basic Materials",
+        "industry": "Paper & Paper Products",
+        "dividend_yield": 0.0
+    },
+    "ABSMARINE.NS": {
+        "symbol": "ABSMARINE.NS",
+        "name": "ABS MARINE SERVICES LIMITED",
+        "price": 329.0,
+        "market_cap": 8076950000.0,
+        "beta": 1.0,
+        "pe": 15.970874,
+        "sector": "Unknown",
+        "industry": "Unknown",
+        "dividend_yield": 0.0
+    },
     "ACC.NS": {
         "symbol": "ACC.NS",
         "name": "ACC LTD.",
@@ -317,6 +306,61 @@
         "sector": "Basic Materials",
         "industry": "Building Materials",
         "dividend_yield": 0.55
+    },
+    "ACCEDERE.BO": {
+        "symbol": "ACCEDERE.BO",
+        "name": "Accedere Ltd",
+        "price": 56.15999984741211,
+        "market_cap": 277232154.44675446,
+        "beta": -0.402,
+        "pe": 181.16129,
+        "sector": "Technology",
+        "industry": "Information Technology Services",
+        "dividend_yield": 0.0
+    },
+    "ACCELYA.NS": {
+        "symbol": "ACCELYA.NS",
+        "name": "ACCELYA SOLUTIONS INDIA LTD",
+        "price": 1143.699951171875,
+        "market_cap": 17071163976.878662,
+        "beta": 0.47,
+        "pe": 15.853894,
+        "sector": "Technology",
+        "industry": "Information Technology Services",
+        "dividend_yield": 7.78
+    },
+    "ACCENTMIC.NS": {
+        "symbol": "ACCENTMIC.NS",
+        "name": "Accent Microcell Ltd",
+        "price": 286.9,
+        "market_cap": 6382437075.2,
+        "beta": 1.0,
+        "pe": 19.319864,
+        "sector": "Unknown",
+        "industry": "Unknown",
+        "dividend_yield": 0.0
+    },
+    "ACCORDTS.BO": {
+        "symbol": "ACCORDTS.BO",
+        "name": "Accord Transformer & Switchgear Ltd",
+        "price": 58.400001525878906,
+        "market_cap": 1201480108.9923477,
+        "beta": 1.0,
+        "pe": 19.863945,
+        "sector": "Industrials",
+        "industry": "Electrical Equipment & Parts",
+        "dividend_yield": 0.0
+    },
+    "ANL.BO": {
+        "symbol": "ANL.BO",
+        "name": "Accretion Nutraveda Ltd",
+        "price": 268.5,
+        "market_cap": 1943940000.0,
+        "beta": 1.0,
+        "pe": 28.685898,
+        "sector": "Healthcare",
+        "industry": "Drug Manufacturers - Specialty & Generic",
+        "dividend_yield": 0.0
     },
     "ACEINTEG.NS": {
         "symbol": "ACEINTEG.NS",
@@ -339,50 +383,6 @@
         "sector": "Financial Services",
         "industry": "Shell Companies",
         "dividend_yield": 0.0
-    },
-    "ABMKNO.BO": {
-        "symbol": "ABMKNO.BO",
-        "name": "ABM KNOWLEDGEWARE LTD.",
-        "price": 218.0,
-        "market_cap": 4360479600.0,
-        "beta": 0.431,
-        "pe": 38.312828,
-        "sector": "Technology",
-        "industry": "Software - Application",
-        "dividend_yield": 0.6
-    },
-    "ANL.BO": {
-        "symbol": "ANL.BO",
-        "name": "Accretion Nutraveda Ltd",
-        "price": 268.5,
-        "market_cap": 1943940000.0,
-        "beta": 1.0,
-        "pe": 28.685898,
-        "sector": "Healthcare",
-        "industry": "Drug Manufacturers - Specialty & Generic",
-        "dividend_yield": 0.0
-    },
-    "ACCENTMIC.NS": {
-        "symbol": "ACCENTMIC.NS",
-        "name": "Accent Microcell Ltd",
-        "price": 286.9,
-        "market_cap": 6382437075.2,
-        "beta": 1.0,
-        "pe": 19.319864,
-        "sector": "Unknown",
-        "industry": "Unknown",
-        "dividend_yield": 0.0
-    },
-    "ACCELYA.NS": {
-        "symbol": "ACCELYA.NS",
-        "name": "ACCELYA SOLUTIONS INDIA LTD",
-        "price": 1143.699951171875,
-        "market_cap": 17071163976.878662,
-        "beta": 0.47,
-        "pe": 15.853894,
-        "sector": "Technology",
-        "industry": "Information Technology Services",
-        "dividend_yield": 7.78
     },
     "ACE.NS": {
         "symbol": "ACE.NS",
@@ -417,15 +417,26 @@
         "industry": "Utilities - Regulated Gas",
         "dividend_yield": 0.03
     },
-    "ADCOUNTY.BO": {
-        "symbol": "ADCOUNTY.BO",
-        "name": "Adcounty Media India Ltd",
-        "price": 102.6500015258789,
-        "market_cap": 2309748214.3341064,
-        "beta": 1.0,
-        "pe": 10.637306,
-        "sector": "Communication Services",
-        "industry": "Advertising Agencies",
+    "AWL.NS": {
+        "symbol": "AWL.NS",
+        "name": "Adani Wilmar Ltd",
+        "price": 190.17999267578125,
+        "market_cap": 246050536708.47284,
+        "beta": -0.16,
+        "pe": 23.624844,
+        "sector": "Consumer Defensive",
+        "industry": "Packaged Foods",
+        "dividend_yield": 0.52
+    },
+    "ADARSHPL.BO": {
+        "symbol": "ADARSHPL.BO",
+        "name": "ADARSH PLANT PROTECT LTD.",
+        "price": 29.90999984741211,
+        "market_cap": 296452963.4876251,
+        "beta": -0.193,
+        "pe": 0.0,
+        "sector": "Consumer Cyclical",
+        "industry": "Packaging & Containers",
         "dividend_yield": 0.0
     },
     "ADCINDIA.BO": {
@@ -439,16 +450,16 @@
         "industry": "Communication Equipment",
         "dividend_yield": 1.15
     },
-    "AWL.NS": {
-        "symbol": "AWL.NS",
-        "name": "Adani Wilmar Ltd",
-        "price": 190.17999267578125,
-        "market_cap": 246050536708.47284,
-        "beta": -0.16,
-        "pe": 23.624844,
-        "sector": "Consumer Defensive",
-        "industry": "Packaged Foods",
-        "dividend_yield": 0.52
+    "ADCOUNTY.BO": {
+        "symbol": "ADCOUNTY.BO",
+        "name": "Adcounty Media India Ltd",
+        "price": 102.6500015258789,
+        "market_cap": 2309748214.3341064,
+        "beta": 1.0,
+        "pe": 10.637306,
+        "sector": "Communication Services",
+        "industry": "Advertising Agencies",
+        "dividend_yield": 0.0
     },
     "LAWSIKHO.NS": {
         "symbol": "LAWSIKHO.NS",
@@ -459,17 +470,6 @@
         "pe": 44.78487,
         "sector": "Unknown",
         "industry": "Unknown",
-        "dividend_yield": 0.0
-    },
-    "ADESHWAR.BO": {
-        "symbol": "ADESHWAR.BO",
-        "name": "ADESHWAR MEDITEX LTD",
-        "price": 18.41,
-        "market_cap": 265682552.66,
-        "beta": 1.0,
-        "pe": 20.920454,
-        "sector": "Healthcare",
-        "industry": "Medical Instruments & Supplies",
         "dividend_yield": 0.0
     },
     "ASRL.BO": {
@@ -483,15 +483,15 @@
         "industry": "Household & Personal Products",
         "dividend_yield": 0.0
     },
-    "ABFRL.NS": {
-        "symbol": "ABFRL.NS",
-        "name": "ADITYA BIRLA FASHION AND RETAIL LTD",
-        "price": 60.540000915527344,
-        "market_cap": 73640109202.47615,
-        "beta": -0.004,
-        "pe": 0.0,
-        "sector": "Consumer Cyclical",
-        "industry": "Apparel Manufacturing",
+    "ADESHWAR.BO": {
+        "symbol": "ADESHWAR.BO",
+        "name": "ADESHWAR MEDITEX LTD",
+        "price": 18.41,
+        "market_cap": 265682552.66,
+        "beta": 1.0,
+        "pe": 20.920454,
+        "sector": "Healthcare",
+        "industry": "Medical Instruments & Supplies",
         "dividend_yield": 0.0
     },
     "ADFFOODS.NS": {
@@ -505,26 +505,26 @@
         "industry": "Packaged Foods",
         "dividend_yield": 0.44
     },
-    "ADARSHPL.BO": {
-        "symbol": "ADARSHPL.BO",
-        "name": "ADARSH PLANT PROTECT LTD.",
-        "price": 29.90999984741211,
-        "market_cap": 296452963.4876251,
-        "beta": -0.193,
-        "pe": 0.0,
+    "ADINATH.BO": {
+        "symbol": "ADINATH.BO",
+        "name": "ADINATH TEXTILES LTD.",
+        "price": 21.25,
+        "market_cap": 144804937.5,
+        "beta": -0.294,
+        "pe": 265.625,
         "sector": "Consumer Cyclical",
-        "industry": "Packaging & Containers",
+        "industry": "Textile Manufacturing",
         "dividend_yield": 0.0
     },
-    "ACML.BO": {
-        "symbol": "ACML.BO",
-        "name": "ADITYA CONSUMER MARKETING LTD",
-        "price": 33.0,
-        "market_cap": 482918271.0,
-        "beta": 0.533,
+    "ABFRL.NS": {
+        "symbol": "ABFRL.NS",
+        "name": "ADITYA BIRLA FASHION AND RETAIL LTD",
+        "price": 60.540000915527344,
+        "market_cap": 73640109202.47615,
+        "beta": -0.004,
         "pe": 0.0,
         "sector": "Consumer Cyclical",
-        "industry": "Department Stores",
+        "industry": "Apparel Manufacturing",
         "dividend_yield": 0.0
     },
     "ABLBL.NS": {
@@ -549,15 +549,26 @@
         "industry": "Real Estate Services",
         "dividend_yield": 0.16
     },
-    "ADINATH.BO": {
-        "symbol": "ADINATH.BO",
-        "name": "ADINATH TEXTILES LTD.",
-        "price": 21.25,
-        "market_cap": 144804937.5,
-        "beta": -0.294,
-        "pe": 265.625,
+    "ACML.BO": {
+        "symbol": "ACML.BO",
+        "name": "ADITYA CONSUMER MARKETING LTD",
+        "price": 33.0,
+        "market_cap": 482918271.0,
+        "beta": 0.533,
+        "pe": 0.0,
         "sector": "Consumer Cyclical",
-        "industry": "Textile Manufacturing",
+        "industry": "Department Stores",
+        "dividend_yield": 0.0
+    },
+    "CPPLUS.NS": {
+        "symbol": "CPPLUS.NS",
+        "name": "Aditya Infotech Ltd",
+        "price": 3369.199951171875,
+        "market_cap": 397061848307.5818,
+        "beta": 1.0,
+        "pe": 104.82887,
+        "sector": "Industrials",
+        "industry": "Building Products & Equipment",
         "dividend_yield": 0.0
     },
     "AVL.BO": {
@@ -571,28 +582,6 @@
         "industry": "Specialty Retail",
         "dividend_yield": 0.22
     },
-    "CPPLUS.NS": {
-        "symbol": "CPPLUS.NS",
-        "name": "Aditya Infotech Ltd",
-        "price": 3369.199951171875,
-        "market_cap": 397061848307.5818,
-        "beta": 1.0,
-        "pe": 104.82887,
-        "sector": "Industrials",
-        "industry": "Building Products & Equipment",
-        "dividend_yield": 0.0
-    },
-    "ADMACH.BO": {
-        "symbol": "ADMACH.BO",
-        "name": "Admach Systems Ltd",
-        "price": 290.54998779296875,
-        "market_cap": 1967836957.3242188,
-        "beta": 1.0,
-        "pe": 15.799347,
-        "sector": "Industrials",
-        "industry": "Specialty Industrial Machinery",
-        "dividend_yield": 0.0
-    },
     "ADJIA.BO": {
         "symbol": "ADJIA.BO",
         "name": "ADJIA TECH",
@@ -604,26 +593,15 @@
         "industry": "Information Technology Services",
         "dividend_yield": 0.0
     },
-    "ADVENZYMES.NS": {
-        "symbol": "ADVENZYMES.NS",
-        "name": "ADVANCED ENZYME TECHNOLOGIES LTD",
-        "price": 380.25,
-        "market_cap": 42578931037.5,
+    "ADMACH.BO": {
+        "symbol": "ADMACH.BO",
+        "name": "Admach Systems Ltd",
+        "price": 290.54998779296875,
+        "market_cap": 1967836957.3242188,
         "beta": 1.0,
-        "pe": 25.249002,
-        "sector": "Basic Materials",
-        "industry": "Specialty Chemicals",
-        "dividend_yield": 1.33
-    },
-    "AEGISVOPAK.NS": {
-        "symbol": "AEGISVOPAK.NS",
-        "name": "Aegis Vopak Terminals Ltd",
-        "price": 193.0,
-        "market_cap": 213842357377.0,
-        "beta": 1.0,
-        "pe": 67.7193,
-        "sector": "Energy",
-        "industry": "Oil & Gas Equipment & Services",
+        "pe": 15.799347,
+        "sector": "Industrials",
+        "industry": "Specialty Industrial Machinery",
         "dividend_yield": 0.0
     },
     "ADVAIT.BO": {
@@ -648,6 +626,17 @@
         "industry": "Agricultural Inputs",
         "dividend_yield": 0.0
     },
+    "ADVENZYMES.NS": {
+        "symbol": "ADVENZYMES.NS",
+        "name": "ADVANCED ENZYME TECHNOLOGIES LTD",
+        "price": 380.25,
+        "market_cap": 42578931037.5,
+        "beta": 1.0,
+        "pe": 25.249002,
+        "sector": "Basic Materials",
+        "industry": "Specialty Chemicals",
+        "dividend_yield": 1.33
+    },
     "AEGISLOG.NS": {
         "symbol": "AEGISLOG.NS",
         "name": "AEGIS LOGISTICS LTD.",
@@ -658,6 +647,28 @@
         "sector": "Energy",
         "industry": "Oil & Gas Refining & Marketing",
         "dividend_yield": 1.04
+    },
+    "AEGISVOPAK.NS": {
+        "symbol": "AEGISVOPAK.NS",
+        "name": "Aegis Vopak Terminals Ltd",
+        "price": 193.0,
+        "market_cap": 213842357377.0,
+        "beta": 1.0,
+        "pe": 67.7193,
+        "sector": "Energy",
+        "industry": "Oil & Gas Equipment & Services",
+        "dividend_yield": 0.0
+    },
+    "AEQUS.NS": {
+        "symbol": "AEQUS.NS",
+        "name": "Aequs Ltd",
+        "price": 183.4600067138672,
+        "market_cap": 120139544003.70369,
+        "beta": 1.0,
+        "pe": 0.0,
+        "sector": "Industrials",
+        "industry": "Aerospace & Defense",
+        "dividend_yield": 0.0
     },
     "AEROFLEX.NS": {
         "symbol": "AEROFLEX.NS",
@@ -681,6 +692,17 @@
         "industry": "Specialty Chemicals",
         "dividend_yield": 0.0
     },
+    "AFCOM.BO": {
+        "symbol": "AFCOM.BO",
+        "name": "Afcom Holdings Ltd",
+        "price": 923.9500122070312,
+        "market_cap": 26516086603.524902,
+        "beta": 1.0,
+        "pe": 56.133053,
+        "sector": "Industrials",
+        "industry": "Airlines",
+        "dividend_yield": 0.0
+    },
     "AFCONS.NS": {
         "symbol": "AFCONS.NS",
         "name": "Afcons Infrastructure Limited",
@@ -692,26 +714,26 @@
         "industry": "Engineering & Construction",
         "dividend_yield": 0.76
     },
-    "AEQUS.NS": {
-        "symbol": "AEQUS.NS",
-        "name": "Aequs Ltd",
-        "price": 183.4600067138672,
-        "market_cap": 120139544003.70369,
-        "beta": 1.0,
-        "pe": 0.0,
-        "sector": "Industrials",
-        "industry": "Aerospace & Defense",
+    "AFFLE.NS": {
+        "symbol": "AFFLE.NS",
+        "name": "AFFLE (INDIA) LTD",
+        "price": 1469.5999755859375,
+        "market_cap": 206685462005.59094,
+        "beta": 0.152,
+        "pe": 45.38604,
+        "sector": "Communication Services",
+        "industry": "Advertising Agencies",
         "dividend_yield": 0.0
     },
-    "AFCOM.BO": {
-        "symbol": "AFCOM.BO",
-        "name": "Afcom Holdings Ltd",
-        "price": 923.9500122070312,
-        "market_cap": 26516086603.524902,
-        "beta": 1.0,
-        "pe": 56.133053,
+    "AFFORDABLE.NS": {
+        "symbol": "AFFORDABLE.NS",
+        "name": "AFFORDABLE ROBOTIC & AUTOMATION LTD",
+        "price": 185.0,
+        "market_cap": 2192454425.0,
+        "beta": 0.3,
+        "pe": 46.48241,
         "sector": "Industrials",
-        "industry": "Airlines",
+        "industry": "Specialty Industrial Machinery",
         "dividend_yield": 0.0
     },
     "AGARWALFT.NS": {
@@ -725,16 +747,16 @@
         "industry": "Unknown",
         "dividend_yield": 0.0
     },
-    "AFFLE.NS": {
-        "symbol": "AFFLE.NS",
-        "name": "AFFLE (INDIA) LTD",
-        "price": 1469.5999755859375,
-        "market_cap": 206685462005.59094,
-        "beta": 0.152,
-        "pe": 45.38604,
-        "sector": "Communication Services",
-        "industry": "Advertising Agencies",
-        "dividend_yield": 0.0
+    "AGARIND.NS": {
+        "symbol": "AGARIND.NS",
+        "name": "AGARWAL INDUSTRIAL CORPORATION LTD.",
+        "price": 419.3999938964844,
+        "market_cap": 6273296615.304901,
+        "beta": 0.22,
+        "pe": 10.745581,
+        "sector": "Basic Materials",
+        "industry": "Specialty Chemicals",
+        "dividend_yield": 0.8
     },
     "AGIIL.NS": {
         "symbol": "AGIIL.NS",
@@ -758,17 +780,6 @@
         "industry": "Unknown",
         "dividend_yield": 0.0
     },
-    "AGARIND.NS": {
-        "symbol": "AGARIND.NS",
-        "name": "AGARWAL INDUSTRIAL CORPORATION LTD.",
-        "price": 419.3999938964844,
-        "market_cap": 6273296615.304901,
-        "beta": 0.22,
-        "pe": 10.745581,
-        "sector": "Basic Materials",
-        "industry": "Specialty Chemicals",
-        "dividend_yield": 0.8
-    },
     "AGROPHOS.NS": {
         "symbol": "AGROPHOS.NS",
         "name": "AGRO PHOS INDIA",
@@ -780,6 +791,28 @@
         "industry": "Agricultural Inputs",
         "dividend_yield": 3.02
     },
+    "AHLADA.NS": {
+        "symbol": "AHLADA.NS",
+        "name": "AHLADA ENGINEERS",
+        "price": 40.22999954223633,
+        "market_cap": 519811824.0852356,
+        "beta": 1.0,
+        "pe": 22.22652,
+        "sector": "Industrials",
+        "industry": "Building Products & Equipment",
+        "dividend_yield": 3.88
+    },
+    "AHLUCONT.NS": {
+        "symbol": "AHLUCONT.NS",
+        "name": "AHLUWALIA CONTRACTS (INDIA) LTD.",
+        "price": 776.0499877929688,
+        "market_cap": 51985695120.28076,
+        "beta": 0.658,
+        "pe": 19.562643,
+        "sector": "Industrials",
+        "industry": "Engineering & Construction",
+        "dividend_yield": 0.08
+    },
     "AHMDSTE.BO": {
         "symbol": "AHMDSTE.BO",
         "name": "AHMEDABAD STEELCRAFT LTD.",
@@ -789,28 +822,6 @@
         "pe": 13.448708,
         "sector": "Basic Materials",
         "industry": "Steel",
-        "dividend_yield": 0.0
-    },
-    "AIRAN.NS": {
-        "symbol": "AIRAN.NS",
-        "name": "AIRAN",
-        "price": 17.18000030517578,
-        "market_cap": 2147843638.153076,
-        "beta": 0.653,
-        "pe": 25.64179,
-        "sector": "Technology",
-        "industry": "Information Technology Services",
-        "dividend_yield": 0.0
-    },
-    "AFFORDABLE.NS": {
-        "symbol": "AFFORDABLE.NS",
-        "name": "AFFORDABLE ROBOTIC & AUTOMATION LTD",
-        "price": 185.0,
-        "market_cap": 2192454425.0,
-        "beta": 0.3,
-        "pe": 46.48241,
-        "sector": "Industrials",
-        "industry": "Specialty Industrial Machinery",
         "dividend_yield": 0.0
     },
     "AIAENG.NS": {
@@ -824,16 +835,16 @@
         "industry": "Specialty Industrial Machinery",
         "dividend_yield": 0.35
     },
-    "AHLUCONT.NS": {
-        "symbol": "AHLUCONT.NS",
-        "name": "AHLUWALIA CONTRACTS (INDIA) LTD.",
-        "price": 776.0499877929688,
-        "market_cap": 51985695120.28076,
-        "beta": 0.658,
-        "pe": 19.562643,
+    "AIKPIPES.BO": {
+        "symbol": "AIKPIPES.BO",
+        "name": "Aik Pipes & Polymers Ltd",
+        "price": 24.100000381469727,
+        "market_cap": 153348302.42729187,
+        "beta": 1.0,
+        "pe": 0.0,
         "sector": "Industrials",
-        "industry": "Engineering & Construction",
-        "dividend_yield": 0.08
+        "industry": "Building Products & Equipment",
+        "dividend_yield": 0.0
     },
     "AIMCOPEST.BO": {
         "symbol": "AIMCOPEST.BO",
@@ -844,6 +855,28 @@
         "pe": 0.0,
         "sector": "Basic Materials",
         "industry": "Agricultural Inputs",
+        "dividend_yield": 0.0
+    },
+    "AIMTRON.NS": {
+        "symbol": "AIMTRON.NS",
+        "name": "AIMTRON ELECTRONICS LIMITED",
+        "price": 545.3,
+        "market_cap": 11131658772.5,
+        "beta": 1.0,
+        "pe": 25.059742,
+        "sector": "Unknown",
+        "industry": "Unknown",
+        "dividend_yield": 0.0
+    },
+    "AIRAN.NS": {
+        "symbol": "AIRAN.NS",
+        "name": "AIRAN",
+        "price": 17.18000030517578,
+        "market_cap": 2147843638.153076,
+        "beta": 0.653,
+        "pe": 25.64179,
+        "sector": "Technology",
+        "industry": "Information Technology Services",
         "dividend_yield": 0.0
     },
     "AIRFLOA.BO": {
@@ -857,39 +890,6 @@
         "industry": "Railroads",
         "dividend_yield": 0.0
     },
-    "AIKPIPES.BO": {
-        "symbol": "AIKPIPES.BO",
-        "name": "Aik Pipes & Polymers Ltd",
-        "price": 24.100000381469727,
-        "market_cap": 153348302.42729187,
-        "beta": 1.0,
-        "pe": 0.0,
-        "sector": "Industrials",
-        "industry": "Building Products & Equipment",
-        "dividend_yield": 0.0
-    },
-    "AHLADA.NS": {
-        "symbol": "AHLADA.NS",
-        "name": "AHLADA ENGINEERS",
-        "price": 40.22999954223633,
-        "market_cap": 519811824.0852356,
-        "beta": 1.0,
-        "pe": 22.22652,
-        "sector": "Industrials",
-        "industry": "Building Products & Equipment",
-        "dividend_yield": 3.88
-    },
-    "AIMTRON.NS": {
-        "symbol": "AIMTRON.NS",
-        "name": "AIMTRON ELECTRONICS LIMITED",
-        "price": 545.3,
-        "market_cap": 11131658772.5,
-        "beta": 1.0,
-        "pe": 25.059742,
-        "sector": "Unknown",
-        "industry": "Unknown",
-        "dividend_yield": 0.0
-    },
     "AJANTPHARM.NS": {
         "symbol": "AJANTPHARM.NS",
         "name": "AJANTA PHARMA LTD.",
@@ -901,13 +901,13 @@
         "industry": "Drug Manufacturers - Specialty & Generic",
         "dividend_yield": 1.92
     },
-    "AJOONI.NS": {
-        "symbol": "AJOONI.NS",
-        "name": "AJOONI BIOTECH",
-        "price": 4.010000228881836,
-        "market_cap": 690696867.4034309,
-        "beta": 0.445,
-        "pe": 20.050001,
+    "AJANTSOY.BO": {
+        "symbol": "AJANTSOY.BO",
+        "name": "AJANTA SOYA LTD.",
+        "price": 21.540000915527344,
+        "market_cap": 1733603678.284378,
+        "beta": 0.157,
+        "pe": 11.900554,
         "sector": "Consumer Defensive",
         "industry": "Packaged Foods",
         "dividend_yield": 0.0
@@ -923,17 +923,6 @@
         "industry": "Farm & Heavy Construction Machinery",
         "dividend_yield": 0.0
     },
-    "AJANTSOY.BO": {
-        "symbol": "AJANTSOY.BO",
-        "name": "AJANTA SOYA LTD.",
-        "price": 21.540000915527344,
-        "market_cap": 1733603678.284378,
-        "beta": 0.157,
-        "pe": 11.900554,
-        "sector": "Consumer Defensive",
-        "industry": "Packaged Foods",
-        "dividend_yield": 0.0
-    },
     "AJMERA.NS": {
         "symbol": "AJMERA.NS",
         "name": "AJMERA REALTY & INFRA INDIA LTD.",
@@ -944,6 +933,28 @@
         "sector": "Real Estate",
         "industry": "Real Estate - Development",
         "dividend_yield": 0.78
+    },
+    "AJOONI.NS": {
+        "symbol": "AJOONI.NS",
+        "name": "AJOONI BIOTECH",
+        "price": 4.010000228881836,
+        "market_cap": 690696867.4034309,
+        "beta": 0.445,
+        "pe": 20.050001,
+        "sector": "Consumer Defensive",
+        "industry": "Packaged Foods",
+        "dividend_yield": 0.0
+    },
+    "AKG.NS": {
+        "symbol": "AKG.NS",
+        "name": "AKG EXIM",
+        "price": 11.100000381469727,
+        "market_cap": 352720005.72180176,
+        "beta": 0.53,
+        "pe": 58.421055,
+        "sector": "Industrials",
+        "industry": "Industrial Distribution",
+        "dividend_yield": 0.0
     },
     "AKI.NS": {
         "symbol": "AKI.NS",
@@ -978,6 +989,28 @@
         "industry": "Drug Manufacturers - Specialty & Generic",
         "dividend_yield": 0.19
     },
+    "AKZOINDIA.NS": {
+        "symbol": "AKZOINDIA.NS",
+        "name": "AKZO NOBEL INDIA LIMITED",
+        "price": 2986.8,
+        "market_cap": 136019809855.20001,
+        "beta": 0.091,
+        "pe": 6.954133,
+        "sector": "Basic Materials",
+        "industry": "Specialty Chemicals",
+        "dividend_yield": 0.0348
+    },
+    "ALBERTDAVD.NS": {
+        "symbol": "ALBERTDAVD.NS",
+        "name": "ALBERT DAVID LTD.",
+        "price": 708.5999755859375,
+        "market_cap": 4044094853.86499,
+        "beta": 0.272,
+        "pe": 0.0,
+        "sector": "Healthcare",
+        "industry": "Drug Manufacturers - Specialty & Generic",
+        "dividend_yield": 0.7
+    },
     "ALCHCORP.BO": {
         "symbol": "ALCHCORP.BO",
         "name": "Alchemist Corporation Ltd",
@@ -987,6 +1020,39 @@
         "pe": 0.0,
         "sector": "Industrials",
         "industry": "Conglomerates",
+        "dividend_yield": 0.0
+    },
+    "ALEMBICLTD.NS": {
+        "symbol": "ALEMBICLTD.NS",
+        "name": "ALEMBIC LTD.",
+        "price": 86.0,
+        "market_cap": 22083237208.0,
+        "beta": 0.705,
+        "pe": 6.957929,
+        "sector": "Real Estate",
+        "industry": "Real Estate - Development",
+        "dividend_yield": 2.75
+    },
+    "APLLTD.NS": {
+        "symbol": "APLLTD.NS",
+        "name": "ALEMBIC PHARMACEUTICALS LTD.",
+        "price": 723.5499877929688,
+        "market_cap": 142223245970.7478,
+        "beta": 0.413,
+        "pe": 21.082458,
+        "sector": "Healthcare",
+        "industry": "Drug Manufacturers - Specialty & Generic",
+        "dividend_yield": 1.52
+    },
+    "ALEXANDER.BO": {
+        "symbol": "ALEXANDER.BO",
+        "name": "Alexander Stamps And Coin Ltd",
+        "price": 7.75,
+        "market_cap": 72168000.0,
+        "beta": -0.131,
+        "pe": 0.0,
+        "sector": "Consumer Cyclical",
+        "industry": "Specialty Retail",
         "dividend_yield": 0.0
     },
     "ALFATRAN.BO": {
@@ -1000,49 +1066,16 @@
         "industry": "Specialty Industrial Machinery",
         "dividend_yield": 0.0
     },
-    "AKZOINDIA.NS": {
-        "symbol": "AKZOINDIA.NS",
-        "name": "AKZO NOBEL INDIA LIMITED",
-        "price": 2986.8,
-        "market_cap": 136019809855.20001,
-        "beta": 0.091,
-        "pe": 6.954133,
-        "sector": "Basic Materials",
-        "industry": "Specialty Chemicals",
-        "dividend_yield": 0.0348
-    },
-    "ALEMBICLTD.NS": {
-        "symbol": "ALEMBICLTD.NS",
-        "name": "ALEMBIC LTD.",
-        "price": 86.0,
-        "market_cap": 22083237208.0,
-        "beta": 0.705,
-        "pe": 6.957929,
-        "sector": "Real Estate",
-        "industry": "Real Estate - Development",
-        "dividend_yield": 2.75
-    },
-    "ALBERTDAVD.NS": {
-        "symbol": "ALBERTDAVD.NS",
-        "name": "ALBERT DAVID LTD.",
-        "price": 708.5999755859375,
-        "market_cap": 4044094853.86499,
-        "beta": 0.272,
-        "pe": 0.0,
-        "sector": "Healthcare",
-        "industry": "Drug Manufacturers - Specialty & Generic",
-        "dividend_yield": 0.7
-    },
-    "AKG.NS": {
-        "symbol": "AKG.NS",
-        "name": "AKG EXIM",
-        "price": 11.100000381469727,
-        "market_cap": 352720005.72180176,
-        "beta": 0.53,
-        "pe": 58.421055,
+    "ALICON.NS": {
+        "symbol": "ALICON.NS",
+        "name": "ALICON CASTALLOY LIMITED",
+        "price": 659.1500244140625,
+        "market_cap": 10768428484.848633,
+        "beta": 0.437,
+        "pe": 31.328423,
         "sector": "Industrials",
-        "industry": "Industrial Distribution",
-        "dividend_yield": 0.0
+        "industry": "Metal Fabrication",
+        "dividend_yield": 0.75
     },
     "ALIVUS.NS": {
         "symbol": "ALIVUS.NS",
@@ -1055,39 +1088,6 @@
         "industry": "Drug Manufacturers - Specialty & Generic",
         "dividend_yield": 0.48
     },
-    "ALEXANDER.BO": {
-        "symbol": "ALEXANDER.BO",
-        "name": "Alexander Stamps And Coin Ltd",
-        "price": 7.75,
-        "market_cap": 72168000.0,
-        "beta": -0.131,
-        "pe": 0.0,
-        "sector": "Consumer Cyclical",
-        "industry": "Specialty Retail",
-        "dividend_yield": 0.0
-    },
-    "APLLTD.NS": {
-        "symbol": "APLLTD.NS",
-        "name": "ALEMBIC PHARMACEUTICALS LTD.",
-        "price": 723.5499877929688,
-        "market_cap": 142223245970.7478,
-        "beta": 0.413,
-        "pe": 21.082458,
-        "sector": "Healthcare",
-        "industry": "Drug Manufacturers - Specialty & Generic",
-        "dividend_yield": 1.52
-    },
-    "ALLETEC.NS": {
-        "symbol": "ALLETEC.NS",
-        "name": "All E Technologies Ltd",
-        "price": 344.25,
-        "market_cap": 6951845088.0,
-        "beta": 1.0,
-        "pe": 23.181818,
-        "sector": "Unknown",
-        "industry": "Unknown",
-        "dividend_yield": 0.0
-    },
     "ALKALI.NS": {
         "symbol": "ALKALI.NS",
         "name": "ALKALI METALS LTD.",
@@ -1098,28 +1098,6 @@
         "sector": "Basic Materials",
         "industry": "Specialty Chemicals",
         "dividend_yield": 1.02
-    },
-    "ALICON.NS": {
-        "symbol": "ALICON.NS",
-        "name": "ALICON CASTALLOY LIMITED",
-        "price": 659.1500244140625,
-        "market_cap": 10768428484.848633,
-        "beta": 0.437,
-        "pe": 31.328423,
-        "sector": "Industrials",
-        "industry": "Metal Fabrication",
-        "dividend_yield": 0.75
-    },
-    "ALKOSIGN.BO": {
-        "symbol": "ALKOSIGN.BO",
-        "name": "Alkosign Ltd",
-        "price": 65.4000015258789,
-        "market_cap": 705829320.2680435,
-        "beta": 0.131,
-        "pe": 74.318184,
-        "sector": "Industrials",
-        "industry": "Business Equipment & Supplies",
-        "dividend_yield": 0.0
     },
     "ALKEM.NS": {
         "symbol": "ALKEM.NS",
@@ -1132,6 +1110,17 @@
         "industry": "Drug Manufacturers - Specialty & Generic",
         "dividend_yield": 1.01
     },
+    "ALKOSIGN.BO": {
+        "symbol": "ALKOSIGN.BO",
+        "name": "Alkosign Ltd",
+        "price": 65.4000015258789,
+        "market_cap": 705829320.2680435,
+        "beta": 0.131,
+        "pe": 74.318184,
+        "sector": "Industrials",
+        "industry": "Business Equipment & Supplies",
+        "dividend_yield": 0.0
+    },
     "ALKYLAMINE.NS": {
         "symbol": "ALKYLAMINE.NS",
         "name": "ALKYL AMINES CHEMICALS LTD.",
@@ -1143,6 +1132,17 @@
         "industry": "Specialty Chemicals",
         "dividend_yield": 0.76
     },
+    "ALLETEC.NS": {
+        "symbol": "ALLETEC.NS",
+        "name": "All E Technologies Ltd",
+        "price": 344.25,
+        "market_cap": 6951845088.0,
+        "beta": 1.0,
+        "pe": 23.181818,
+        "sector": "Unknown",
+        "industry": "Unknown",
+        "dividend_yield": 0.0
+    },
     "ALLTIME.NS": {
         "symbol": "ALLTIME.NS",
         "name": "All Time Plastics Ltd",
@@ -1152,6 +1152,17 @@
         "pe": 37.82211,
         "sector": "Consumer Defensive",
         "industry": "Household & Personal Products",
+        "dividend_yield": 0.0
+    },
+    "ALLCARGO.NS": {
+        "symbol": "ALLCARGO.NS",
+        "name": "ALLCARGO LOGISTICS LTD.",
+        "price": 8.899999618530273,
+        "market_cap": 13330227802.742857,
+        "beta": 0.573,
+        "pe": 222.5,
+        "sector": "Industrials",
+        "industry": "Integrated Freight & Logistics",
         "dividend_yield": 0.0
     },
     "ATL.NS": {
@@ -1176,16 +1187,16 @@
         "industry": "Specialty Business Services",
         "dividend_yield": 7.23
     },
-    "ALPEXSOLAR.NS": {
-        "symbol": "ALPEXSOLAR.NS",
-        "name": "Alpex Solar Ltd",
-        "price": 838.95,
-        "market_cap": 20531958930.0,
-        "beta": 1.0,
-        "pe": 10.416563,
-        "sector": "Unknown",
-        "industry": "Unknown",
-        "dividend_yield": 0.0
+    "ADSL.NS": {
+        "symbol": "ADSL.NS",
+        "name": "ALLIED DIGITAL SERVICES LTD.",
+        "price": 121.62999725341797,
+        "market_cap": 6880429905.269897,
+        "beta": 0.678,
+        "pe": 19.491987,
+        "sector": "Technology",
+        "industry": "Information Technology Services",
+        "dividend_yield": 2.43
     },
     "ALPA.NS": {
         "symbol": "ALPA.NS",
@@ -1198,26 +1209,15 @@
         "industry": "Drug Manufacturers - Specialty & Generic",
         "dividend_yield": 0.0
     },
-    "ADSL.NS": {
-        "symbol": "ADSL.NS",
-        "name": "ALLIED DIGITAL SERVICES LTD.",
-        "price": 121.62999725341797,
-        "market_cap": 6880429905.269897,
-        "beta": 0.678,
-        "pe": 19.491987,
-        "sector": "Technology",
-        "industry": "Information Technology Services",
-        "dividend_yield": 2.43
-    },
-    "ALLCARGO.NS": {
-        "symbol": "ALLCARGO.NS",
-        "name": "ALLCARGO LOGISTICS LTD.",
-        "price": 8.899999618530273,
-        "market_cap": 13330227802.742857,
-        "beta": 0.573,
-        "pe": 222.5,
-        "sector": "Industrials",
-        "industry": "Integrated Freight & Logistics",
+    "ALPEXSOLAR.NS": {
+        "symbol": "ALPEXSOLAR.NS",
+        "name": "Alpex Solar Ltd",
+        "price": 838.95,
+        "market_cap": 20531958930.0,
+        "beta": 1.0,
+        "pe": 10.416563,
+        "sector": "Unknown",
+        "industry": "Unknown",
         "dividend_yield": 0.0
     },
     "ALPHAGEO.NS": {
@@ -1231,17 +1231,6 @@
         "industry": "Oil & Gas Equipment & Services",
         "dividend_yield": 3.78
     },
-    "ALPINEHOU.BO": {
-        "symbol": "ALPINEHOU.BO",
-        "name": "ALPINE HOUSING DEVELOPMENT CORPORATION LTD.",
-        "price": 97.04000091552734,
-        "market_cap": 1680917094.8186722,
-        "beta": 0.286,
-        "pe": 27.965418,
-        "sector": "Real Estate",
-        "industry": "Real Estate - Development",
-        "dividend_yield": 0.0
-    },
     "ALPHALOGIC.BO": {
         "symbol": "ALPHALOGIC.BO",
         "name": "ALPHALOGIC TECH.",
@@ -1253,6 +1242,28 @@
         "industry": "Information Technology Services",
         "dividend_yield": 0.0
     },
+    "ALPINEHOU.BO": {
+        "symbol": "ALPINEHOU.BO",
+        "name": "ALPINE HOUSING DEVELOPMENT CORPORATION LTD.",
+        "price": 97.04000091552734,
+        "market_cap": 1680917094.8186722,
+        "beta": 0.286,
+        "pe": 27.965418,
+        "sector": "Real Estate",
+        "industry": "Real Estate - Development",
+        "dividend_yield": 0.0
+    },
+    "ALUFLUOR.BO": {
+        "symbol": "ALUFLUOR.BO",
+        "name": "ALUFLUORIDE LTD.",
+        "price": 462.3999938964844,
+        "market_cap": 3616190829.067566,
+        "beta": 0.439,
+        "pe": 14.382581,
+        "sector": "Basic Materials",
+        "industry": "Chemicals",
+        "dividend_yield": 0.85
+    },
     "ALUWIND.NS": {
         "symbol": "ALUWIND.NS",
         "name": "Aluwind Architectural Ltd",
@@ -1262,17 +1273,6 @@
         "pe": 14.9761915,
         "sector": "Unknown",
         "industry": "Unknown",
-        "dividend_yield": 0.0
-    },
-    "AMBARPIL.BO": {
-        "symbol": "AMBARPIL.BO",
-        "name": "AMBAR PROTEIN INDUSTRIES LTD",
-        "price": 192.9499969482422,
-        "market_cap": 1109462482.4523926,
-        "beta": -1.611,
-        "pe": 0.0,
-        "sector": "Consumer Defensive",
-        "industry": "Packaged Foods",
         "dividend_yield": 0.0
     },
     "AMAGI.NS": {
@@ -1286,6 +1286,17 @@
         "industry": "Software - Application",
         "dividend_yield": 0.0
     },
+    "AMAL.BO": {
+        "symbol": "AMAL.BO",
+        "name": "AMAL LTD.",
+        "price": 536.9000244140625,
+        "market_cap": 6637513529.622803,
+        "beta": 0.152,
+        "pe": 29.630243,
+        "sector": "Basic Materials",
+        "industry": "Chemicals",
+        "dividend_yield": 0.28
+    },
     "ARE&M.NS": {
         "symbol": "ARE&M.NS",
         "name": "AMARA RAJA ENERGY & MOBILITY LIMITED",
@@ -1296,17 +1307,6 @@
         "sector": "Industrials",
         "industry": "Electrical Equipment & Parts",
         "dividend_yield": 1.22
-    },
-    "ALUFLUOR.BO": {
-        "symbol": "ALUFLUOR.BO",
-        "name": "ALUFLUORIDE LTD.",
-        "price": 462.3999938964844,
-        "market_cap": 3616190829.067566,
-        "beta": 0.439,
-        "pe": 14.382581,
-        "sector": "Basic Materials",
-        "industry": "Chemicals",
-        "dividend_yield": 0.85
     },
     "AEL.BO": {
         "symbol": "AEL.BO",
@@ -1330,6 +1330,17 @@
         "industry": "Drug Manufacturers - Specialty & Generic",
         "dividend_yield": 0.0
     },
+    "AMBARPIL.BO": {
+        "symbol": "AMBARPIL.BO",
+        "name": "AMBAR PROTEIN INDUSTRIES LTD",
+        "price": 192.9499969482422,
+        "market_cap": 1109462482.4523926,
+        "beta": -1.611,
+        "pe": 0.0,
+        "sector": "Consumer Defensive",
+        "industry": "Packaged Foods",
+        "dividend_yield": 0.0
+    },
     "AMBER.NS": {
         "symbol": "AMBER.NS",
         "name": "AMBER ENTERPRISES INDIA LTD",
@@ -1339,28 +1350,6 @@
         "pe": 149.86029,
         "sector": "Consumer Cyclical",
         "industry": "Furnishings, Fixtures & Appliances",
-        "dividend_yield": 0.0
-    },
-    "AMAL.BO": {
-        "symbol": "AMAL.BO",
-        "name": "AMAL LTD.",
-        "price": 536.9000244140625,
-        "market_cap": 6637513529.622803,
-        "beta": 0.152,
-        "pe": 29.630243,
-        "sector": "Basic Materials",
-        "industry": "Chemicals",
-        "dividend_yield": 0.28
-    },
-    "AMBOAGRI.BO": {
-        "symbol": "AMBOAGRI.BO",
-        "name": "Ambo Agritec Ltd",
-        "price": 14.220000267028809,
-        "market_cap": 279354180.44582367,
-        "beta": -0.267,
-        "pe": 24.947369,
-        "sector": "Consumer Defensive",
-        "industry": "Packaged Foods",
         "dividend_yield": 0.0
     },
     "AMBIKCO.NS": {
@@ -1374,81 +1363,15 @@
         "industry": "Textile Manufacturing",
         "dividend_yield": 2.18
     },
-    "AMIC.BO": {
-        "symbol": "AMIC.BO",
-        "name": "Amic Forging Ltd",
-        "price": 1736.449951171875,
-        "market_cap": 22570263596.085205,
-        "beta": -0.077,
-        "pe": 66.12528,
-        "sector": "Industrials",
-        "industry": "Metal Fabrication",
-        "dividend_yield": 0.0
-    },
-    "AMERISE.BO": {
-        "symbol": "AMERISE.BO",
-        "name": "Amerise Biosciences Ltd",
-        "price": 0.7400000095367432,
-        "market_cap": 4889106.063008308,
-        "beta": 0.233,
-        "pe": "Infinity",
-        "sector": "Financial Services",
-        "industry": "Shell Companies",
-        "dividend_yield": 0.0
-    },
-    "AMNPLST.NS": {
-        "symbol": "AMNPLST.NS",
-        "name": "AMINES & PLASTICIZERS LTD.",
-        "price": 203.39999389648438,
-        "market_cap": 11191067664.18457,
-        "beta": 1.0,
-        "pe": 30.63253,
-        "sector": "Basic Materials",
-        "industry": "Chemicals",
-        "dividend_yield": 0.25
-    },
-    "AMEYA.NS": {
-        "symbol": "AMEYA.NS",
-        "name": "AMEYA PRECISION ENGINEERS LIMITED",
-        "price": 121.15,
-        "market_cap": 908625000.0,
-        "beta": 1.0,
-        "pe": 17.135784,
-        "sector": "Unknown",
-        "industry": "Unknown",
-        "dividend_yield": 0.0
-    },
-    "AMJLAND.NS": {
-        "symbol": "AMJLAND.NS",
-        "name": "AMJ LAND HOLDINGS LTD",
-        "price": 36.84000015258789,
-        "market_cap": 1510440006.2561035,
-        "beta": 0.307,
-        "pe": 10.204987,
-        "sector": "Real Estate",
-        "industry": "Real Estate - Development",
-        "dividend_yield": 0.54
-    },
-    "AMIRCHAND.NS": {
-        "symbol": "AMIRCHAND.NS",
-        "name": "Amir Chand Jagdish Kumar (Exports) Limited",
-        "price": 123.08000183105469,
-        "market_cap": null,
-        "beta": 1.0,
-        "pe": 20.931973,
+    "AMBOAGRI.BO": {
+        "symbol": "AMBOAGRI.BO",
+        "name": "Ambo Agritec Ltd",
+        "price": 14.220000267028809,
+        "market_cap": 279354180.44582367,
+        "beta": -0.267,
+        "pe": 24.947369,
         "sector": "Consumer Defensive",
-        "industry": "Farm Products",
-        "dividend_yield": 0.0
-    },
-    "ARL.BO": {
-        "symbol": "ARL.BO",
-        "name": "ANAND RAYONS LTD",
-        "price": 45.58000183105469,
-        "market_cap": 978599175.232605,
-        "beta": 0.097,
-        "pe": 13.565477,
-        "sector": "Consumer Cyclical",
-        "industry": "Textile Manufacturing",
+        "industry": "Packaged Foods",
         "dividend_yield": 0.0
     },
     "AMEENJI.BO": {
@@ -1462,27 +1385,71 @@
         "industry": "Railroads",
         "dividend_yield": 0.0
     },
-    "AMRUTANJAN.NS": {
-        "symbol": "AMRUTANJAN.NS",
-        "name": "AMRUTANJAN HEALTH CARE LTD.",
-        "price": 546.5499877929688,
-        "market_cap": 15795338917.765808,
-        "beta": 0.412,
-        "pe": 27.313843,
-        "sector": "Healthcare",
-        "industry": "Drug Manufacturers - Specialty & Generic",
-        "dividend_yield": 1.01
+    "AMERISE.BO": {
+        "symbol": "AMERISE.BO",
+        "name": "Amerise Biosciences Ltd",
+        "price": 0.7400000095367432,
+        "market_cap": 4889106.063008308,
+        "beta": 0.233,
+        "pe": "Infinity",
+        "sector": "Financial Services",
+        "industry": "Shell Companies",
+        "dividend_yield": 0.0
     },
-    "ANANTRAJ.NS": {
-        "symbol": "ANANTRAJ.NS",
-        "name": "ANANT RAJ LIMITED",
-        "price": 548.0,
-        "market_cap": 197212557640.0,
-        "beta": 0.39,
-        "pe": 34.70551,
+    "AMEYA.NS": {
+        "symbol": "AMEYA.NS",
+        "name": "AMEYA PRECISION ENGINEERS LIMITED",
+        "price": 121.15,
+        "market_cap": 908625000.0,
+        "beta": 1.0,
+        "pe": 17.135784,
+        "sector": "Unknown",
+        "industry": "Unknown",
+        "dividend_yield": 0.0
+    },
+    "AMIC.BO": {
+        "symbol": "AMIC.BO",
+        "name": "Amic Forging Ltd",
+        "price": 1736.449951171875,
+        "market_cap": 22570263596.085205,
+        "beta": -0.077,
+        "pe": 66.12528,
+        "sector": "Industrials",
+        "industry": "Metal Fabrication",
+        "dividend_yield": 0.0
+    },
+    "AMNPLST.NS": {
+        "symbol": "AMNPLST.NS",
+        "name": "AMINES & PLASTICIZERS LTD.",
+        "price": 203.39999389648438,
+        "market_cap": 11191067664.18457,
+        "beta": 1.0,
+        "pe": 30.63253,
+        "sector": "Basic Materials",
+        "industry": "Chemicals",
+        "dividend_yield": 0.25
+    },
+    "AMIRCHAND.NS": {
+        "symbol": "AMIRCHAND.NS",
+        "name": "Amir Chand Jagdish Kumar (Exports) Limited",
+        "price": 123.08000183105469,
+        "market_cap": null,
+        "beta": 1.0,
+        "pe": 20.931973,
+        "sector": "Consumer Defensive",
+        "industry": "Farm Products",
+        "dividend_yield": 0.0
+    },
+    "AMJLAND.NS": {
+        "symbol": "AMJLAND.NS",
+        "name": "AMJ LAND HOLDINGS LTD",
+        "price": 36.84000015258789,
+        "market_cap": 1510440006.2561035,
+        "beta": 0.307,
+        "pe": 10.204987,
         "sector": "Real Estate",
         "industry": "Real Estate - Development",
-        "dividend_yield": 0.13
+        "dividend_yield": 0.54
     },
     "AMKAY.BO": {
         "symbol": "AMKAY.BO",
@@ -1495,6 +1462,17 @@
         "industry": "Medical Instruments & Supplies",
         "dividend_yield": 0.0
     },
+    "AMRUTANJAN.NS": {
+        "symbol": "AMRUTANJAN.NS",
+        "name": "AMRUTANJAN HEALTH CARE LTD.",
+        "price": 546.5499877929688,
+        "market_cap": 15795338917.765808,
+        "beta": 0.412,
+        "pe": 27.313843,
+        "sector": "Healthcare",
+        "industry": "Drug Manufacturers - Specialty & Generic",
+        "dividend_yield": 1.01
+    },
     "AMWILL.BO": {
         "symbol": "AMWILL.BO",
         "name": "Amwill Health Care Ltd",
@@ -1506,27 +1484,27 @@
         "industry": "Medical Distribution",
         "dividend_yield": 0.0
     },
-    "ANDHRAPET.BO": {
-        "symbol": "ANDHRAPET.BO",
-        "name": "ANDHRA PETROCHEMICALS LTD.",
-        "price": 40.27000045776367,
-        "market_cap": 3421806370.8969116,
-        "beta": -0.021,
-        "pe": 0.0,
-        "sector": "Basic Materials",
-        "industry": "Chemicals",
+    "ARL.BO": {
+        "symbol": "ARL.BO",
+        "name": "ANAND RAYONS LTD",
+        "price": 45.58000183105469,
+        "market_cap": 978599175.232605,
+        "beta": 0.097,
+        "pe": 13.565477,
+        "sector": "Consumer Cyclical",
+        "industry": "Textile Manufacturing",
         "dividend_yield": 0.0
     },
-    "AISL.NS": {
-        "symbol": "AISL.NS",
-        "name": "ANI INTEGRATED",
-        "price": 147.0,
-        "market_cap": 1521773400.0,
-        "beta": 1.0,
-        "pe": 21.212122,
-        "sector": "Unknown",
-        "industry": "Unknown",
-        "dividend_yield": 0.0
+    "ANANTRAJ.NS": {
+        "symbol": "ANANTRAJ.NS",
+        "name": "ANANT RAJ LIMITED",
+        "price": 548.0,
+        "market_cap": 197212557640.0,
+        "beta": 0.39,
+        "pe": 34.70551,
+        "sector": "Real Estate",
+        "industry": "Real Estate - Development",
+        "dividend_yield": 0.13
     },
     "ANDHRAPAP.NS": {
         "symbol": "ANDHRAPAP.NS",
@@ -1539,37 +1517,15 @@
         "industry": "Paper & Paper Products",
         "dividend_yield": 1.62
     },
-    "AHCL.NS": {
-        "symbol": "AHCL.NS",
-        "name": "Anlon Healthcare Ltd",
-        "price": 13.720000267028809,
-        "market_cap": 7292385941.929817,
-        "beta": 1.0,
-        "pe": 21.107693,
-        "sector": "Healthcare",
-        "industry": "Drug Manufacturers - Specialty & Generic",
-        "dividend_yield": 0.0
-    },
-    "ANIRIT.BO": {
-        "symbol": "ANIRIT.BO",
-        "name": "Anirit Ventures Ltd",
-        "price": 61.7400016784668,
-        "market_cap": 1111320030.2124023,
-        "beta": 0.803,
+    "ANDHRAPET.BO": {
+        "symbol": "ANDHRAPET.BO",
+        "name": "ANDHRA PETROCHEMICALS LTD.",
+        "price": 40.27000045776367,
+        "market_cap": 3421806370.8969116,
+        "beta": -0.021,
         "pe": 0.0,
-        "sector": "Real Estate",
-        "industry": "Real Estate Services",
-        "dividend_yield": 0.0
-    },
-    "ANLON.NS": {
-        "symbol": "ANLON.NS",
-        "name": "Anlon Technology Solutions Ltd",
-        "price": 506.0,
-        "market_cap": 3165232400.0,
-        "beta": 1.0,
-        "pe": 34.14305,
-        "sector": "Unknown",
-        "industry": "Unknown",
+        "sector": "Basic Materials",
+        "industry": "Chemicals",
         "dividend_yield": 0.0
     },
     "ANDHRSUGAR.NS": {
@@ -1583,17 +1539,6 @@
         "industry": "Chemicals",
         "dividend_yield": 1.0
     },
-    "ANIKINDS.NS": {
-        "symbol": "ANIKINDS.NS",
-        "name": "ANIK INDUSTRIES LTD.",
-        "price": 43.7400016784668,
-        "market_cap": 1213937524.2233047,
-        "beta": 1.0,
-        "pe": 71.70492,
-        "sector": "Consumer Defensive",
-        "industry": "Food Distribution",
-        "dividend_yield": 0.0
-    },
     "ANDREWYU.BO": {
         "symbol": "ANDREWYU.BO",
         "name": "ANDREW YULE & COMPANY LTD.",
@@ -1605,6 +1550,39 @@
         "industry": "Farm Products",
         "dividend_yield": 0.0
     },
+    "AISL.NS": {
+        "symbol": "AISL.NS",
+        "name": "ANI INTEGRATED",
+        "price": 147.0,
+        "market_cap": 1521773400.0,
+        "beta": 1.0,
+        "pe": 21.212122,
+        "sector": "Unknown",
+        "industry": "Unknown",
+        "dividend_yield": 0.0
+    },
+    "ANIKINDS.NS": {
+        "symbol": "ANIKINDS.NS",
+        "name": "ANIK INDUSTRIES LTD.",
+        "price": 43.7400016784668,
+        "market_cap": 1213937524.2233047,
+        "beta": 1.0,
+        "pe": 71.70492,
+        "sector": "Consumer Defensive",
+        "industry": "Food Distribution",
+        "dividend_yield": 0.0
+    },
+    "ANIRIT.BO": {
+        "symbol": "ANIRIT.BO",
+        "name": "Anirit Ventures Ltd",
+        "price": 61.7400016784668,
+        "market_cap": 1111320030.2124023,
+        "beta": 0.803,
+        "pe": 0.0,
+        "sector": "Real Estate",
+        "industry": "Real Estate Services",
+        "dividend_yield": 0.0
+    },
     "ANJANIFOODS.BO": {
         "symbol": "ANJANIFOODS.BO",
         "name": "ANJANI FOODS LTD",
@@ -1614,6 +1592,28 @@
         "pe": 137.5,
         "sector": "Consumer Defensive",
         "industry": "Grocery Stores",
+        "dividend_yield": 0.0
+    },
+    "AHCL.NS": {
+        "symbol": "AHCL.NS",
+        "name": "Anlon Healthcare Ltd",
+        "price": 13.720000267028809,
+        "market_cap": 7292385941.929817,
+        "beta": 1.0,
+        "pe": 21.107693,
+        "sector": "Healthcare",
+        "industry": "Drug Manufacturers - Specialty & Generic",
+        "dividend_yield": 0.0
+    },
+    "ANLON.NS": {
+        "symbol": "ANLON.NS",
+        "name": "Anlon Technology Solutions Ltd",
+        "price": 506.0,
+        "market_cap": 3165232400.0,
+        "beta": 1.0,
+        "pe": 34.14305,
+        "sector": "Unknown",
+        "industry": "Unknown",
         "dividend_yield": 0.0
     },
     "ANNAPURNA.NS": {
@@ -1649,17 +1649,6 @@
         "industry": "Waste Management",
         "dividend_yield": 0.0
     },
-    "ANURAS.NS": {
-        "symbol": "ANURAS.NS",
-        "name": "ANUPAM RASAYAN INDIA LTD",
-        "price": 1327.199951171875,
-        "market_cap": 151099471473.0005,
-        "beta": 0.169,
-        "pe": 86.35003,
-        "sector": "Basic Materials",
-        "industry": "Specialty Chemicals",
-        "dividend_yield": 0.11
-    },
     "ANUHPHR.BO": {
         "symbol": "ANUHPHR.BO",
         "name": "ANUH PHARMA LTD.",
@@ -1671,16 +1660,16 @@
         "industry": "Drug Manufacturers - Specialty & Generic",
         "dividend_yield": 1.99
     },
-    "APCOTEXIND.NS": {
-        "symbol": "APCOTEXIND.NS",
-        "name": "APCOTEX INDUSTRIES LTD.",
-        "price": 498.45001220703125,
-        "market_cap": 25842120944.873047,
-        "beta": 0.197,
-        "pe": 25.470108,
+    "ANURAS.NS": {
+        "symbol": "ANURAS.NS",
+        "name": "ANUPAM RASAYAN INDIA LTD",
+        "price": 1327.199951171875,
+        "market_cap": 151099471473.0005,
+        "beta": 0.169,
+        "pe": 86.35003,
         "sector": "Basic Materials",
         "industry": "Specialty Chemicals",
-        "dividend_yield": 1.62
+        "dividend_yield": 0.11
     },
     "APARINDS.NS": {
         "symbol": "APARINDS.NS",
@@ -1693,16 +1682,27 @@
         "industry": "Electrical Equipment & Parts",
         "dividend_yield": 0.38
     },
-    "ATIL.BO": {
-        "symbol": "ATIL.BO",
-        "name": "Apollo Techno Industries Ltd",
-        "price": 85.30000305175781,
-        "market_cap": 1167671741.7755127,
-        "beta": 1.0,
-        "pe": 8.470706,
-        "sector": "Industrials",
-        "industry": "Farm & Heavy Construction Machinery",
-        "dividend_yield": 0.0
+    "APCOTEXIND.NS": {
+        "symbol": "APCOTEXIND.NS",
+        "name": "APCOTEX INDUSTRIES LTD.",
+        "price": 498.45001220703125,
+        "market_cap": 25842120944.873047,
+        "beta": 0.197,
+        "pe": 25.470108,
+        "sector": "Basic Materials",
+        "industry": "Specialty Chemicals",
+        "dividend_yield": 1.62
+    },
+    "APEX.NS": {
+        "symbol": "APEX.NS",
+        "name": "APEX FROZEN FOODS LTD",
+        "price": 432.29998779296875,
+        "market_cap": 13509374618.530273,
+        "beta": -0.097,
+        "pe": 34.750805,
+        "sector": "Consumer Defensive",
+        "industry": "Farm Products",
+        "dividend_yield": 0.52
     },
     "APIS.BO": {
         "symbol": "APIS.BO",
@@ -1713,28 +1713,6 @@
         "pe": 0.0,
         "sector": "Consumer Defensive",
         "industry": "Packaged Foods",
-        "dividend_yield": 0.0
-    },
-    "APOLLO.NS": {
-        "symbol": "APOLLO.NS",
-        "name": "APOLLO MICRO SYSTEMS LTD",
-        "price": 407.54998779296875,
-        "market_cap": 145619623935.36743,
-        "beta": 1.174,
-        "pe": 129.38095,
-        "sector": "Industrials",
-        "industry": "Aerospace & Defense",
-        "dividend_yield": 0.06
-    },
-    "APLAB.BO": {
-        "symbol": "APLAB.BO",
-        "name": "APLAB LTD.",
-        "price": 108.9000015258789,
-        "market_cap": 2737746038.3605957,
-        "beta": 0.851,
-        "pe": 64.43787,
-        "sector": "Industrials",
-        "industry": "Electrical Equipment & Parts",
         "dividend_yield": 0.0
     },
     "APLAPOLLO.NS": {
@@ -1748,16 +1726,16 @@
         "industry": "Steel",
         "dividend_yield": 0.33
     },
-    "APOLLOHOSP.NS": {
-        "symbol": "APOLLOHOSP.NS",
-        "name": "APOLLO HOSPITALS ENTERPRISE LTD.",
-        "price": 8290.5,
-        "market_cap": 1192046698858.5,
-        "beta": 0.157,
-        "pe": 61.3702,
-        "sector": "Healthcare",
-        "industry": "Medical Care Facilities",
-        "dividend_yield": 0.25
+    "APLAB.BO": {
+        "symbol": "APLAB.BO",
+        "name": "APLAB LTD.",
+        "price": 108.9000015258789,
+        "market_cap": 2737746038.3605957,
+        "beta": 0.851,
+        "pe": 64.43787,
+        "sector": "Industrials",
+        "industry": "Electrical Equipment & Parts",
+        "dividend_yield": 0.0
     },
     "APMIN.BO": {
         "symbol": "APMIN.BO",
@@ -1770,6 +1748,28 @@
         "industry": "Textile Manufacturing",
         "dividend_yield": 0.0
     },
+    "APOLLOHOSP.NS": {
+        "symbol": "APOLLOHOSP.NS",
+        "name": "APOLLO HOSPITALS ENTERPRISE LTD.",
+        "price": 8290.5,
+        "market_cap": 1192046698858.5,
+        "beta": 0.157,
+        "pe": 61.3702,
+        "sector": "Healthcare",
+        "industry": "Medical Care Facilities",
+        "dividend_yield": 0.25
+    },
+    "APOLLO.NS": {
+        "symbol": "APOLLO.NS",
+        "name": "APOLLO MICRO SYSTEMS LTD",
+        "price": 407.54998779296875,
+        "market_cap": 145619623935.36743,
+        "beta": 1.174,
+        "pe": 129.38095,
+        "sector": "Industrials",
+        "industry": "Aerospace & Defense",
+        "dividend_yield": 0.06
+    },
     "APOLLOPIPE.NS": {
         "symbol": "APOLLOPIPE.NS",
         "name": "APOLLO PIPES LTD",
@@ -1781,15 +1781,26 @@
         "industry": "Building Products & Equipment",
         "dividend_yield": 0.15
     },
-    "APPL.BO": {
-        "symbol": "APPL.BO",
-        "name": "Aptus Pharma",
-        "price": 214.4499969482422,
-        "market_cap": 3677817447.6623535,
+    "APOLSINHOT.NS": {
+        "symbol": "APOLSINHOT.NS",
+        "name": "APOLLO SINDOORI",
+        "price": 1298.300048828125,
+        "market_cap": 3376099446.9726562,
+        "beta": -0.242,
+        "pe": 33.97802,
+        "sector": "Industrials",
+        "industry": "Specialty Business Services",
+        "dividend_yield": 0.35
+    },
+    "ATIL.BO": {
+        "symbol": "ATIL.BO",
+        "name": "Apollo Techno Industries Ltd",
+        "price": 85.30000305175781,
+        "market_cap": 1167671741.7755127,
         "beta": 1.0,
-        "pe": 69.17742,
-        "sector": "Healthcare",
-        "industry": "Medical Distribution",
+        "pe": 8.470706,
+        "sector": "Industrials",
+        "industry": "Farm & Heavy Construction Machinery",
         "dividend_yield": 0.0
     },
     "APOLLOTYRE.NS": {
@@ -1803,28 +1814,6 @@
         "industry": "Auto Parts",
         "dividend_yield": 2.17
     },
-    "APOLSINHOT.NS": {
-        "symbol": "APOLSINHOT.NS",
-        "name": "APOLLO SINDOORI",
-        "price": 1298.300048828125,
-        "market_cap": 3376099446.9726562,
-        "beta": -0.242,
-        "pe": 33.97802,
-        "sector": "Industrials",
-        "industry": "Specialty Business Services",
-        "dividend_yield": 0.35
-    },
-    "APEX.NS": {
-        "symbol": "APEX.NS",
-        "name": "APEX FROZEN FOODS LTD",
-        "price": 432.29998779296875,
-        "market_cap": 13509374618.530273,
-        "beta": -0.097,
-        "pe": 34.750805,
-        "sector": "Consumer Defensive",
-        "industry": "Farm Products",
-        "dividend_yield": 0.52
-    },
     "APTECHT.NS": {
         "symbol": "APTECHT.NS",
         "name": "APTECH LTD.",
@@ -1836,27 +1825,27 @@
         "industry": "Education & Training Services",
         "dividend_yield": 4.32
     },
-    "ARIES.NS": {
-        "symbol": "ARIES.NS",
-        "name": "ARIES AGRO LTD.",
-        "price": 330.8999938964844,
-        "market_cap": 4303135695.727814,
+    "APPL.BO": {
+        "symbol": "APPL.BO",
+        "name": "Aptus Pharma",
+        "price": 214.4499969482422,
+        "market_cap": 3677817447.6623535,
         "beta": 1.0,
-        "pe": 10.045538,
-        "sector": "Basic Materials",
-        "industry": "Agricultural Inputs",
-        "dividend_yield": 0.36
-    },
-    "ARMAN.BO": {
-        "symbol": "ARMAN.BO",
-        "name": "Arman Holdings Ltd.",
-        "price": 108.9000015258789,
-        "market_cap": 567423457.950592,
-        "beta": 1.0,
-        "pe": 102.735855,
-        "sector": "Basic Materials",
-        "industry": "Other Precious Metals & Mining",
+        "pe": 69.17742,
+        "sector": "Healthcare",
+        "industry": "Medical Distribution",
         "dividend_yield": 0.0
+    },
+    "ACI.NS": {
+        "symbol": "ACI.NS",
+        "name": "Archean Chemical Industries Ltd",
+        "price": 535.5,
+        "market_cap": 66111969987.0,
+        "beta": 0.322,
+        "pe": 62.050983,
+        "sector": "Basic Materials",
+        "industry": "Chemicals",
+        "dividend_yield": 0.47
     },
     "ARCHITORG.BO": {
         "symbol": "ARCHITORG.BO",
@@ -1880,16 +1869,16 @@
         "industry": "Unknown",
         "dividend_yield": 0.0
     },
-    "ACI.NS": {
-        "symbol": "ACI.NS",
-        "name": "Archean Chemical Industries Ltd",
-        "price": 535.5,
-        "market_cap": 66111969987.0,
-        "beta": 0.322,
-        "pe": 62.050983,
+    "ARIES.NS": {
+        "symbol": "ARIES.NS",
+        "name": "ARIES AGRO LTD.",
+        "price": 330.8999938964844,
+        "market_cap": 4303135695.727814,
+        "beta": 1.0,
+        "pe": 10.045538,
         "sector": "Basic Materials",
-        "industry": "Chemicals",
-        "dividend_yield": 0.47
+        "industry": "Agricultural Inputs",
+        "dividend_yield": 0.36
     },
     "ARIHANTACA.NS": {
         "symbol": "ARIHANTACA.NS",
@@ -1913,6 +1902,17 @@
         "industry": "Real Estate - Development",
         "dividend_yield": 1.74
     },
+    "ARMAN.BO": {
+        "symbol": "ARMAN.BO",
+        "name": "Arman Holdings Ltd.",
+        "price": 108.9000015258789,
+        "market_cap": 567423457.950592,
+        "beta": 1.0,
+        "pe": 102.735855,
+        "sector": "Basic Materials",
+        "industry": "Other Precious Metals & Mining",
+        "dividend_yield": 0.0
+    },
     "ARROWGREEN.NS": {
         "symbol": "ARROWGREEN.NS",
         "name": "ARROW GREENTECH LTD",
@@ -1924,15 +1924,15 @@
         "industry": "Packaging & Containers",
         "dividend_yield": 0.71
     },
-    "ARVEE.NS": {
-        "symbol": "ARVEE.NS",
-        "name": "ARVEE LABORAT.",
-        "price": 161.0,
-        "market_cap": 1774220000.0,
-        "beta": 0.526,
-        "pe": 85.18519,
-        "sector": "Basic Materials",
-        "industry": "Specialty Chemicals",
+    "ARTEMISMED.NS": {
+        "symbol": "ARTEMISMED.NS",
+        "name": "ARTEMIS MEDICARE SERVICES LTD",
+        "price": 268.3500061035156,
+        "market_cap": null,
+        "beta": 1.0,
+        "pe": 117.18341,
+        "sector": "",
+        "industry": "",
         "dividend_yield": 0.0
     },
     "ABVL.BO": {
@@ -1946,15 +1946,15 @@
         "industry": "Specialty Business Services",
         "dividend_yield": 0.0
     },
-    "ARTEMISMED.NS": {
-        "symbol": "ARTEMISMED.NS",
-        "name": "ARTEMIS MEDICARE SERVICES LTD",
-        "price": 268.3500061035156,
-        "market_cap": null,
-        "beta": 1.0,
-        "pe": 117.18341,
-        "sector": "",
-        "industry": "",
+    "ARVEE.NS": {
+        "symbol": "ARVEE.NS",
+        "name": "ARVEE LABORAT.",
+        "price": 161.0,
+        "market_cap": 1774220000.0,
+        "beta": 0.526,
+        "pe": 85.18519,
+        "sector": "Basic Materials",
+        "industry": "Specialty Chemicals",
         "dividend_yield": 0.0
     },
     "ACSAL.NS": {
@@ -1966,6 +1966,61 @@
         "pe": 13.449614,
         "sector": "Unknown",
         "industry": "Unknown",
+        "dividend_yield": 0.0
+    },
+    "ARVINDFASN.NS": {
+        "symbol": "ARVINDFASN.NS",
+        "name": "ARVIND FASHIONS LTD",
+        "price": 477.20001220703125,
+        "market_cap": 63780162382.33063,
+        "beta": -0.132,
+        "pe": 51.645023,
+        "sector": "Consumer Cyclical",
+        "industry": "Apparel Manufacturing",
+        "dividend_yield": 0.34
+    },
+    "ARVIND.NS": {
+        "symbol": "ARVIND.NS",
+        "name": "ARVIND LTD.",
+        "price": 485.04998779296875,
+        "market_cap": 127138702932.3584,
+        "beta": -0.049,
+        "pe": 30.757767,
+        "sector": "Consumer Cyclical",
+        "industry": "Textile Manufacturing",
+        "dividend_yield": 0.75
+    },
+    "ARVSMART.NS": {
+        "symbol": "ARVSMART.NS",
+        "name": "ARVIND SMARTSPACES LTD",
+        "price": 586.0999755859375,
+        "market_cap": 26882635272.100708,
+        "beta": 0.229,
+        "pe": 28.002865,
+        "sector": "Real Estate",
+        "industry": "Real Estate - Development",
+        "dividend_yield": 1.01
+    },
+    "ASAHIINDIA.NS": {
+        "symbol": "ASAHIINDIA.NS",
+        "name": "ASAHI INDIA GLASS LTD.",
+        "price": 903.5,
+        "market_cap": 230326717972.0,
+        "beta": 0.269,
+        "pe": 65.23466,
+        "sector": "Consumer Cyclical",
+        "industry": "Auto Parts",
+        "dividend_yield": 0.22
+    },
+    "ASARFI.BO": {
+        "symbol": "ASARFI.BO",
+        "name": "Asarfi Hospital Ltd",
+        "price": 211.6999969482422,
+        "market_cap": 4165684349.949646,
+        "beta": -0.339,
+        "pe": 25.02364,
+        "sector": "Healthcare",
+        "industry": "Medical Care Facilities",
         "dividend_yield": 0.0
     },
     "ASCENSIVE.BO": {
@@ -1990,61 +2045,6 @@
         "industry": "Luxury Goods",
         "dividend_yield": 0.0
     },
-    "ARVIND.NS": {
-        "symbol": "ARVIND.NS",
-        "name": "ARVIND LTD.",
-        "price": 485.04998779296875,
-        "market_cap": 127138702932.3584,
-        "beta": -0.049,
-        "pe": 30.757767,
-        "sector": "Consumer Cyclical",
-        "industry": "Textile Manufacturing",
-        "dividend_yield": 0.75
-    },
-    "ARVSMART.NS": {
-        "symbol": "ARVSMART.NS",
-        "name": "ARVIND SMARTSPACES LTD",
-        "price": 586.0999755859375,
-        "market_cap": 26882635272.100708,
-        "beta": 0.229,
-        "pe": 28.002865,
-        "sector": "Real Estate",
-        "industry": "Real Estate - Development",
-        "dividend_yield": 1.01
-    },
-    "ASARFI.BO": {
-        "symbol": "ASARFI.BO",
-        "name": "Asarfi Hospital Ltd",
-        "price": 211.6999969482422,
-        "market_cap": 4165684349.949646,
-        "beta": -0.339,
-        "pe": 25.02364,
-        "sector": "Healthcare",
-        "industry": "Medical Care Facilities",
-        "dividend_yield": 0.0
-    },
-    "ASIANENE.NS": {
-        "symbol": "ASIANENE.NS",
-        "name": "ASIAN ENERGY SERVICES LTD",
-        "price": 352.70001220703125,
-        "market_cap": 17135445130.561829,
-        "beta": 0.77,
-        "pe": 31.102293,
-        "sector": "Energy",
-        "industry": "Oil & Gas Equipment & Services",
-        "dividend_yield": 0.29
-    },
-    "ASAHIINDIA.NS": {
-        "symbol": "ASAHIINDIA.NS",
-        "name": "ASAHI INDIA GLASS LTD.",
-        "price": 903.5,
-        "market_cap": 230326717972.0,
-        "beta": 0.269,
-        "pe": 65.23466,
-        "sector": "Consumer Cyclical",
-        "industry": "Auto Parts",
-        "dividend_yield": 0.22
-    },
     "ASHIANA.NS": {
         "symbol": "ASHIANA.NS",
         "name": "ASHIANA HOUSING LTD.",
@@ -2067,27 +2067,16 @@
         "industry": "Other Industrial Metals & Mining",
         "dividend_yield": 1.65
     },
-    "ARVINDFASN.NS": {
-        "symbol": "ARVINDFASN.NS",
-        "name": "ARVIND FASHIONS LTD",
-        "price": 477.20001220703125,
-        "market_cap": 63780162382.33063,
-        "beta": -0.132,
-        "pe": 51.645023,
-        "sector": "Consumer Cyclical",
-        "industry": "Apparel Manufacturing",
-        "dividend_yield": 0.34
-    },
-    "ASSOCER.BO": {
-        "symbol": "ASSOCER.BO",
-        "name": "ASSOCIATED CERAMICS LTD",
-        "price": 175.85,
-        "market_cap": 359565770.5,
-        "beta": 1.0,
-        "pe": 14.308381,
-        "sector": "Basic Materials",
-        "industry": "Building Materials",
-        "dividend_yield": 0.0
+    "ASIANENE.NS": {
+        "symbol": "ASIANENE.NS",
+        "name": "ASIAN ENERGY SERVICES LTD",
+        "price": 352.70001220703125,
+        "market_cap": 17135445130.561829,
+        "beta": 0.77,
+        "pe": 31.102293,
+        "sector": "Energy",
+        "industry": "Oil & Gas Equipment & Services",
+        "dividend_yield": 0.29
     },
     "ASIANTILES.NS": {
         "symbol": "ASIANTILES.NS",
@@ -2098,17 +2087,6 @@
         "pe": 86.15714,
         "sector": "Industrials",
         "industry": "Building Products & Equipment",
-        "dividend_yield": 0.0
-    },
-    "ASPIRA.BO": {
-        "symbol": "ASPIRA.BO",
-        "name": "ASPIRA PATHLAB & DIAGNOSTICS LTD",
-        "price": 125.5,
-        "market_cap": 1291771500.0,
-        "beta": -0.164,
-        "pe": 2510.0,
-        "sector": "Healthcare",
-        "industry": "Diagnostics & Research",
         "dividend_yield": 0.0
     },
     "ASIANPAINT.NS": {
@@ -2122,6 +2100,17 @@
         "industry": "Specialty Chemicals",
         "dividend_yield": 1.03
     },
+    "ASKAUTOLTD.NS": {
+        "symbol": "ASKAUTOLTD.NS",
+        "name": "ASK Automotive Ltd",
+        "price": 437.45001220703125,
+        "market_cap": 86240032776.52588,
+        "beta": -0.227,
+        "pe": 29.027872,
+        "sector": "Consumer Cyclical",
+        "industry": "Auto Parts",
+        "dividend_yield": 0.42
+    },
     "ASMTEC.BO": {
         "symbol": "ASMTEC.BO",
         "name": "ASM TECHNOLOGIES LTD.",
@@ -2132,6 +2121,28 @@
         "sector": "Technology",
         "industry": "Information Technology Services",
         "dividend_yield": 0.27
+    },
+    "ASPIRA.BO": {
+        "symbol": "ASPIRA.BO",
+        "name": "ASPIRA PATHLAB & DIAGNOSTICS LTD",
+        "price": 125.5,
+        "market_cap": 1291771500.0,
+        "beta": -0.164,
+        "pe": 2510.0,
+        "sector": "Healthcare",
+        "industry": "Diagnostics & Research",
+        "dividend_yield": 0.0
+    },
+    "ASSOCER.BO": {
+        "symbol": "ASSOCER.BO",
+        "name": "ASSOCIATED CERAMICS LTD",
+        "price": 175.85,
+        "market_cap": 359565770.5,
+        "beta": 1.0,
+        "pe": 14.308381,
+        "sector": "Basic Materials",
+        "industry": "Building Materials",
+        "dividend_yield": 0.0
     },
     "ASSOCIATED.BO": {
         "symbol": "ASSOCIATED.BO",
@@ -2144,28 +2155,6 @@
         "industry": "Specialty Business Services",
         "dividend_yield": 0.0
     },
-    "ASTEC.NS": {
-        "symbol": "ASTEC.NS",
-        "name": "ASTEC LIFESCIENCES LIMITED",
-        "price": 782.8499755859375,
-        "market_cap": 17443649474.30005,
-        "beta": 0.108,
-        "pe": 0.0,
-        "sector": "Basic Materials",
-        "industry": "Agricultural Inputs",
-        "dividend_yield": 0.0
-    },
-    "ASKAUTOLTD.NS": {
-        "symbol": "ASKAUTOLTD.NS",
-        "name": "ASK Automotive Ltd",
-        "price": 437.45001220703125,
-        "market_cap": 86240032776.52588,
-        "beta": -0.227,
-        "pe": 29.027872,
-        "sector": "Consumer Cyclical",
-        "industry": "Auto Parts",
-        "dividend_yield": 0.42
-    },
     "ASTALLTD.BO": {
         "symbol": "ASTALLTD.BO",
         "name": "Astal Laboratories Ltd",
@@ -2177,27 +2166,16 @@
         "industry": "Drug Manufacturers - Specialty & Generic",
         "dividend_yield": 0.0
     },
-    "ATAM.NS": {
-        "symbol": "ATAM.NS",
-        "name": "ATAM VALVES LTD",
-        "price": 70.51000213623047,
-        "market_cap": 808256154.4876099,
-        "beta": 0.069,
-        "pe": 33.417065,
-        "sector": "Industrials",
-        "industry": "Specialty Industrial Machinery",
-        "dividend_yield": 1.21
-    },
-    "ASTRAL.NS": {
-        "symbol": "ASTRAL.NS",
-        "name": "ASTRAL LTD",
-        "price": 1536.9000244140625,
-        "market_cap": 412888442073.5419,
-        "beta": 0.147,
-        "pe": 76.845,
-        "sector": "Industrials",
-        "industry": "Building Products & Equipment",
-        "dividend_yield": 0.25
+    "ASTEC.NS": {
+        "symbol": "ASTEC.NS",
+        "name": "ASTEC LIFESCIENCES LIMITED",
+        "price": 782.8499755859375,
+        "market_cap": 17443649474.30005,
+        "beta": 0.108,
+        "pe": 0.0,
+        "sector": "Basic Materials",
+        "industry": "Agricultural Inputs",
+        "dividend_yield": 0.0
     },
     "ASTERDM.NS": {
         "symbol": "ASTERDM.NS",
@@ -2221,17 +2199,6 @@
         "industry": "Drug Manufacturers - Specialty & Generic",
         "dividend_yield": 0.0
     },
-    "ASTRAZEN.NS": {
-        "symbol": "ASTRAZEN.NS",
-        "name": "ASTRAZENECA PHARMA INDIA LTD.",
-        "price": 8557.0,
-        "market_cap": 213925000000.0,
-        "beta": 0.238,
-        "pe": 114.23041,
-        "sector": "Healthcare",
-        "industry": "Drug Manufacturers - Specialty & Generic",
-        "dividend_yield": 0.37
-    },
     "ASTRAMICRO.NS": {
         "symbol": "ASTRAMICRO.NS",
         "name": "ASTRA MICROWAVE PRODUCTS LTD.",
@@ -2243,27 +2210,27 @@
         "industry": "Communication Equipment",
         "dividend_yield": 0.17
     },
-    "ATALREAL.NS": {
-        "symbol": "ATALREAL.NS",
-        "name": "ATAL REALTECH",
-        "price": 29.549999237060547,
-        "market_cap": 3661134092.974663,
-        "beta": 0.109,
-        "pe": 29.848484,
+    "ASTRAL.NS": {
+        "symbol": "ASTRAL.NS",
+        "name": "ASTRAL LTD",
+        "price": 1536.9000244140625,
+        "market_cap": 412888442073.5419,
+        "beta": 0.147,
+        "pe": 76.845,
         "sector": "Industrials",
-        "industry": "Engineering & Construction",
-        "dividend_yield": 0.0
+        "industry": "Building Products & Equipment",
+        "dividend_yield": 0.25
     },
-    "ATHERENERG.NS": {
-        "symbol": "ATHERENERG.NS",
-        "name": "Ather Energy Limited",
-        "price": 1022.0499877929688,
-        "market_cap": 391568782711.73035,
-        "beta": 1.0,
-        "pe": 0.0,
-        "sector": "Consumer Cyclical",
-        "industry": "Auto Manufacturers",
-        "dividend_yield": 0.0
+    "ASTRAZEN.NS": {
+        "symbol": "ASTRAZEN.NS",
+        "name": "ASTRAZENECA PHARMA INDIA LTD.",
+        "price": 8557.0,
+        "market_cap": 213925000000.0,
+        "beta": 0.238,
+        "pe": 114.23041,
+        "sector": "Healthcare",
+        "industry": "Drug Manufacturers - Specialty & Generic",
+        "dividend_yield": 0.37
     },
     "ASTRONMULT.BO": {
         "symbol": "ASTRONMULT.BO",
@@ -2276,15 +2243,37 @@
         "industry": "Packaged Foods",
         "dividend_yield": 0.0
     },
-    "ATMASTCO.NS": {
-        "symbol": "ATMASTCO.NS",
-        "name": "Atmastco Ltd",
-        "price": 306.0,
-        "market_cap": 7568815140.0,
+    "ATALREAL.NS": {
+        "symbol": "ATALREAL.NS",
+        "name": "ATAL REALTECH",
+        "price": 29.549999237060547,
+        "market_cap": 3661134092.974663,
+        "beta": 0.109,
+        "pe": 29.848484,
+        "sector": "Industrials",
+        "industry": "Engineering & Construction",
+        "dividend_yield": 0.0
+    },
+    "ATAM.NS": {
+        "symbol": "ATAM.NS",
+        "name": "ATAM VALVES LTD",
+        "price": 70.51000213623047,
+        "market_cap": 808256154.4876099,
+        "beta": 0.069,
+        "pe": 33.417065,
+        "sector": "Industrials",
+        "industry": "Specialty Industrial Machinery",
+        "dividend_yield": 1.21
+    },
+    "ATHERENERG.NS": {
+        "symbol": "ATHERENERG.NS",
+        "name": "Ather Energy Limited",
+        "price": 1022.0499877929688,
+        "market_cap": 391568782711.73035,
         "beta": 1.0,
-        "pe": 39.23077,
-        "sector": "Unknown",
-        "industry": "Unknown",
+        "pe": 0.0,
+        "sector": "Consumer Cyclical",
+        "industry": "Auto Manufacturers",
         "dividend_yield": 0.0
     },
     "ATISHAY.BO": {
@@ -2320,15 +2309,15 @@
         "industry": "Leisure",
         "dividend_yield": 0.0
     },
-    "ATVPR.BO": {
-        "symbol": "ATVPR.BO",
-        "name": "ATV PROJECTS INDIA LTD.",
-        "price": 28.989999771118164,
-        "market_cap": 1539874167.582386,
-        "beta": -0.18,
-        "pe": 21.474073,
-        "sector": "Industrials",
-        "industry": "Engineering & Construction",
+    "ATMASTCO.NS": {
+        "symbol": "ATMASTCO.NS",
+        "name": "Atmastco Ltd",
+        "price": 306.0,
+        "market_cap": 7568815140.0,
+        "beta": 1.0,
+        "pe": 39.23077,
+        "sector": "Unknown",
+        "industry": "Unknown",
         "dividend_yield": 0.0
     },
     "ATUL.NS": {
@@ -2342,27 +2331,16 @@
         "industry": "Specialty Chemicals",
         "dividend_yield": 0.45
     },
-    "AUSOMENT.NS": {
-        "symbol": "AUSOMENT.NS",
-        "name": "AUSOM ENTERPRISE LIMITED",
-        "price": 120.0,
-        "market_cap": 1634826240.0,
-        "beta": 0.393,
-        "pe": 5.507113,
-        "sector": "Financial Services",
-        "industry": "Capital Markets",
-        "dividend_yield": 0.73
-    },
-    "AUSTERE.BO": {
-        "symbol": "AUSTERE.BO",
-        "name": "Austere Systems Ltd",
-        "price": 50.0,
-        "market_cap": 523906750.0,
-        "beta": 1.0,
-        "pe": 9.140768,
-        "sector": "Technology",
-        "industry": "Information Technology Services",
-        "dividend_yield": 0.8
+    "ATVPR.BO": {
+        "symbol": "ATVPR.BO",
+        "name": "ATV PROJECTS INDIA LTD.",
+        "price": 28.989999771118164,
+        "market_cap": 1539874167.582386,
+        "beta": -0.18,
+        "pe": 21.474073,
+        "sector": "Industrials",
+        "industry": "Engineering & Construction",
+        "dividend_yield": 0.0
     },
     "AURIONPRO.NS": {
         "symbol": "AURIONPRO.NS",
@@ -2375,17 +2353,6 @@
         "industry": "Software - Application",
         "dividend_yield": 0.72
     },
-    "AURUM.NS": {
-        "symbol": "AURUM.NS",
-        "name": "Aurum PropTech Limited",
-        "price": 180.22999572753906,
-        "market_cap": 13741712982.454391,
-        "beta": 0.035,
-        "pe": 720.92,
-        "sector": "Real Estate",
-        "industry": "Real Estate Services",
-        "dividend_yield": 0.0
-    },
     "AUROPHARMA.NS": {
         "symbol": "AUROPHARMA.NS",
         "name": "AUROBINDO PHARMA LTD.",
@@ -2397,37 +2364,48 @@
         "industry": "Drug Manufacturers - Specialty & Generic",
         "dividend_yield": 0.28
     },
-    "AFLTD.BO": {
-        "symbol": "AFLTD.BO",
-        "name": "Autofurnish Ltd.",
-        "price": 43.470001220703125,
-        "market_cap": 587519149.2584229,
-        "beta": 1.0,
-        "pe": 16.980469,
-        "sector": "Consumer Cyclical",
-        "industry": "Auto Parts",
+    "AURUM.NS": {
+        "symbol": "AURUM.NS",
+        "name": "Aurum PropTech Limited",
+        "price": 180.22999572753906,
+        "market_cap": 13741712982.454391,
+        "beta": 0.035,
+        "pe": 720.92,
+        "sector": "Real Estate",
+        "industry": "Real Estate Services",
         "dividend_yield": 0.0
     },
-    "AUTOAXLES.NS": {
-        "symbol": "AUTOAXLES.NS",
-        "name": "AUTOMOTIVE AXLES LTD.",
-        "price": 1715.5999755859375,
-        "market_cap": 25926097078.655396,
-        "beta": 0.606,
-        "pe": 15.766933,
-        "sector": "Consumer Cyclical",
-        "industry": "Auto Parts",
-        "dividend_yield": 1.83
+    "AUSOMENT.NS": {
+        "symbol": "AUSOMENT.NS",
+        "name": "AUSOM ENTERPRISE LIMITED",
+        "price": 120.0,
+        "market_cap": 1634826240.0,
+        "beta": 0.393,
+        "pe": 5.507113,
+        "sector": "Financial Services",
+        "industry": "Capital Markets",
+        "dividend_yield": 0.72
     },
-    "AUTOPINS.BO": {
-        "symbol": "AUTOPINS.BO",
-        "name": "AUTO PINS (INDIA) LTD.",
-        "price": 211.0,
-        "market_cap": 1204190082.0,
+    "AUSTERE.BO": {
+        "symbol": "AUSTERE.BO",
+        "name": "Austere Systems Ltd",
+        "price": 50.0,
+        "market_cap": 523906750.0,
         "beta": 1.0,
-        "pe": 324.6154,
-        "sector": "Consumer Cyclical",
-        "industry": "Auto Parts",
+        "pe": 9.140768,
+        "sector": "Technology",
+        "industry": "Information Technology Services",
+        "dividend_yield": 0.8
+    },
+    "AUSTENG.BO": {
+        "symbol": "AUSTENG.BO",
+        "name": "AUSTIN ENGINEERING CO.LTD.",
+        "price": 137.35000610351562,
+        "market_cap": 477675851.22680664,
+        "beta": -0.55,
+        "pe": 10.5410595,
+        "sector": "Industrials",
+        "industry": "Tools & Accessories",
         "dividend_yield": 0.0
     },
     "APS.NS": {
@@ -2441,48 +2419,26 @@
         "industry": "Unknown",
         "dividend_yield": 0.0
     },
-    "AUSTENG.BO": {
-        "symbol": "AUSTENG.BO",
-        "name": "AUSTIN ENGINEERING CO.LTD.",
-        "price": 137.35000610351562,
-        "market_cap": 477675851.22680664,
-        "beta": -0.55,
-        "pe": 10.5410595,
-        "sector": "Industrials",
-        "industry": "Tools & Accessories",
+    "AUTOPINS.BO": {
+        "symbol": "AUTOPINS.BO",
+        "name": "AUTO PINS (INDIA) LTD.",
+        "price": 211.0,
+        "market_cap": 1204190082.0,
+        "beta": 1.0,
+        "pe": 324.6154,
+        "sector": "Consumer Cyclical",
+        "industry": "Auto Parts",
         "dividend_yield": 0.0
     },
-    "AVANTIFEED.NS": {
-        "symbol": "AVANTIFEED.NS",
-        "name": "AVANTI FEEDS LTD.",
-        "price": 1171.699951171875,
-        "market_cap": 159638998018.38135,
-        "beta": 0.149,
-        "pe": 26.407482,
-        "sector": "Consumer Defensive",
-        "industry": "Packaged Foods",
-        "dividend_yield": 0.69
-    },
-    "AVANTEL.NS": {
-        "symbol": "AVANTEL.NS",
-        "name": "AVANTEL LTD.",
-        "price": 175.6999969482422,
-        "market_cap": 46685395534.11484,
-        "beta": -0.216,
-        "pe": 319.45453,
-        "sector": "Technology",
-        "industry": "Communication Equipment",
-        "dividend_yield": 0.11
-    },
-    "AVALON.NS": {
-        "symbol": "AVALON.NS",
-        "name": "Avalon Technologies Ltd",
-        "price": 1515.800048828125,
-        "market_cap": 101236794373.71802,
+    "AFLTD.BO": {
+        "symbol": "AFLTD.BO",
+        "name": "Autofurnish Ltd.",
+        "price": 43.470001220703125,
+        "market_cap": 587519149.2584229,
         "beta": 1.0,
-        "pe": 89.53337,
-        "sector": "Technology",
-        "industry": "Electronic Components",
+        "pe": 16.980469,
+        "sector": "Consumer Cyclical",
+        "industry": "Auto Parts",
         "dividend_yield": 0.0
     },
     "ACGL.BO": {
@@ -2496,6 +2452,17 @@
         "industry": "Auto Parts",
         "dividend_yield": 1.26
     },
+    "AUTOAXLES.NS": {
+        "symbol": "AUTOAXLES.NS",
+        "name": "AUTOMOTIVE AXLES LTD.",
+        "price": 1715.5999755859375,
+        "market_cap": 25926097078.655396,
+        "beta": 0.606,
+        "pe": 15.766933,
+        "sector": "Consumer Cyclical",
+        "industry": "Auto Parts",
+        "dividend_yield": 1.83
+    },
     "ASAL.NS": {
         "symbol": "ASAL.NS",
         "name": "AUTOMOTIVE STAMPINGS & ASSEMBLIES LTD.",
@@ -2505,6 +2472,50 @@
         "pe": 29.719034,
         "sector": "Consumer Cyclical",
         "industry": "Auto Parts",
+        "dividend_yield": 0.0
+    },
+    "AVALON.NS": {
+        "symbol": "AVALON.NS",
+        "name": "Avalon Technologies Ltd",
+        "price": 1515.800048828125,
+        "market_cap": 101236794373.71802,
+        "beta": 1.0,
+        "pe": 89.53337,
+        "sector": "Technology",
+        "industry": "Electronic Components",
+        "dividend_yield": 0.0
+    },
+    "AVANTEL.NS": {
+        "symbol": "AVANTEL.NS",
+        "name": "AVANTEL LTD.",
+        "price": 175.6999969482422,
+        "market_cap": 46685395534.11484,
+        "beta": -0.216,
+        "pe": 319.45453,
+        "sector": "Technology",
+        "industry": "Communication Equipment",
+        "dividend_yield": 0.11
+    },
+    "AVANTIFEED.NS": {
+        "symbol": "AVANTIFEED.NS",
+        "name": "AVANTI FEEDS LTD.",
+        "price": 1171.699951171875,
+        "market_cap": 159638998018.38135,
+        "beta": 0.149,
+        "pe": 26.407482,
+        "sector": "Consumer Defensive",
+        "industry": "Packaged Foods",
+        "dividend_yield": 0.69
+    },
+    "AVAX.BO": {
+        "symbol": "AVAX.BO",
+        "name": "Avax Apparels and Ornaments Ltd",
+        "price": 52.0,
+        "market_cap": 432289728.0,
+        "beta": 1.0,
+        "pe": 14.565826,
+        "sector": "Consumer Cyclical",
+        "industry": "Apparel Manufacturing",
         "dividend_yield": 0.0
     },
     "DMART.NS": {
@@ -2518,17 +2529,6 @@
         "industry": "Discount Stores",
         "dividend_yield": 0.0
     },
-    "AVAX.BO": {
-        "symbol": "AVAX.BO",
-        "name": "Avax Apparels and Ornaments Ltd",
-        "price": 52.0,
-        "market_cap": 432289728.0,
-        "beta": 1.0,
-        "pe": 14.565826,
-        "sector": "Consumer Cyclical",
-        "industry": "Apparel Manufacturing",
-        "dividend_yield": 0.0
-    },
     "APIL.BO": {
         "symbol": "APIL.BO",
         "name": "AVI PRODUCTS INDIA LTD",
@@ -2538,17 +2538,6 @@
         "pe": 0.0,
         "sector": "Healthcare",
         "industry": "Medical Distribution",
-        "dividend_yield": 0.0
-    },
-    "AWFIS.NS": {
-        "symbol": "AWFIS.NS",
-        "name": "AWFIS Space Solutions Ltd",
-        "price": 311.54998779296875,
-        "market_cap": 22295509724.725952,
-        "beta": 1.194,
-        "pe": 31.37462,
-        "sector": "Industrials",
-        "industry": "Rental & Leasing Services",
         "dividend_yield": 0.0
     },
     "AVIVA.BO": {
@@ -2573,6 +2562,39 @@
         "industry": "Furnishings, Fixtures & Appliances",
         "dividend_yield": 0.0
     },
+    "AVTNPL.NS": {
+        "symbol": "AVTNPL.NS",
+        "name": "AVT NATURAL PRODUCTS LTD.",
+        "price": 70.22000122070312,
+        "market_cap": 10693382665.893555,
+        "beta": 0.389,
+        "pe": 16.483568,
+        "sector": "Basic Materials",
+        "industry": "Specialty Chemicals",
+        "dividend_yield": 1.09
+    },
+    "AWFIS.NS": {
+        "symbol": "AWFIS.NS",
+        "name": "AWFIS Space Solutions Ltd",
+        "price": 311.54998779296875,
+        "market_cap": 22295509724.725952,
+        "beta": 1.194,
+        "pe": 31.37462,
+        "sector": "Industrials",
+        "industry": "Rental & Leasing Services",
+        "dividend_yield": 0.0
+    },
+    "AXISCADES.NS": {
+        "symbol": "AXISCADES.NS",
+        "name": "AXISCADES TECHNOLOGIES LTD",
+        "price": 1682.5999755859375,
+        "market_cap": 71562641053.04578,
+        "beta": 0.378,
+        "pe": 100.035675,
+        "sector": "Industrials",
+        "industry": "Engineering & Construction",
+        "dividend_yield": 0.0
+    },
     "AXITA.NS": {
         "symbol": "AXITA.NS",
         "name": "AXITA COTTON LTD",
@@ -2595,15 +2617,15 @@
         "industry": "Specialty Industrial Machinery",
         "dividend_yield": 5.11
     },
-    "AZTEC.BO": {
-        "symbol": "AZTEC.BO",
-        "name": "Aztec Fluids & Machinery Ltd",
-        "price": 90.33000183105469,
-        "market_cap": 1228488024.9023438,
-        "beta": 0.784,
-        "pe": 16.82123,
-        "sector": "Industrials",
-        "industry": "Specialty Industrial Machinery",
+    "AYMSYNTEX.NS": {
+        "symbol": "AYMSYNTEX.NS",
+        "name": "AYM SYNTEX LTD",
+        "price": 222.7899932861328,
+        "market_cap": 13058632940.362778,
+        "beta": 0.503,
+        "pe": 198.91963,
+        "sector": "Consumer Cyclical",
+        "industry": "Textile Manufacturing",
         "dividend_yield": 0.0
     },
     "AZAD.NS": {
@@ -2617,37 +2639,15 @@
         "industry": "Specialty Industrial Machinery",
         "dividend_yield": 0.0
     },
-    "AVTNPL.NS": {
-        "symbol": "AVTNPL.NS",
-        "name": "AVT NATURAL PRODUCTS LTD.",
-        "price": 70.22000122070312,
-        "market_cap": 10693382665.893555,
-        "beta": 0.389,
-        "pe": 16.483568,
-        "sector": "Basic Materials",
-        "industry": "Specialty Chemicals",
-        "dividend_yield": 1.09
-    },
-    "BBTCL.NS": {
-        "symbol": "BBTCL.NS",
-        "name": "B&B TRIPLEWALL",
-        "price": 202.36000061035156,
-        "market_cap": 4150654538.9190674,
-        "beta": -0.008,
-        "pe": 19.956608,
-        "sector": "Consumer Cyclical",
-        "industry": "Packaging & Containers",
-        "dividend_yield": 0.0
-    },
-    "AXISCADES.NS": {
-        "symbol": "AXISCADES.NS",
-        "name": "AXISCADES TECHNOLOGIES LTD",
-        "price": 1682.5999755859375,
-        "market_cap": 71562641053.04578,
-        "beta": 0.378,
-        "pe": 100.035675,
+    "AZTEC.BO": {
+        "symbol": "AZTEC.BO",
+        "name": "Aztec Fluids & Machinery Ltd",
+        "price": 90.33000183105469,
+        "market_cap": 1228488024.9023438,
+        "beta": 0.784,
+        "pe": 16.82123,
         "sector": "Industrials",
-        "industry": "Engineering & Construction",
+        "industry": "Specialty Industrial Machinery",
         "dividend_yield": 0.0
     },
     "BAPACK.BO": {
@@ -2661,15 +2661,26 @@
         "industry": "Packaging & Containers",
         "dividend_yield": 0.56
     },
-    "AYMSYNTEX.NS": {
-        "symbol": "AYMSYNTEX.NS",
-        "name": "AYM SYNTEX LTD",
-        "price": 222.7899932861328,
-        "market_cap": 13058632940.362778,
-        "beta": 0.503,
-        "pe": 198.91963,
+    "BBTCL.NS": {
+        "symbol": "BBTCL.NS",
+        "name": "B&B TRIPLEWALL",
+        "price": 202.36000061035156,
+        "market_cap": 4150654538.9190674,
+        "beta": -0.008,
+        "pe": 19.956608,
         "sector": "Consumer Cyclical",
-        "industry": "Textile Manufacturing",
+        "industry": "Packaging & Containers",
+        "dividend_yield": 0.0
+    },
+    "BLKASHYAP.NS": {
+        "symbol": "BLKASHYAP.NS",
+        "name": "B.L.KASHYAP AND SONS LTD.",
+        "price": 53.5099983215332,
+        "market_cap": 12065563273.615265,
+        "beta": 0.367,
+        "pe": 764.4285,
+        "sector": "Industrials",
+        "industry": "Engineering & Construction",
         "dividend_yield": 0.0
     },
     "BRGIL.BO": {
@@ -2683,16 +2694,16 @@
         "industry": "Engineering & Construction",
         "dividend_yield": 0.0
     },
-    "BLKASHYAP.NS": {
-        "symbol": "BLKASHYAP.NS",
-        "name": "B.L.KASHYAP AND SONS LTD.",
-        "price": 53.5099983215332,
-        "market_cap": 12065563273.615265,
-        "beta": 0.367,
-        "pe": 764.4285,
-        "sector": "Industrials",
-        "industry": "Engineering & Construction",
-        "dividend_yield": 0.0
+    "B2BSOFT.BO": {
+        "symbol": "B2BSOFT.BO",
+        "name": "B2B SOFTWARE TECHNOLOGIES LTD.",
+        "price": 24.010000228881836,
+        "market_cap": 405030288.191061,
+        "beta": 0.275,
+        "pe": 22.027523,
+        "sector": "Technology",
+        "industry": "Information Technology Services",
+        "dividend_yield": 5.71
     },
     "BAFNAPH.NS": {
         "symbol": "BAFNAPH.NS",
@@ -2716,28 +2727,6 @@
         "industry": "Packaging & Containers",
         "dividend_yield": 0.0
     },
-    "B2BSOFT.BO": {
-        "symbol": "B2BSOFT.BO",
-        "name": "B2B SOFTWARE TECHNOLOGIES LTD.",
-        "price": 24.010000228881836,
-        "market_cap": 405030288.191061,
-        "beta": 0.275,
-        "pe": 22.027523,
-        "sector": "Technology",
-        "industry": "Information Technology Services",
-        "dividend_yield": 5.71
-    },
-    "BAJAJELEC.NS": {
-        "symbol": "BAJAJELEC.NS",
-        "name": "BAJAJ ELECTRICALS LTD.",
-        "price": 308.75,
-        "market_cap": 35627517428.75,
-        "beta": -0.14,
-        "pe": 0.0,
-        "sector": "Consumer Cyclical",
-        "industry": "Furnishings, Fixtures & Appliances",
-        "dividend_yield": 0.87
-    },
     "BAJAJ-AUTO.NS": {
         "symbol": "BAJAJ-AUTO.NS",
         "name": "BAJAJ AUTO LTD.",
@@ -2748,28 +2737,6 @@
         "sector": "Consumer Cyclical",
         "industry": "Auto Manufacturers",
         "dividend_yield": 1.46
-    },
-    "BAJAJHCARE.NS": {
-        "symbol": "BAJAJHCARE.NS",
-        "name": "BAJAJ HEALTHCARE LTD",
-        "price": 298.70001220703125,
-        "market_cap": 10055037251.621155,
-        "beta": 0.287,
-        "pe": 44.44941,
-        "sector": "Healthcare",
-        "industry": "Drug Manufacturers - Specialty & Generic",
-        "dividend_yield": 0.33
-    },
-    "BALAMINES.NS": {
-        "symbol": "BALAMINES.NS",
-        "name": "BALAJI AMINES LTD.",
-        "price": 2122.199951171875,
-        "market_cap": 68761400617.91992,
-        "beta": 0.646,
-        "pe": 41.119938,
-        "sector": "Basic Materials",
-        "industry": "Specialty Chemicals",
-        "dividend_yield": 0.55
     },
     "BAJAJCON.NS": {
         "symbol": "BAJAJCON.NS",
@@ -2782,6 +2749,28 @@
         "industry": "Household & Personal Products",
         "dividend_yield": 0.0
     },
+    "BAJAJELEC.NS": {
+        "symbol": "BAJAJELEC.NS",
+        "name": "BAJAJ ELECTRICALS LTD.",
+        "price": 308.75,
+        "market_cap": 35627517428.75,
+        "beta": -0.14,
+        "pe": 0.0,
+        "sector": "Consumer Cyclical",
+        "industry": "Furnishings, Fixtures & Appliances",
+        "dividend_yield": 0.87
+    },
+    "BAJAJHCARE.NS": {
+        "symbol": "BAJAJHCARE.NS",
+        "name": "BAJAJ HEALTHCARE LTD",
+        "price": 298.70001220703125,
+        "market_cap": 10055037251.621155,
+        "beta": 0.287,
+        "pe": 44.44941,
+        "sector": "Healthcare",
+        "industry": "Drug Manufacturers - Specialty & Generic",
+        "dividend_yield": 0.33
+    },
     "BAJAJST.BO": {
         "symbol": "BAJAJST.BO",
         "name": "BAJAJ STEEL INDUSTRIES LTD.",
@@ -2792,72 +2781,6 @@
         "sector": "Industrials",
         "industry": "Specialty Industrial Machinery",
         "dividend_yield": 0.26
-    },
-    "BALAXI.NS": {
-        "symbol": "BALAXI.NS",
-        "name": "BALAXI PHARMA",
-        "price": 24.989999771118164,
-        "market_cap": 1379635412.364006,
-        "beta": 0.747,
-        "pe": 14.614035,
-        "sector": "Healthcare",
-        "industry": "Drug Manufacturers - Specialty & Generic",
-        "dividend_yield": 0.0
-    },
-    "BALMLAWRIE.NS": {
-        "symbol": "BALMLAWRIE.NS",
-        "name": "BALMER LAWRIE & CO.LTD.",
-        "price": 182.4499969482422,
-        "market_cap": 31199651180.837677,
-        "beta": 0.718,
-        "pe": 11.276267,
-        "sector": "Industrials",
-        "industry": "Conglomerates",
-        "dividend_yield": 7.04
-    },
-    "BALKRISIND.NS": {
-        "symbol": "BALKRISIND.NS",
-        "name": "BALKRISHNA INDUSTRIES LTD.",
-        "price": 2200.39990234375,
-        "market_cap": 425375125997.36816,
-        "beta": 0.321,
-        "pe": 34.226162,
-        "sector": "Consumer Cyclical",
-        "industry": "Auto Parts",
-        "dividend_yield": 0.75
-    },
-    "BALUFORGE.NS": {
-        "symbol": "BALUFORGE.NS",
-        "name": "BALU FORGE INDUSTRIES LTD",
-        "price": 483.1000061035156,
-        "market_cap": 58670325172.94455,
-        "beta": 0.613,
-        "pe": 20.204935,
-        "sector": "Industrials",
-        "industry": "Metal Fabrication",
-        "dividend_yield": 0.03
-    },
-    "BANSTEA.BO": {
-        "symbol": "BANSTEA.BO",
-        "name": "BANSISONS TEA INDUSTRIES LTD",
-        "price": 12.58,
-        "market_cap": 79631400.0,
-        "beta": 1.0,
-        "pe": 0.0,
-        "sector": "Consumer Defensive",
-        "industry": "Farm Products",
-        "dividend_yield": 0.0
-    },
-    "BRPL.BO": {
-        "symbol": "BRPL.BO",
-        "name": "BANSAL ROOFING PRODUCTS LTD",
-        "price": 124.1500015258789,
-        "market_cap": 1636694300.1159668,
-        "beta": 0.315,
-        "pe": 15.51875,
-        "sector": "Industrials",
-        "industry": "Building Products & Equipment",
-        "dividend_yield": 0.81
     },
     "BAJEL.NS": {
         "symbol": "BAJEL.NS",
@@ -2870,16 +2793,71 @@
         "industry": "Utilities - Regulated Electric",
         "dividend_yield": 0.31
     },
-    "BANSALWIRE.NS": {
-        "symbol": "BANSALWIRE.NS",
-        "name": "BANSAL WIRE INDUSTRIES LIMITED",
-        "price": 310.0,
-        "market_cap": 48532345120.0,
-        "beta": 1.0,
-        "pe": 30.185003,
+    "BALAMINES.NS": {
+        "symbol": "BALAMINES.NS",
+        "name": "BALAJI AMINES LTD.",
+        "price": 2122.199951171875,
+        "market_cap": 68761400617.91992,
+        "beta": 0.646,
+        "pe": 41.119938,
         "sector": "Basic Materials",
-        "industry": "Steel",
+        "industry": "Specialty Chemicals",
+        "dividend_yield": 0.55
+    },
+    "BALAXI.NS": {
+        "symbol": "BALAXI.NS",
+        "name": "BALAXI PHARMA",
+        "price": 24.989999771118164,
+        "market_cap": 1379635412.364006,
+        "beta": 0.747,
+        "pe": 14.614035,
+        "sector": "Healthcare",
+        "industry": "Drug Manufacturers - Specialty & Generic",
         "dividend_yield": 0.0
+    },
+    "BALKRISIND.NS": {
+        "symbol": "BALKRISIND.NS",
+        "name": "BALKRISHNA INDUSTRIES LTD.",
+        "price": 2200.39990234375,
+        "market_cap": 425375125997.36816,
+        "beta": 0.321,
+        "pe": 34.226162,
+        "sector": "Consumer Cyclical",
+        "industry": "Auto Parts",
+        "dividend_yield": 0.75
+    },
+    "BALMLAWRIE.NS": {
+        "symbol": "BALMLAWRIE.NS",
+        "name": "BALMER LAWRIE & CO.LTD.",
+        "price": 182.4499969482422,
+        "market_cap": 31199651180.837677,
+        "beta": 0.718,
+        "pe": 11.276267,
+        "sector": "Industrials",
+        "industry": "Conglomerates",
+        "dividend_yield": 7.04
+    },
+    "BLIL.BO": {
+        "symbol": "BLIL.BO",
+        "name": "BALMER LAWRIE INVESTMENTS LTD.",
+        "price": 72.12000274658203,
+        "market_cap": 16008671012.466202,
+        "beta": 0.236,
+        "pe": 8.97015,
+        "sector": "Industrials",
+        "industry": "Conglomerates",
+        "dividend_yield": 8.77
+    },
+    "BALUFORGE.NS": {
+        "symbol": "BALUFORGE.NS",
+        "name": "BALU FORGE INDUSTRIES LTD",
+        "price": 483.1000061035156,
+        "market_cap": 58670325172.94455,
+        "beta": 0.613,
+        "pe": 20.204935,
+        "sector": "Industrials",
+        "industry": "Metal Fabrication",
+        "dividend_yield": 0.03
     },
     "BANCOINDIA.NS": {
         "symbol": "BANCOINDIA.NS",
@@ -2891,6 +2869,39 @@
         "sector": "Consumer Cyclical",
         "industry": "Auto Parts",
         "dividend_yield": 2.44
+    },
+    "BRPL.BO": {
+        "symbol": "BRPL.BO",
+        "name": "BANSAL ROOFING PRODUCTS LTD",
+        "price": 124.1500015258789,
+        "market_cap": 1636694300.1159668,
+        "beta": 0.315,
+        "pe": 15.51875,
+        "sector": "Industrials",
+        "industry": "Building Products & Equipment",
+        "dividend_yield": 0.81
+    },
+    "BANSALWIRE.NS": {
+        "symbol": "BANSALWIRE.NS",
+        "name": "BANSAL WIRE INDUSTRIES LIMITED",
+        "price": 310.0,
+        "market_cap": 48532345120.0,
+        "beta": 1.0,
+        "pe": 30.185003,
+        "sector": "Basic Materials",
+        "industry": "Steel",
+        "dividend_yield": 0.0
+    },
+    "BANSTEA.BO": {
+        "symbol": "BANSTEA.BO",
+        "name": "BANSISONS TEA INDUSTRIES LTD",
+        "price": 12.58,
+        "market_cap": 79631400.0,
+        "beta": 1.0,
+        "pe": 0.0,
+        "sector": "Consumer Defensive",
+        "industry": "Farm Products",
+        "dividend_yield": 0.0
     },
     "BAROEXT.BO": {
         "symbol": "BAROEXT.BO",
@@ -2914,6 +2925,17 @@
         "industry": "Software - Application",
         "dividend_yield": 0.0
     },
+    "BASF.NS": {
+        "symbol": "BASF.NS",
+        "name": "BASF INDIA LTD.",
+        "price": 3312.800048828125,
+        "market_cap": 143396670305.55664,
+        "beta": 0.425,
+        "pe": 34.472427,
+        "sector": "Basic Materials",
+        "industry": "Specialty Chemicals",
+        "dividend_yield": 0.75
+    },
     "BATAINDIA.NS": {
         "symbol": "BATAINDIA.NS",
         "name": "BATA INDIA LTD.",
@@ -2924,17 +2946,6 @@
         "sector": "Consumer Cyclical",
         "industry": "Footwear & Accessories",
         "dividend_yield": 1.34
-    },
-    "BCCFUBA.BO": {
-        "symbol": "BCCFUBA.BO",
-        "name": "BCC FUBA INDIA LTD.",
-        "price": 157.10000610351562,
-        "market_cap": 3126771632.978668,
-        "beta": 0.363,
-        "pe": 50.514473,
-        "sector": "Technology",
-        "industry": "Electronic Components",
-        "dividend_yield": 0.0
     },
     "BAYERCROP.NS": {
         "symbol": "BAYERCROP.NS",
@@ -2947,27 +2958,16 @@
         "industry": "Agricultural Inputs",
         "dividend_yield": 2.8
     },
-    "BASF.NS": {
-        "symbol": "BASF.NS",
-        "name": "BASF INDIA LTD.",
-        "price": 3312.800048828125,
-        "market_cap": 143396670305.55664,
-        "beta": 0.425,
-        "pe": 34.472427,
-        "sector": "Basic Materials",
-        "industry": "Specialty Chemicals",
-        "dividend_yield": 0.75
-    },
-    "BEARDSELL.NS": {
-        "symbol": "BEARDSELL.NS",
-        "name": "BEARDSELL LTD",
-        "price": 29.739999771118164,
-        "market_cap": 1172856370.973587,
-        "beta": 1.0,
-        "pe": 13.159292,
-        "sector": "Industrials",
-        "industry": "Building Products & Equipment",
-        "dividend_yield": 0.34
+    "BCCFUBA.BO": {
+        "symbol": "BCCFUBA.BO",
+        "name": "BCC FUBA INDIA LTD.",
+        "price": 157.10000610351562,
+        "market_cap": 3126771632.978668,
+        "beta": 0.363,
+        "pe": 50.514473,
+        "sector": "Technology",
+        "industry": "Electronic Components",
+        "dividend_yield": 0.0
     },
     "BDH.BO": {
         "symbol": "BDH.BO",
@@ -2979,6 +2979,17 @@
         "sector": "Healthcare",
         "industry": "Drug Manufacturers - Specialty & Generic",
         "dividend_yield": 1.28
+    },
+    "BEARDSELL.NS": {
+        "symbol": "BEARDSELL.NS",
+        "name": "BEARDSELL LTD",
+        "price": 29.739999771118164,
+        "market_cap": 1172856370.973587,
+        "beta": 1.0,
+        "pe": 13.159292,
+        "sector": "Industrials",
+        "industry": "Building Products & Equipment",
+        "dividend_yield": 0.34
     },
     "BEEKAY.BO": {
         "symbol": "BEEKAY.BO",
@@ -3002,6 +3013,17 @@
         "industry": "Shell Companies",
         "dividend_yield": 0.0
     },
+    "BEEZAASAN.BO": {
+        "symbol": "BEEZAASAN.BO",
+        "name": "Beezaasan Explotech Ltd",
+        "price": 236.85000610351562,
+        "market_cap": 3588697764.3790894,
+        "beta": 1.0,
+        "pe": 23.039885,
+        "sector": "Basic Materials",
+        "industry": "Specialty Chemicals",
+        "dividend_yield": 0.0
+    },
     "BELLACASA.BO": {
         "symbol": "BELLACASA.BO",
         "name": "BELLA CASA FASHION & RETAIL LTD",
@@ -3012,5 +3034,1787 @@
         "sector": "Consumer Cyclical",
         "industry": "Textile Manufacturing",
         "dividend_yield": 0.83
+    },
+    "BELRISE.NS": {
+        "symbol": "BELRISE.NS",
+        "name": "Belrise Industries Limited",
+        "price": 219.5399932861328,
+        "market_cap": 195364071837.1493,
+        "beta": 1.0,
+        "pe": 37.721645,
+        "sector": "Consumer Cyclical",
+        "industry": "Auto Parts",
+        "dividend_yield": 0.25
+    },
+    "BEMHY.BO": {
+        "symbol": "BEMHY.BO",
+        "name": "BEMCO HYDRAULICS LTD.",
+        "price": 87.58999633789062,
+        "market_cap": 3830660899.8413086,
+        "beta": 1.596,
+        "pe": 25.761763,
+        "sector": "Industrials",
+        "industry": "Specialty Industrial Machinery",
+        "dividend_yield": 0.11
+    },
+    "BLAL.NS": {
+        "symbol": "BLAL.NS",
+        "name": "BEML LAND ASSETS LIMITED",
+        "price": 183.7899932861328,
+        "market_cap": 7653842375.404358,
+        "beta": 0.656,
+        "pe": "Infinity",
+        "sector": "Financial Services",
+        "industry": "Shell Companies",
+        "dividend_yield": 0.0
+    },
+    "BEML.NS": {
+        "symbol": "BEML.NS",
+        "name": "BEML LTD.",
+        "price": 1757.300048828125,
+        "market_cap": 146363763766.8457,
+        "beta": 0.758,
+        "pe": 103.675514,
+        "sector": "Industrials",
+        "industry": "Conglomerates",
+        "dividend_yield": 0.75
+    },
+    "BENARAS.BO": {
+        "symbol": "BENARAS.BO",
+        "name": "BENARES HOTELS LTD.",
+        "price": 10177.7998046875,
+        "market_cap": 13231139746.09375,
+        "beta": 0.143,
+        "pe": 30.608084,
+        "sector": "Consumer Cyclical",
+        "industry": "Lodging",
+        "dividend_yield": 0.25
+    },
+    "BENCHMARK.BO": {
+        "symbol": "BENCHMARK.BO",
+        "name": "Benchmark Computer Solutions ltd",
+        "price": 45.029998779296875,
+        "market_cap": 309085911.62109375,
+        "beta": 0.892,
+        "pe": 9.133874,
+        "sector": "Technology",
+        "industry": "Software - Infrastructure",
+        "dividend_yield": 0.0
+    },
+    "BENGALASM.BO": {
+        "symbol": "BENGALASM.BO",
+        "name": "BENGAL & ASSAM COMPANY LTD.",
+        "price": 7039.2998046875,
+        "market_cap": 80275464003.37598,
+        "beta": 0.083,
+        "pe": 30.412596,
+        "sector": "Consumer Cyclical",
+        "industry": "Auto Parts",
+        "dividend_yield": 0.72
+    },
+    "BERGEPAINT.NS": {
+        "symbol": "BERGEPAINT.NS",
+        "name": "BERGER PAINTS INDIA LTD.",
+        "price": 496.04998779296875,
+        "market_cap": 578395680659.1672,
+        "beta": 0.423,
+        "pe": 51.350933,
+        "sector": "Basic Materials",
+        "industry": "Specialty Chemicals",
+        "dividend_yield": 0.75
+    },
+    "BERLDRG.BO": {
+        "symbol": "BERLDRG.BO",
+        "name": "BERYL DRUGS LTD.",
+        "price": 21.3799991607666,
+        "market_cap": 108432941.74365997,
+        "beta": 0.113,
+        "pe": 712.6666,
+        "sector": "Healthcare",
+        "industry": "Drug Manufacturers - Specialty & Generic",
+        "dividend_yield": 0.0
+    },
+    "BESTAGRO.NS": {
+        "symbol": "BESTAGRO.NS",
+        "name": "BEST AGROLIFE LTD",
+        "price": 16.309999465942383,
+        "market_cap": 5784685451.585197,
+        "beta": -0.104,
+        "pe": 65.24,
+        "sector": "Basic Materials",
+        "industry": "Agricultural Inputs",
+        "dividend_yield": 1.12
+    },
+    "BETA.NS": {
+        "symbol": "BETA.NS",
+        "name": "BETA DRUGS LTD",
+        "price": 1454.0,
+        "market_cap": 14677480062.0,
+        "beta": -0.447,
+        "pe": 35.524067,
+        "sector": "Healthcare",
+        "industry": "Drug Manufacturers - Specialty & Generic",
+        "dividend_yield": 0.0
+    },
+    "BETXIND.BO": {
+        "symbol": "BETXIND.BO",
+        "name": "BETEX INDIA LTD.",
+        "price": 488.0,
+        "market_cap": 732000000.0,
+        "beta": 0.629,
+        "pe": 17.610971,
+        "sector": "Consumer Cyclical",
+        "industry": "Textile Manufacturing",
+        "dividend_yield": 0.0
+    },
+    "BEWLTD.NS": {
+        "symbol": "BEWLTD.NS",
+        "name": "BEW Engineering Limited",
+        "price": 1434.0,
+        "market_cap": 18747146616.0,
+        "beta": 1.0,
+        "pe": 151.42555,
+        "sector": "Unknown",
+        "industry": "Unknown",
+        "dividend_yield": 0.0
+    },
+    "BHAGERIA.NS": {
+        "symbol": "BHAGERIA.NS",
+        "name": "BHAGERIA INDUSTRIES LTD",
+        "price": 156.22000122070312,
+        "market_cap": 6818093852.876587,
+        "beta": 0.771,
+        "pe": 14.779566,
+        "sector": "Basic Materials",
+        "industry": "Specialty Chemicals",
+        "dividend_yield": 0.97
+    },
+    "BHAGCHEM.NS": {
+        "symbol": "BHAGCHEM.NS",
+        "name": "BHAGIRADHA CHEMICALS & INDUSTRIES LTD.",
+        "price": 233.83999633789062,
+        "market_cap": 30321817192.337646,
+        "beta": 0.56,
+        "pe": 212.58182,
+        "sector": "Basic Materials",
+        "industry": "Agricultural Inputs",
+        "dividend_yield": 0.06
+    },
+    "BGWTATO.BO": {
+        "symbol": "BGWTATO.BO",
+        "name": "BHAGWATI AUTOCAST LTD.",
+        "price": 519.0999755859375,
+        "market_cap": 1495363513.1707764,
+        "beta": 0.615,
+        "pe": 11.838084,
+        "sector": "Basic Materials",
+        "industry": "Steel",
+        "dividend_yield": 0.45
+    },
+    "BEPL.NS": {
+        "symbol": "BEPL.NS",
+        "name": "BHANSALI ENGINEERING POLYMERS LTD.",
+        "price": 94.63999938964844,
+        "market_cap": 23551964502.50885,
+        "beta": 0.209,
+        "pe": 13.071823,
+        "sector": "Basic Materials",
+        "industry": "Chemicals",
+        "dividend_yield": 4.18
+    },
+    "BHARATAGRI.BO": {
+        "symbol": "BHARATAGRI.BO",
+        "name": "BHARAT AGRI FERT & REALTY LTD.",
+        "price": 31.1200008392334,
+        "market_cap": 1644851067.5577736,
+        "beta": 0.192,
+        "pe": 0.0,
+        "sector": "Consumer Cyclical",
+        "industry": "Resorts & Casinos",
+        "dividend_yield": 0.0
+    },
+    "BBL.NS": {
+        "symbol": "BBL.NS",
+        "name": "BHARAT BIJLEE LTD.",
+        "price": 2783.800048828125,
+        "market_cap": 31465626007.910156,
+        "beta": 1.0,
+        "pe": 26.178297,
+        "sector": "Industrials",
+        "industry": "Electrical Equipment & Parts",
+        "dividend_yield": 1.27
+    },
+    "BHARATCOAL.NS": {
+        "symbol": "BHARATCOAL.NS",
+        "name": "Bharat Coking Coal",
+        "price": 38.7400016784668,
+        "market_cap": null,
+        "beta": 1.0,
+        "pe": 138.35715,
+        "sector": "Basic Materials",
+        "industry": "Coking Coal",
+        "dividend_yield": 0.0
+    },
+    "BEL.NS": {
+        "symbol": "BEL.NS",
+        "name": "BHARAT ELECTRONICS LTD.",
+        "price": 406.6000061035156,
+        "market_cap": 2972156116486.7495,
+        "beta": 0.304,
+        "pe": 49.10628,
+        "sector": "Industrials",
+        "industry": "Aerospace & Defense",
+        "dividend_yield": 1.07
+    },
+    "BHARATFORG.NS": {
+        "symbol": "BHARATFORG.NS",
+        "name": "BHARAT FORGE LTD.",
+        "price": 1936.5,
+        "market_cap": 925818635868.0,
+        "beta": 0.561,
+        "pe": 86.25835,
+        "sector": "Consumer Cyclical",
+        "industry": "Auto Parts",
+        "dividend_yield": 0.42
+    },
+    "BHEL.NS": {
+        "symbol": "BHEL.NS",
+        "name": "BHARAT HEAVY ELECTRICALS LTD.",
+        "price": 406.29998779296875,
+        "market_cap": 1414762298630.8438,
+        "beta": 0.86,
+        "pe": 88.32609,
+        "sector": "Industrials",
+        "industry": "Specialty Industrial Machinery",
+        "dividend_yield": 0.12
+    },
+    "BPLPHARMA.BO": {
+        "symbol": "BPLPHARMA.BO",
+        "name": "BHARAT PARENTERALS LTD",
+        "price": 1398.199951171875,
+        "market_cap": 9636342330.07837,
+        "beta": 0.754,
+        "pe": 0.0,
+        "sector": "Healthcare",
+        "industry": "Drug Manufacturers - Specialty & Generic",
+        "dividend_yield": 0.08
+    },
+    "BHARATRAS.NS": {
+        "symbol": "BHARATRAS.NS",
+        "name": "BHARAT RASAYAN LTD.",
+        "price": 1442.300048828125,
+        "market_cap": 23972572957.17578,
+        "beta": 0.157,
+        "pe": 18.058094,
+        "sector": "Basic Materials",
+        "industry": "Agricultural Inputs",
+        "dividend_yield": 0.03
+    },
+    "BHARATSE.BO": {
+        "symbol": "BHARATSE.BO",
+        "name": "BHARAT SEATS LTD.",
+        "price": 182.14999389648438,
+        "market_cap": 11439019616.699219,
+        "beta": 0.895,
+        "pe": 27.14605,
+        "sector": "Consumer Cyclical",
+        "industry": "Auto Parts",
+        "dividend_yield": 0.82
+    },
+    "BHARATWIRE.NS": {
+        "symbol": "BHARATWIRE.NS",
+        "name": "BHARAT WIRE ROPES LTD",
+        "price": 215.6999969482422,
+        "market_cap": 14801962340.379486,
+        "beta": 0.586,
+        "pe": 28.122555,
+        "sector": "Basic Materials",
+        "industry": "Steel",
+        "dividend_yield": 0.0
+    },
+    "BHARATROHAN.BO": {
+        "symbol": "BHARATROHAN.BO",
+        "name": "Bharatrohan Airborne Innovations Ltd",
+        "price": 113.25,
+        "market_cap": 2256282128.25,
+        "beta": 1.0,
+        "pe": 25.166666,
+        "sector": "Technology",
+        "industry": "Information Technology Services",
+        "dividend_yield": 0.0
+    },
+    "BHARTIARTL.NS": {
+        "symbol": "BHARTIARTL.NS",
+        "name": "BHARTI AIRTEL LTD.",
+        "price": 1824.0999755859375,
+        "market_cap": 11111453231500.332,
+        "beta": 0.043,
+        "pe": 41.03712,
+        "sector": "Communication Services",
+        "industry": "Telecom Services",
+        "dividend_yield": 0.88
+    },
+    "BHARTIHEXA.NS": {
+        "symbol": "BHARTIHEXA.NS",
+        "name": "BHARTI HEXACOM LIMITED",
+        "price": 1496.199951171875,
+        "market_cap": 748099975585.9375,
+        "beta": 0.175,
+        "pe": 43.105732,
+        "sector": "Communication Services",
+        "industry": "Telecom Services",
+        "dividend_yield": 0.67
+    },
+    "BCCL.BO": {
+        "symbol": "BCCL.BO",
+        "name": "Bhatia Colour Chem Ltd",
+        "price": 48.04999923706055,
+        "market_cap": 679395612.5625343,
+        "beta": -0.654,
+        "pe": 16.233109,
+        "sector": "Basic Materials",
+        "industry": "Specialty Chemicals",
+        "dividend_yield": 0.0
+    },
+    "BHATIA.BO": {
+        "symbol": "BHATIA.BO",
+        "name": "BHATIA COMMUNICATIONS & RETAIL (INDIA) LTD",
+        "price": 26.93000030517578,
+        "market_cap": 3787758402.923584,
+        "beta": -0.555,
+        "pe": 24.481817,
+        "sector": "Technology",
+        "industry": "Electronics & Computer Distribution",
+        "dividend_yield": 0.15
+    },
+    "BHAVIK.BO": {
+        "symbol": "BHAVIK.BO",
+        "name": "Bhavik Enterprises Ltd.",
+        "price": 161.0,
+        "market_cap": 3277639449.0,
+        "beta": 1.0,
+        "pe": 24.174175,
+        "sector": "Basic Materials",
+        "industry": "Specialty Chemicals",
+        "dividend_yield": 0.0
+    },
+    "BTTL.BO": {
+        "symbol": "BTTL.BO",
+        "name": "BHILWARA TECHNICAL TEXTILES LTD.",
+        "price": 36.400001525878906,
+        "market_cap": 2124788391.0705948,
+        "beta": -0.569,
+        "pe": 0.0,
+        "sector": "Consumer Cyclical",
+        "industry": "Textile Manufacturing",
+        "dividend_yield": 0.0
+    },
+    "BIGBLOC.NS": {
+        "symbol": "BIGBLOC.NS",
+        "name": "BIGBLOC CONSTRUCTION LTD",
+        "price": 50.459999084472656,
+        "market_cap": 7143912215.38353,
+        "beta": -0.198,
+        "pe": 0.0,
+        "sector": "Industrials",
+        "industry": "Building Products & Equipment",
+        "dividend_yield": 0.0
+    },
+    "BIKAJI.NS": {
+        "symbol": "BIKAJI.NS",
+        "name": "Bikaji Foods International Ltd",
+        "price": 649.2999877929688,
+        "market_cap": 162803141459.25293,
+        "beta": 0.287,
+        "pe": 62.977688,
+        "sector": "Consumer Defensive",
+        "industry": "Packaged Foods",
+        "dividend_yield": 0.19
+    },
+    "BIMETAL.BO": {
+        "symbol": "BIMETAL.BO",
+        "name": "BIMETAL BEARINGS LTD.",
+        "price": 644.0,
+        "market_cap": 2463300000.0,
+        "beta": 0.314,
+        "pe": 21.01142,
+        "sector": "Consumer Cyclical",
+        "industry": "Auto Parts",
+        "dividend_yield": 2.0
+    },
+    "BINDALEXPO.BO": {
+        "symbol": "BINDALEXPO.BO",
+        "name": "BINDAL EXPORTS LTD",
+        "price": 26.6,
+        "market_cap": 122370640.0,
+        "beta": -0.221,
+        "pe": 0.0,
+        "sector": "Consumer Cyclical",
+        "industry": "Textile Manufacturing",
+        "dividend_yield": 0.0
+    },
+    "BIOCON.NS": {
+        "symbol": "BIOCON.NS",
+        "name": "BIOCON LTD.",
+        "price": 412.45001220703125,
+        "market_cap": 667893235074.7284,
+        "beta": 0.227,
+        "pe": 145.74205,
+        "sector": "Healthcare",
+        "industry": "Biotechnology",
+        "dividend_yield": 0.12
+    },
+    "BIOFILCHEM.NS": {
+        "symbol": "BIOFILCHEM.NS",
+        "name": "BIOFIL CHEMICALS & PHARMACEUTICALS LTD.",
+        "price": 34.2400016784668,
+        "market_cap": 557214939.315033,
+        "beta": 0.506,
+        "pe": 20.141176,
+        "sector": "Healthcare",
+        "industry": "Drug Manufacturers - Specialty & Generic",
+        "dividend_yield": 0.0
+    },
+    "BIRLACABLE.NS": {
+        "symbol": "BIRLACABLE.NS",
+        "name": "BIRLA CABLE LTD",
+        "price": 224.4600067138672,
+        "market_cap": 6733800201.416016,
+        "beta": 0.562,
+        "pe": 89.071434,
+        "sector": "Technology",
+        "industry": "Communication Equipment",
+        "dividend_yield": 0.0
+    },
+    "BIRLAPREC.BO": {
+        "symbol": "BIRLAPREC.BO",
+        "name": "BIRLA PRECISION TECHNOLOGIES LTD.",
+        "price": 38.650001525878906,
+        "market_cap": 2643182274.4012527,
+        "beta": 0.284,
+        "pe": 20.558512,
+        "sector": "Industrials",
+        "industry": "Tools & Accessories",
+        "dividend_yield": 0.11
+    },
+    "BSOFT.NS": {
+        "symbol": "BSOFT.NS",
+        "name": "BIRLASOFT LTD",
+        "price": 327.6499938964844,
+        "market_cap": 91573680557.35107,
+        "beta": 0.484,
+        "pe": 17.691685,
+        "sector": "Technology",
+        "industry": "Information Technology Services",
+        "dividend_yield": 1.89
+    },
+    "BITS.BO": {
+        "symbol": "BITS.BO",
+        "name": "BITS LTD",
+        "price": 8.289999961853027,
+        "market_cap": 927443745.7323074,
+        "beta": 0.066,
+        "pe": 276.33334,
+        "sector": "Consumer Defensive",
+        "industry": "Education & Training Services",
+        "dividend_yield": 0.0
+    },
+    "BIZOTIC.BO": {
+        "symbol": "BIZOTIC.BO",
+        "name": "Bizotic Commercial Ltd",
+        "price": 754.5999755859375,
+        "market_cap": 7275852964.599609,
+        "beta": -0.294,
+        "pe": 39.363586,
+        "sector": "Consumer Cyclical",
+        "industry": "Apparel Manufacturing",
+        "dividend_yield": 0.0
+    },
+    "BKV.BO": {
+        "symbol": "BKV.BO",
+        "name": "BKV INDUSTRIES LTD",
+        "price": 9.399999618530273,
+        "market_cap": 145216683.7068329,
+        "beta": 0.034,
+        "pe": 0.0,
+        "sector": "Consumer Defensive",
+        "industry": "Farm Products",
+        "dividend_yield": 0.0
+    },
+    "BBOX.NS": {
+        "symbol": "BBOX.NS",
+        "name": "Black Box Limited",
+        "price": 1056.300048828125,
+        "market_cap": 187598048913.33618,
+        "beta": 0.466,
+        "pe": 83.23878,
+        "sector": "Technology",
+        "industry": "Software - Application",
+        "dividend_yield": 0.1
+    },
+    "BLACKROSE.BO": {
+        "symbol": "BLACKROSE.BO",
+        "name": "BLACK ROSE INDUSTRIES LTD.",
+        "price": 97.2699966430664,
+        "market_cap": 4960769828.796387,
+        "beta": 0.442,
+        "pe": 22.05669,
+        "sector": "Basic Materials",
+        "industry": "Specialty Chemicals",
+        "dividend_yield": 1.09
+    },
+    "BLISSGVS.NS": {
+        "symbol": "BLISSGVS.NS",
+        "name": "BLISS GVS PHARMA LTD.",
+        "price": 439.6499938964844,
+        "market_cap": 46510120894.11536,
+        "beta": 0.946,
+        "pe": 36.668056,
+        "sector": "Healthcare",
+        "industry": "Drug Manufacturers - Specialty & Generic",
+        "dividend_yield": 0.23
+    },
+    "BLSE.NS": {
+        "symbol": "BLSE.NS",
+        "name": "BLS E-Services Ltd",
+        "price": 225.02000427246094,
+        "market_cap": 20398980793.856003,
+        "beta": 0.038,
+        "pe": 35.60443,
+        "sector": "Industrials",
+        "industry": "Specialty Business Services",
+        "dividend_yield": 0.67
+    },
+    "BLS.NS": {
+        "symbol": "BLS.NS",
+        "name": "BLS INTERNATIONAL SERVICES LTD",
+        "price": 270.3999938964844,
+        "market_cap": 111321260111.23718,
+        "beta": -0.201,
+        "pe": 16.259771,
+        "sector": "Industrials",
+        "industry": "Specialty Business Services",
+        "dividend_yield": 1.11
+    },
+    "BLUECHIPT.BO": {
+        "symbol": "BLUECHIPT.BO",
+        "name": "BLUE CHIP TEX INDUSTRIES LTD.",
+        "price": 124.19999694824219,
+        "market_cap": 244736093.98651123,
+        "beta": -0.198,
+        "pe": 0.0,
+        "sector": "Consumer Cyclical",
+        "industry": "Textile Manufacturing",
+        "dividend_yield": 0.0
+    },
+    "BLUEDART.NS": {
+        "symbol": "BLUEDART.NS",
+        "name": "BLUE DART EXPRESS LTD.",
+        "price": 4691.89990234375,
+        "market_cap": 111329091217.41895,
+        "beta": 0.375,
+        "pe": 45.084076,
+        "sector": "Industrials",
+        "industry": "Integrated Freight & Logistics",
+        "dividend_yield": 0.53
+    },
+    "BLUEJET.NS": {
+        "symbol": "BLUEJET.NS",
+        "name": "Blue Jet Healthcare Ltd",
+        "price": 447.1000061035156,
+        "market_cap": 77556392576.24893,
+        "beta": 0.939,
+        "pe": 31.265734,
+        "sector": "Healthcare",
+        "industry": "Biotechnology",
+        "dividend_yield": 0.27
+    },
+    "BPAGRI.BO": {
+        "symbol": "BPAGRI.BO",
+        "name": "Blue Pearl Agriventures Ltd",
+        "price": 14.470000267028809,
+        "market_cap": 8719043360.900879,
+        "beta": 0.486,
+        "pe": 723.5,
+        "sector": "Consumer Cyclical",
+        "industry": "Textile Manufacturing",
+        "dividend_yield": 0.0
+    },
+    "BLUEPEBBLE.NS": {
+        "symbol": "BLUEPEBBLE.NS",
+        "name": "Blue Pebble Ltd",
+        "price": 264.05,
+        "market_cap": 1077324000.0,
+        "beta": 1.0,
+        "pe": 21.277195,
+        "sector": "Unknown",
+        "industry": "Unknown",
+        "dividend_yield": 0.0
+    },
+    "BLUESTARCO.NS": {
+        "symbol": "BLUESTARCO.NS",
+        "name": "BLUE STAR LTD.",
+        "price": 1580.800048828125,
+        "market_cap": 325000849027.5029,
+        "beta": 0.234,
+        "pe": 61.77413,
+        "sector": "Industrials",
+        "industry": "Building Products & Equipment",
+        "dividend_yield": 0.54
+    },
+    "BLUSPRING.NS": {
+        "symbol": "BLUSPRING.NS",
+        "name": "Bluspring Enterprises Limited",
+        "price": 78.79000091552734,
+        "market_cap": 11774454951.017303,
+        "beta": 1.0,
+        "pe": 0.0,
+        "sector": "Industrials",
+        "industry": "Specialty Business Services",
+        "dividend_yield": 0.0
+    },
+    "BMW.BO": {
+        "symbol": "BMW.BO",
+        "name": "BMW INDUSTRIES LTD",
+        "price": 54.130001068115234,
+        "market_cap": 12183930320.218277,
+        "beta": 0.68,
+        "pe": 15.077995,
+        "sector": "Basic Materials",
+        "industry": "Steel",
+        "dividend_yield": 0.8
+    },
+    "BNRUDY.BO": {
+        "symbol": "BNRUDY.BO",
+        "name": "BNR UDYOG LTD.",
+        "price": 28.65999984741211,
+        "market_cap": 85979999.54223633,
+        "beta": 0.434,
+        "pe": 0.0,
+        "sector": "Industrials",
+        "industry": "Specialty Business Services",
+        "dividend_yield": 0.0
+    },
+    "BOHRAIND.NS": {
+        "symbol": "BOHRAIND.NS",
+        "name": "BOHRA INDUSTRIES",
+        "price": 17.15999984741211,
+        "market_cap": 176699126.7487793,
+        "beta": -1.053,
+        "pe": 0.0,
+        "sector": "Basic Materials",
+        "industry": "Agricultural Inputs",
+        "dividend_yield": 0.0
+    },
+    "BBTC.NS": {
+        "symbol": "BBTC.NS",
+        "name": "BOMBAY BURMAH TRADING CORP.LTD.",
+        "price": 1490.699951171875,
+        "market_cap": 104008967923.16895,
+        "beta": 0.663,
+        "pe": 8.367198,
+        "sector": "Consumer Defensive",
+        "industry": "Packaged Foods",
+        "dividend_yield": 2.25
+    },
+    "BOMDYEING.NS": {
+        "symbol": "BOMDYEING.NS",
+        "name": "BOMBAY DYEING & MFG.CO.LTD.",
+        "price": 123.26000213623047,
+        "market_cap": 25457492215.206146,
+        "beta": 0.164,
+        "pe": 94.81539,
+        "sector": "Consumer Cyclical",
+        "industry": "Textile Manufacturing",
+        "dividend_yield": 0.32
+    },
+    "BMETRICS.NS": {
+        "symbol": "BMETRICS.NS",
+        "name": "BOMBAY METRICS SUPPLY CHAIN LIMITED",
+        "price": 124.0,
+        "market_cap": 1526926080.0,
+        "beta": 1.0,
+        "pe": 93.93939,
+        "sector": "Unknown",
+        "industry": "Unknown",
+        "dividend_yield": 0.0
+    },
+    "BSHSL.NS": {
+        "symbol": "BSHSL.NS",
+        "name": "BOMBAY SUPER HYB",
+        "price": 93.91999816894531,
+        "market_cap": 9855709145.454102,
+        "beta": 0.741,
+        "pe": 36.97638,
+        "sector": "Basic Materials",
+        "industry": "Agricultural Inputs",
+        "dividend_yield": 0.0
+    },
+    "BOMBWIR.BO": {
+        "symbol": "BOMBWIR.BO",
+        "name": "BOMBAY WIRE ROPES LTD.",
+        "price": 49.4900016784668,
+        "market_cap": 264251863.96217346,
+        "beta": -1.115,
+        "pe": 0.0,
+        "sector": "Financial Services",
+        "industry": "Shell Companies",
+        "dividend_yield": 0.0
+    },
+    "BONDADA.BO": {
+        "symbol": "BONDADA.BO",
+        "name": "Bondada Engineering Ltd",
+        "price": 315.8500061035156,
+        "market_cap": 35271439218.83865,
+        "beta": 0.806,
+        "pe": 17.30685,
+        "sector": "Industrials",
+        "industry": "Engineering & Construction",
+        "dividend_yield": 0.03
+    },
+    "BONLON.BO": {
+        "symbol": "BONLON.BO",
+        "name": "BONLON INDUSTRIES LTD",
+        "price": 42.630001068115234,
+        "market_cap": 698422569.0393143,
+        "beta": 0.149,
+        "pe": 29.4,
+        "sector": "Basic Materials",
+        "industry": "Other Industrial Metals & Mining",
+        "dividend_yield": 0.0
+    },
+    "BORANA.NS": {
+        "symbol": "BORANA.NS",
+        "name": "Borana Weaves Limited",
+        "price": 322.8500061035156,
+        "market_cap": 8602433653.379974,
+        "beta": 1.0,
+        "pe": 13.258727,
+        "sector": "Consumer Cyclical",
+        "industry": "Textile Manufacturing",
+        "dividend_yield": 0.0
+    },
+    "BOROLTD.NS": {
+        "symbol": "BOROLTD.NS",
+        "name": "BOROSIL LTD",
+        "price": 223.33999633789062,
+        "market_cap": 26708700622.917023,
+        "beta": 0.175,
+        "pe": 35.734398,
+        "sector": "Consumer Cyclical",
+        "industry": "Furnishings, Fixtures & Appliances",
+        "dividend_yield": 0.0
+    },
+    "BORORENEW.NS": {
+        "symbol": "BORORENEW.NS",
+        "name": "BOROSIL RENEWABLES LTD",
+        "price": 544.5999755859375,
+        "market_cap": 76398218036.9176,
+        "beta": 1.0,
+        "pe": 57.447258,
+        "sector": "Technology",
+        "industry": "Solar",
+        "dividend_yield": 0.0
+    },
+    "BOROSCI.NS": {
+        "symbol": "BOROSCI.NS",
+        "name": "Borosil Scientific Limited",
+        "price": 154.27999877929688,
+        "market_cap": 13722750765.422058,
+        "beta": 1.0,
+        "pe": 85.71111,
+        "sector": "Consumer Cyclical",
+        "industry": "Packaging & Containers",
+        "dividend_yield": 0.0
+    },
+    "BOSCHLTD.NS": {
+        "symbol": "BOSCHLTD.NS",
+        "name": "BOSCH LTD.",
+        "price": 37760.0,
+        "market_cap": 1113679846400.0,
+        "beta": 0.69,
+        "pe": 40.098972,
+        "sector": "Consumer Cyclical",
+        "industry": "Auto Parts",
+        "dividend_yield": 0.73
+    },
+    "BPL.NS": {
+        "symbol": "BPL.NS",
+        "name": "BPL LTD.",
+        "price": 52.369998931884766,
+        "market_cap": 2564860027.5582542,
+        "beta": 0.158,
+        "pe": 0.0,
+        "sector": "Technology",
+        "industry": "Consumer Electronics",
+        "dividend_yield": 0.0
+    },
+    "BRADYM.BO": {
+        "symbol": "BRADYM.BO",
+        "name": "BRADY & MORRIS ENGINEERING CO.LTD.",
+        "price": 817.8499755859375,
+        "market_cap": 1840162445.0683594,
+        "beta": 0.841,
+        "pe": 32.97782,
+        "sector": "Industrials",
+        "industry": "Specialty Industrial Machinery",
+        "dividend_yield": 0.0
+    },
+    "FIRSTCRY.NS": {
+        "symbol": "FIRSTCRY.NS",
+        "name": "Brainbees Solutions Limited",
+        "price": 222.07000732421875,
+        "market_cap": 107745459769.03503,
+        "beta": 1.0,
+        "pe": 0.0,
+        "sector": "Consumer Cyclical",
+        "industry": "Internet Retail",
+        "dividend_yield": 0.0
+    },
+    "BRANDBUCKT.BO": {
+        "symbol": "BRANDBUCKT.BO",
+        "name": "Brandbucket Media & Technology Ltd",
+        "price": 4.9,
+        "market_cap": 113881880.00000001,
+        "beta": 0.034,
+        "pe": 17.5,
+        "sector": "Communication Services",
+        "industry": "Advertising Agencies",
+        "dividend_yield": 0.0
+    },
+    "BRIGADE.NS": {
+        "symbol": "BRIGADE.NS",
+        "name": "BRIGADE ENTERPRISES LTD.",
+        "price": 654.2000122070312,
+        "market_cap": 160031574733.10577,
+        "beta": 0.242,
+        "pe": 2516.154,
+        "sector": "Real Estate",
+        "industry": "Real Estate - Development",
+        "dividend_yield": 0.38
+    },
+    "BRIGHOTEL.NS": {
+        "symbol": "BRIGHOTEL.NS",
+        "name": "Brigade Hotel Ventures Limited",
+        "price": 61.47999954223633,
+        "market_cap": 23352720722.321873,
+        "beta": 1.0,
+        "pe": 36.595238,
+        "sector": "Consumer Cyclical",
+        "industry": "Lodging",
+        "dividend_yield": 0.0
+    },
+    "BCG.NS": {
+        "symbol": "BCG.NS",
+        "name": "BRIGHTCOM GROUP LTD",
+        "price": 11.039999961853027,
+        "market_cap": 22284481400.919502,
+        "beta": -0.013,
+        "pe": 2.5437787,
+        "sector": "Communication Services",
+        "industry": "Advertising Agencies",
+        "dividend_yield": 0.0
+    },
+    "BRITANNIA.NS": {
+        "symbol": "BRITANNIA.NS",
+        "name": "BRITANNIA INDUSTRIES LTD.",
+        "price": 5064.0,
+        "market_cap": 1219757050944.0,
+        "beta": 0.542,
+        "pe": 48.04098,
+        "sector": "Consumer Defensive",
+        "industry": "Packaged Foods",
+        "dividend_yield": 1.77
+    },
+    "BROACH.BO": {
+        "symbol": "BROACH.BO",
+        "name": "Broach Lifecare Hospital Ltd",
+        "price": 15.0,
+        "market_cap": 91055700.0,
+        "beta": 1.0,
+        "pe": 107.14286,
+        "sector": "Healthcare",
+        "industry": "Medical Care Facilities",
+        "dividend_yield": 0.0
+    },
+    "BROOKS.NS": {
+        "symbol": "BROOKS.NS",
+        "name": "BROOKS LABORATORIES LTD.",
+        "price": 64.4000015258789,
+        "market_cap": 1897046816.1481934,
+        "beta": 1.095,
+        "pe": 8.761905,
+        "sector": "Healthcare",
+        "industry": "Drug Manufacturers - Specialty & Generic",
+        "dividend_yield": 0.0
+    },
+    "BUTTERFLY.NS": {
+        "symbol": "BUTTERFLY.NS",
+        "name": "BUTTERFLY GANDHIMATHI APPLIANCES LTD",
+        "price": 650.5999755859375,
+        "market_cap": 11632435444.087524,
+        "beta": -0.048,
+        "pe": 25.493729,
+        "sector": "Consumer Cyclical",
+        "industry": "Furnishings, Fixtures & Appliances",
+        "dividend_yield": 0.0
+    },
+    "CDSL.NS": {
+        "symbol": "CDSL.NS",
+        "name": "C D S L",
+        "price": 1218.199951171875,
+        "market_cap": 254603789794.92188,
+        "beta": 0.274,
+        "pe": 55.778385,
+        "sector": "Financial Services",
+        "industry": "Capital Markets",
+        "dividend_yield": 1.02
+    },
+    "CPS.NS": {
+        "symbol": "CPS.NS",
+        "name": "C P S Shapers Ltd",
+        "price": 285.2,
+        "market_cap": 630611424.0,
+        "beta": 1.0,
+        "pe": 396.1111,
+        "sector": "Unknown",
+        "industry": "Unknown",
+        "dividend_yield": 0.0
+    },
+    "MAPMYINDIA.NS": {
+        "symbol": "MAPMYINDIA.NS",
+        "name": "C.E. Info Systems Ltd - Map My India",
+        "price": 815.9000244140625,
+        "market_cap": 44679546927.33984,
+        "beta": 0.204,
+        "pe": 33.383797,
+        "sector": "Technology",
+        "industry": "Software - Infrastructure",
+        "dividend_yield": 0.42
+    },
+    "CALCOM.BO": {
+        "symbol": "CALCOM.BO",
+        "name": "CALCOM VISION LTD.",
+        "price": 77.69000244140625,
+        "market_cap": 1086521797.9539185,
+        "beta": -0.339,
+        "pe": 40.04639,
+        "sector": "Industrials",
+        "industry": "Electrical Equipment & Parts",
+        "dividend_yield": 0.0
+    },
+    "CALSOFT.NS": {
+        "symbol": "CALSOFT.NS",
+        "name": "CALIFORNIA SOFTWARE CO.LTD.",
+        "price": 23.139999389648438,
+        "market_cap": 1430709693.6229248,
+        "beta": 0.379,
+        "pe": 128.55554,
+        "sector": "Technology",
+        "industry": "Software - Application",
+        "dividend_yield": 0.0
+    },
+    "CAMEXLTD.BO": {
+        "symbol": "CAMEXLTD.BO",
+        "name": "CAMEX LTD.",
+        "price": 40.61000061035156,
+        "market_cap": 414575313.230896,
+        "beta": 1.0,
+        "pe": 12.651091,
+        "sector": "Basic Materials",
+        "industry": "Specialty Chemicals",
+        "dividend_yield": 0.0
+    },
+    "CAMLINFINE.NS": {
+        "symbol": "CAMLINFINE.NS",
+        "name": "CAMLIN FINE SCIENCES LTD.",
+        "price": 117.08999633789062,
+        "market_cap": 22492006262.709503,
+        "beta": 0.721,
+        "pe": 0.0,
+        "sector": "Basic Materials",
+        "industry": "Specialty Chemicals",
+        "dividend_yield": 0.0
+    },
+    "CAMPUS.NS": {
+        "symbol": "CAMPUS.NS",
+        "name": "CAMPUS ACTIVEWEAR LIMITED",
+        "price": 254.0,
+        "market_cap": 77620674070.0,
+        "beta": 0.082,
+        "pe": 51.731163,
+        "sector": "Consumer Cyclical",
+        "industry": "Footwear & Accessories",
+        "dividend_yield": 0.6
+    },
+    "CANARYS.NS": {
+        "symbol": "CANARYS.NS",
+        "name": "Canarys Automations Ltd",
+        "price": 54.1,
+        "market_cap": 3094309713.3,
+        "beta": 1.0,
+        "pe": 38.920864,
+        "sector": "Unknown",
+        "industry": "Unknown",
+        "dividend_yield": 0.0
+    },
+    "CANDOUR.BO": {
+        "symbol": "CANDOUR.BO",
+        "name": "Candour Techtex Ltd",
+        "price": 67.36000061035156,
+        "market_cap": 1644354478.5795593,
+        "beta": 0.696,
+        "pe": 0.0,
+        "sector": "Industrials",
+        "industry": "Specialty Industrial Machinery",
+        "dividend_yield": 0.0
+    },
+    "CANTABIL.NS": {
+        "symbol": "CANTABIL.NS",
+        "name": "CANTABIL RETAIL INDIA LTD.",
+        "price": 215.91000366210938,
+        "market_cap": 18058289522.69165,
+        "beta": -0.115,
+        "pe": 18.85677,
+        "sector": "Consumer Cyclical",
+        "industry": "Apparel Manufacturing",
+        "dividend_yield": 0.7
+    },
+    "CAPACITE.NS": {
+        "symbol": "CAPACITE.NS",
+        "name": "CAPACITE INFRAPROJECTS LTD",
+        "price": 224.8800048828125,
+        "market_cap": 19025757602.94568,
+        "beta": 1.0,
+        "pe": 9.937252,
+        "sector": "Industrials",
+        "industry": "Engineering & Construction",
+        "dividend_yield": 0.0
+    },
+    "CNINFOTECH.BO": {
+        "symbol": "CNINFOTECH.BO",
+        "name": "CapitalNumbers Infotech Ltd",
+        "price": 95.91999816894531,
+        "market_cap": 2343036836.0728455,
+        "beta": 1.0,
+        "pe": 8.704174,
+        "sector": "Technology",
+        "industry": "Information Technology Services",
+        "dividend_yield": 2.5
+    },
+    "CAPRICORN.BO": {
+        "symbol": "CAPRICORN.BO",
+        "name": "CAPRICORN SYSTEMS GLOBAL SOLUTIONS LTD.",
+        "price": 11.14,
+        "market_cap": 311608080.0,
+        "beta": 1.0,
+        "pe": 0.0,
+        "sector": "Technology",
+        "industry": "Software - Application",
+        "dividend_yield": 0.0
+    },
+    "CAPPIPES.BO": {
+        "symbol": "CAPPIPES.BO",
+        "name": "CAPTAIN PIPES LTD",
+        "price": 10.180000305175781,
+        "market_cap": 1564104110.8886719,
+        "beta": -0.065,
+        "pe": 22.622223,
+        "sector": "Consumer Cyclical",
+        "industry": "Auto Parts",
+        "dividend_yield": 0.0
+    },
+    "CPL.BO": {
+        "symbol": "CPL.BO",
+        "name": "CAPTAIN POLYPLAST LTD",
+        "price": 71.5,
+        "market_cap": 4302783485.0,
+        "beta": 0.75,
+        "pe": 15.376344,
+        "sector": "Industrials",
+        "industry": "Farm & Heavy Construction Machinery",
+        "dividend_yield": 0.0
+    },
+    "CTCL.BO": {
+        "symbol": "CTCL.BO",
+        "name": "CAPTAIN TECHNOCAST LTD",
+        "price": 230.0,
+        "market_cap": 5340623000.0,
+        "beta": -1.126,
+        "pe": 45.90818,
+        "sector": "Industrials",
+        "industry": "Metal Fabrication",
+        "dividend_yield": 0.0
+    },
+    "CARBORUNIV.NS": {
+        "symbol": "CARBORUNIV.NS",
+        "name": "CARBORUNDUM UNIVERSAL LTD.",
+        "price": 1011.7000122070312,
+        "market_cap": 192722278298.76013,
+        "beta": 0.292,
+        "pe": 97.93805,
+        "sector": "Industrials",
+        "industry": "Conglomerates",
+        "dividend_yield": 0.39
+    },
+    "CARRARO.NS": {
+        "symbol": "CARRARO.NS",
+        "name": "Carraro India Limited",
+        "price": 529.0499877929688,
+        "market_cap": 30077305484.9115,
+        "beta": 1.0,
+        "pe": 23.042248,
+        "sector": "Consumer Cyclical",
+        "industry": "Auto Parts",
+        "dividend_yield": 0.89
+    },
+    "CARTRADE.NS": {
+        "symbol": "CARTRADE.NS",
+        "name": "CARTRADE TECH LTD",
+        "price": 1961.699951171875,
+        "market_cap": 94020423919.26392,
+        "beta": 0.048,
+        "pe": 44.06334,
+        "sector": "Consumer Cyclical",
+        "industry": "Auto & Truck Dealerships",
+        "dividend_yield": 0.0
+    },
+    "CARYSIL.NS": {
+        "symbol": "CARYSIL.NS",
+        "name": "Carysil",
+        "price": 1138.0,
+        "market_cap": 32367685628.0,
+        "beta": 0.563,
+        "pe": 32.966396,
+        "sector": "Consumer Cyclical",
+        "industry": "Furnishings, Fixtures & Appliances",
+        "dividend_yield": 0.22
+    },
+    "CASTROLIND.NS": {
+        "symbol": "CASTROLIND.NS",
+        "name": "CASTROL INDIA LTD.",
+        "price": 183.42999267578125,
+        "market_cap": 181434711652.5713,
+        "beta": 0.348,
+        "pe": 18.949379,
+        "sector": "Energy",
+        "industry": "Oil & Gas Refining & Marketing",
+        "dividend_yield": 4.76
+    },
+    "CATVISION.BO": {
+        "symbol": "CATVISION.BO",
+        "name": "CATVISION LIMITED",
+        "price": 19.299999237060547,
+        "market_cap": 105254475.8392334,
+        "beta": -0.118,
+        "pe": 0.0,
+        "sector": "Technology",
+        "industry": "Communication Equipment",
+        "dividend_yield": 23.56
+    },
+    "CCLINTER.BO": {
+        "symbol": "CCLINTER.BO",
+        "name": "CCL INTERNATIONAL LTD.",
+        "price": 24.450000762939453,
+        "market_cap": 469259084.64279175,
+        "beta": -0.112,
+        "pe": 18.664124,
+        "sector": "Industrials",
+        "industry": "Engineering & Construction",
+        "dividend_yield": 0.0
+    },
+    "CCL.NS": {
+        "symbol": "CCL.NS",
+        "name": "CCL PRODUCTS (INDIA) LTD.",
+        "price": 1078.199951171875,
+        "market_cap": 143614460935.37402,
+        "beta": 0.024,
+        "pe": 37.026096,
+        "sector": "Consumer Defensive",
+        "industry": "Packaged Foods",
+        "dividend_yield": 0.72
+    },
+    "CDG.BO": {
+        "symbol": "CDG.BO",
+        "name": "CDG PETCHEM LTD",
+        "price": 208.8000030517578,
+        "market_cap": 1928372428.1845093,
+        "beta": -0.087,
+        "pe": 124.28572,
+        "sector": "Consumer Cyclical",
+        "industry": "Textile Manufacturing",
+        "dividend_yield": 0.0
+    },
+    "CEATLTD.NS": {
+        "symbol": "CEATLTD.NS",
+        "name": "CEAT LTD.",
+        "price": 3184.60009765625,
+        "market_cap": 128471608531.60156,
+        "beta": 0.518,
+        "pe": 18.433666,
+        "sector": "Consumer Cyclical",
+        "industry": "Auto Parts",
+        "dividend_yield": 0.93
+    },
+    "CEIGALL.NS": {
+        "symbol": "CEIGALL.NS",
+        "name": "Ceigall India Limited",
+        "price": 360.6000061035156,
+        "market_cap": 62818273939.86209,
+        "beta": 1.0,
+        "pe": 20.326946,
+        "sector": "Industrials",
+        "industry": "Engineering & Construction",
+        "dividend_yield": 0.0
+    },
+    "CELLECOR.NS": {
+        "symbol": "CELLECOR.NS",
+        "name": "Cellecor Gadgets",
+        "price": 288.8,
+        "market_cap": 62865348640.0,
+        "beta": 1.0,
+        "pe": 160.44444,
+        "sector": "Unknown",
+        "industry": "Unknown",
+        "dividend_yield": 0.0
+    },
+    "CELLO.NS": {
+        "symbol": "CELLO.NS",
+        "name": "Cello World Ltd",
+        "price": 380.04998779296875,
+        "market_cap": 83947354475.34949,
+        "beta": 0.365,
+        "pe": 25.888964,
+        "sector": "Consumer Cyclical",
+        "industry": "Furnishings, Fixtures & Appliances",
+        "dividend_yield": 0.39
+    },
+    "CENLUB.BO": {
+        "symbol": "CENLUB.BO",
+        "name": "CENLUB INDUSTRIES LTD.",
+        "price": 225.85000610351562,
+        "market_cap": 1053115767.6100769,
+        "beta": 0.419,
+        "pe": 14.627591,
+        "sector": "Industrials",
+        "industry": "Specialty Industrial Machinery",
+        "dividend_yield": 0.0
+    },
+    "CMPDI.NS": {
+        "symbol": "CMPDI.NS",
+        "name": "Central Mine Planning & Design Institute Limited",
+        "price": 228.72999572753906,
+        "market_cap": null,
+        "beta": 1.0,
+        "pe": 26.59651,
+        "sector": "Basic Materials",
+        "industry": "Other Industrial Metals & Mining",
+        "dividend_yield": 0.0
+    },
+    "CENTUM.NS": {
+        "symbol": "CENTUM.NS",
+        "name": "CENTUM ELECTRONICS LTD.",
+        "price": 3589.89990234375,
+        "market_cap": 52918653432.15088,
+        "beta": -0.124,
+        "pe": 52.76161,
+        "sector": "Technology",
+        "industry": "Electronic Components",
+        "dividend_yield": 0.17
+    },
+    "CENTENKA.NS": {
+        "symbol": "CENTENKA.NS",
+        "name": "CENTURY ENKA LTD.",
+        "price": 502.45001220703125,
+        "market_cap": 10978828709.780823,
+        "beta": 0.103,
+        "pe": 10.892044,
+        "sector": "Consumer Cyclical",
+        "industry": "Textile Manufacturing",
+        "dividend_yield": 1.98
+    },
+    "CENTURYPLY.NS": {
+        "symbol": "CENTURYPLY.NS",
+        "name": "CENTURY PLYBOARDS (I) LTD.",
+        "price": 752.9000244140625,
+        "market_cap": 167274049595.14526,
+        "beta": 0.235,
+        "pe": 63.751057,
+        "sector": "Basic Materials",
+        "industry": "Lumber & Wood Production",
+        "dividend_yield": 0.13
+    },
+    "CERA.NS": {
+        "symbol": "CERA.NS",
+        "name": "CERA SANITARYWARE LTD.",
+        "price": 5577.0,
+        "market_cap": 71904065805.0,
+        "beta": -0.129,
+        "pe": 35.28407,
+        "sector": "Industrials",
+        "industry": "Building Products & Equipment",
+        "dividend_yield": 1.34
+    },
+    "CFF.BO": {
+        "symbol": "CFF.BO",
+        "name": "CFF Fluid Control Ltd",
+        "price": 720.8499755859375,
+        "market_cap": 15119179472.937012,
+        "beta": 0.967,
+        "pe": 37.80021,
+        "sector": "Industrials",
+        "industry": "Aerospace & Defense",
+        "dividend_yield": 0.14
+    },
+    "CGPOWER.NS": {
+        "symbol": "CGPOWER.NS",
+        "name": "CG POWER AND INDUSTRIAL SOLUTIONS LTD",
+        "price": 906.6500244140625,
+        "market_cap": 1427935934906.979,
+        "beta": 0.405,
+        "pe": 117.44172,
+        "sector": "Industrials",
+        "industry": "Electrical Equipment & Parts",
+        "dividend_yield": 0.14
+    },
+    "CGVAK.BO": {
+        "symbol": "CGVAK.BO",
+        "name": "CG-VAK SOFTWARE & EXPORTS LTD.",
+        "price": 196.10000610351562,
+        "market_cap": 990344250.8239746,
+        "beta": 0.206,
+        "pe": 10.430852,
+        "sector": "Technology",
+        "industry": "Software - Application",
+        "dividend_yield": 0.5
+    },
+    "CLSEL.NS": {
+        "symbol": "CLSEL.NS",
+        "name": "CHAMAN LAL SETIA EXPORTS LTD.",
+        "price": 280.8999938964844,
+        "market_cap": 13967926354.498901,
+        "beta": 0.503,
+        "pe": 12.16544,
+        "sector": "Consumer Defensive",
+        "industry": "Packaged Foods",
+        "dividend_yield": 0.88
+    },
+    "CHAMBLFERT.NS": {
+        "symbol": "CHAMBLFERT.NS",
+        "name": "CHAMBAL FERTILISERS & CHEMICALS LTD.",
+        "price": 461.25,
+        "market_cap": 184800871991.25,
+        "beta": 0.308,
+        "pe": 9.463479,
+        "sector": "Basic Materials",
+        "industry": "Agricultural Inputs",
+        "dividend_yield": 2.13
+    },
+    "CBPL.BO": {
+        "symbol": "CBPL.BO",
+        "name": "CHANDRA BHAGAT PHARMA LTD",
+        "price": 43.5,
+        "market_cap": 328209936.0,
+        "beta": -0.349,
+        "pe": 10.767327,
+        "sector": "Healthcare",
+        "industry": "Medical Distribution",
+        "dividend_yield": 0.0
+    },
+    "CHLOGIST.BO": {
+        "symbol": "CHLOGIST.BO",
+        "name": "CHARTERED LOGISTICS LTD.",
+        "price": 6.650000095367432,
+        "market_cap": 845481012.1250153,
+        "beta": 0.61,
+        "pe": 0.0,
+        "sector": "Industrials",
+        "industry": "Trucking",
+        "dividend_yield": 0.0
+    },
+    "CHATHA.BO": {
+        "symbol": "CHATHA.BO",
+        "name": "Chatha Foods Ltd",
+        "price": 72.0,
+        "market_cap": 1733895288.0,
+        "beta": 0.917,
+        "pe": 27.067669,
+        "sector": "Consumer Defensive",
+        "industry": "Packaged Foods",
+        "dividend_yield": 0.0
+    },
+    "CHEMBOND.NS": {
+        "symbol": "CHEMBOND.NS",
+        "name": "CHEMBOND CHEMICALS LTD.",
+        "price": 156.38999938964844,
+        "market_cap": 2103177752.1118164,
+        "beta": 0.917,
+        "pe": 16.307611,
+        "sector": "Basic Materials",
+        "industry": "Specialty Chemicals",
+        "dividend_yield": 1.09
+    },
+    "CHEMCRUX.BO": {
+        "symbol": "CHEMCRUX.BO",
+        "name": "CHEMCRUX ENTERPRISES LTD",
+        "price": 90.04000091552734,
+        "market_cap": 1333387967.157898,
+        "beta": 0.337,
+        "pe": 35.73016,
+        "sector": "Basic Materials",
+        "industry": "Specialty Chemicals",
+        "dividend_yield": 1.1
+    },
+    "CHEMFAB.NS": {
+        "symbol": "CHEMFAB.NS",
+        "name": "CHEMFAB ALKALIS LTD",
+        "price": 405.29998779296875,
+        "market_cap": 5825661245.1397705,
+        "beta": -0.062,
+        "pe": 0.0,
+        "sector": "Basic Materials",
+        "industry": "Specialty Chemicals",
+        "dividend_yield": 0.31
+    },
+    "CHEMKART.BO": {
+        "symbol": "CHEMKART.BO",
+        "name": "Chemkart India Ltd",
+        "price": 135.0,
+        "market_cap": 1633365000.0,
+        "beta": 1.0,
+        "pe": 7.8215528,
+        "sector": "Basic Materials",
+        "industry": "Chemicals",
+        "dividend_yield": 0.0
+    },
+    "CHEMPLASTS.NS": {
+        "symbol": "CHEMPLASTS.NS",
+        "name": "CHEMPLAST SANMAR LTD",
+        "price": 207.4600067138672,
+        "market_cap": 32801413283.56668,
+        "beta": -0.107,
+        "pe": 0.0,
+        "sector": "Basic Materials",
+        "industry": "Chemicals",
+        "dividend_yield": 0.0
+    },
+    "CHENFERRO.BO": {
+        "symbol": "CHENFERRO.BO",
+        "name": "CHENNAI FERROUS INDUSTRIES LTD",
+        "price": 90.58000183105469,
+        "market_cap": 326496431.8200531,
+        "beta": 0.152,
+        "pe": 20.493214,
+        "sector": "Basic Materials",
+        "industry": "Steel",
+        "dividend_yield": 0.0
+    },
+    "CHEVIOT.NS": {
+        "symbol": "CHEVIOT.NS",
+        "name": "CHEVIOT CO.LTD.",
+        "price": 1097.0,
+        "market_cap": 6408536875.0,
+        "beta": 0.523,
+        "pe": 12.39128,
+        "sector": "Consumer Cyclical",
+        "industry": "Textile Manufacturing",
+        "dividend_yield": 2.23
+    },
+    "CHORDIA.BO": {
+        "symbol": "CHORDIA.BO",
+        "name": "CHORDIA FOOD PRODUCTS LTD.",
+        "price": 72.98999786376953,
+        "market_cap": 294022104.87472534,
+        "beta": 1.0,
+        "pe": 46.1962,
+        "sector": "Real Estate",
+        "industry": "Real Estate Services",
+        "dividend_yield": 0.0
+    },
+    "CHOTHANI.BO": {
+        "symbol": "CHOTHANI.BO",
+        "name": "CHOTHANI FOODS LTD",
+        "price": 8.7,
+        "market_cap": 90132000.0,
+        "beta": 1.0,
+        "pe": 45.789474,
+        "sector": "Consumer Defensive",
+        "industry": "Packaged Foods",
+        "dividend_yield": 0.0
+    },
+    "CIEINDIA.NS": {
+        "symbol": "CIEINDIA.NS",
+        "name": "CIE AUTOMOTIVE INDIA LIMITED",
+        "price": 452.0,
+        "market_cap": 171471794404.0,
+        "beta": 1.0,
+        "pe": 19.83326,
+        "sector": "Consumer Cyclical",
+        "industry": "Auto Parts",
+        "dividend_yield": 1.57
+    },
+    "CIGNITITEC.NS": {
+        "symbol": "CIGNITITEC.NS",
+        "name": "CIGNITI TECHNOLOGIES LTD.",
+        "price": 1260.0999755859375,
+        "market_cap": 34711922363.36682,
+        "beta": -0.127,
+        "pe": 11.531985,
+        "sector": "",
+        "industry": "",
+        "dividend_yield": 0.0
+    },
+    "CINEVISTA.NS": {
+        "symbol": "CINEVISTA.NS",
+        "name": "CINEVISTA LTD.",
+        "price": 15.359999656677246,
+        "market_cap": 882224236.2807512,
+        "beta": 0.317,
+        "pe": "Infinity",
+        "sector": "Communication Services",
+        "industry": "Entertainment",
+        "dividend_yield": 0.0
+    },
+    "CIPLA.NS": {
+        "symbol": "CIPLA.NS",
+        "name": "CIPLA LTD.",
+        "price": 1375.199951171875,
+        "market_cap": 1110887271415.814,
+        "beta": 0.093,
+        "pe": 28.65,
+        "sector": "Healthcare",
+        "industry": "Drug Manufacturers - Specialty & Generic",
+        "dividend_yield": 0.94
+    },
+    "CCAL.BO": {
+        "symbol": "CCAL.BO",
+        "name": "City Crops Agro Ltd",
+        "price": 20.8799991607666,
+        "market_cap": 340693935.10643005,
+        "beta": 0.775,
+        "pe": 0.0,
+        "sector": "Consumer Defensive",
+        "industry": "Farm Products",
+        "dividend_yield": 0.0
+    },
+    "CITYONLINE.BO": {
+        "symbol": "CITYONLINE.BO",
+        "name": "CITY ONLINE SERVICES LTD",
+        "price": 6.76,
+        "market_cap": 34913372.0,
+        "beta": 0.534,
+        "pe": 0.0,
+        "sector": "Communication Services",
+        "industry": "Telecom Services",
+        "dividend_yield": 0.0
+    },
+    "CFL.BO": {
+        "symbol": "CFL.BO",
+        "name": "Classic Filaments Ltd",
+        "price": 51.3,
+        "market_cap": 313614855.0,
+        "beta": -0.437,
+        "pe": 0.0,
+        "sector": "Consumer Cyclical",
+        "industry": "Textile Manufacturing",
+        "dividend_yield": 0.0
+    },
+    "CLEAN.NS": {
+        "symbol": "CLEAN.NS",
+        "name": "CLEAN SCIENCE AND TECHNOLOGY LTD",
+        "price": 793.5,
+        "market_cap": 84331036756.5,
+        "beta": 0.255,
+        "pe": 36.71911,
+        "sector": "Basic Materials",
+        "industry": "Specialty Chemicals",
+        "dividend_yield": 0.77
+    },
+    "CTLLAB.BO": {
+        "symbol": "CTLLAB.BO",
+        "name": "Clinitech Laboratory Ltd",
+        "price": 37.8,
+        "market_cap": 86274720.0,
+        "beta": 1.0,
+        "pe": 12.393442,
+        "sector": "Healthcare",
+        "industry": "Diagnostics & Research",
+        "dividend_yield": 0.0
+    },
+    "CLN.BO": {
+        "symbol": "CLN.BO",
+        "name": "CLN Energy Ltd",
+        "price": 425.1499938964844,
+        "market_cap": 4486714173.088074,
+        "beta": 1.0,
+        "pe": 26.638472,
+        "sector": "Consumer Cyclical",
+        "industry": "Auto Parts",
+        "dividend_yield": 0.0
+    },
+    "CMSINFO.NS": {
+        "symbol": "CMSINFO.NS",
+        "name": "CMS Info Systems Ltd",
+        "price": 304.6499938964844,
+        "market_cap": 50156825860.782196,
+        "beta": 0.295,
+        "pe": 16.674875,
+        "sector": "Industrials",
+        "industry": "Specialty Business Services",
+        "dividend_yield": 1.8
+    },
+    "COALINDIA.NS": {
+        "symbol": "COALINDIA.NS",
+        "name": "COAL INDIA LTD.",
+        "price": 472.29998779296875,
+        "market_cap": 2910656513613.483,
+        "beta": 0.003,
+        "pe": 9.358034,
+        "sector": "Energy",
+        "industry": "Thermal Coal",
+        "dividend_yield": 4.66
+    },
+    "COARO.BO": {
+        "symbol": "COARO.BO",
+        "name": "COASTAL ROADWAYS LTD.",
+        "price": 27.1,
+        "market_cap": 112371911.5,
+        "beta": 0.822,
+        "pe": 7.112861,
+        "sector": "Industrials",
+        "industry": "Trucking",
+        "dividend_yield": 0.0
+    },
+    "COCHMAL.BO": {
+        "symbol": "COCHMAL.BO",
+        "name": "COCHIN MALABAR ESTATES & INDUSTRIES LTD.",
+        "price": 142.35000610351562,
+        "market_cap": 252231114.61486816,
+        "beta": 0.45,
+        "pe": 0.0,
+        "sector": "Consumer Defensive",
+        "industry": "Farm Products",
+        "dividend_yield": 0.0
+    },
+    "COCHINM.BO": {
+        "symbol": "COCHINM.BO",
+        "name": "COCHIN MINERALS & RUTILE LTD.",
+        "price": 256.29998779296875,
+        "market_cap": 2006828904.4189453,
+        "beta": 1.0,
+        "pe": 13.632978,
+        "sector": "Basic Materials",
+        "industry": "Other Industrial Metals & Mining",
+        "dividend_yield": 3.09
+    },
+    "COCHINSHIP.NS": {
+        "symbol": "COCHINSHIP.NS",
+        "name": "COCHIN SHIPYARD LTD",
+        "price": 1455.699951171875,
+        "market_cap": 382966678600.2588,
+        "beta": 0.699,
+        "pe": 53.322346,
+        "sector": "Industrials",
+        "industry": "Aerospace & Defense",
+        "dividend_yield": 0.9
+    },
+    "COFORGE.NS": {
+        "symbol": "COFORGE.NS",
+        "name": "COFORGE LTD",
+        "price": 1420.9000244140625,
+        "market_cap": 610986930927.6455,
+        "beta": 0.164,
+        "pe": 32.470295,
+        "sector": "Technology",
+        "industry": "Information Technology Services",
+        "dividend_yield": 1.05
+    },
+    "COLPAL.NS": {
+        "symbol": "COLPAL.NS",
+        "name": "COLGATE-PALMOLIVE (INDIA) LTD.",
+        "price": 2018.5999755859375,
+        "market_cap": 549030194152.12573,
+        "beta": 0.563,
+        "pe": 41.390198,
+        "sector": "Consumer Defensive",
+        "industry": "Household & Personal Products",
+        "dividend_yield": 2.4
+    },
+    "COLINZ.BO": {
+        "symbol": "COLINZ.BO",
+        "name": "COLINZ LABORATORIES LTD.",
+        "price": 61.880001068115234,
+        "market_cap": 155881910.6906891,
+        "beta": -0.103,
+        "pe": 31.571428,
+        "sector": "Healthcare",
+        "industry": "Drug Manufacturers - Specialty & Generic",
+        "dividend_yield": 0.0
+    },
+    "COMSYN.NS": {
+        "symbol": "COMSYN.NS",
+        "name": "COMMERCIAL SYN BAGS LTD",
+        "price": 153.0,
+        "market_cap": 6171897600.0,
+        "beta": 0.243,
+        "pe": 22.566372,
+        "sector": "Consumer Cyclical",
+        "industry": "Packaging & Containers",
+        "dividend_yield": 0.26
+    },
+    "COMMITTED.NS": {
+        "symbol": "COMMITTED.NS",
+        "name": "Committed Cargo Care Ltd",
+        "price": 53.1,
+        "market_cap": 608504760.0,
+        "beta": 1.0,
+        "pe": 5.8544655,
+        "sector": "Unknown",
+        "industry": "Unknown",
+        "dividend_yield": 0.0
+    },
+    "CAMS.NS": {
+        "symbol": "CAMS.NS",
+        "name": "COMPUTER AGE MANAGEMENT SERVICES LTD",
+        "price": 752.4000244140625,
+        "market_cap": 186583542349.50903,
+        "beta": 0.109,
+        "pe": 39.269314,
+        "sector": "Technology",
+        "industry": "Information Technology Services",
+        "dividend_yield": 1.62
+    },
+    "CONART.BO": {
+        "symbol": "CONART.BO",
+        "name": "CONART ENGINEERS LTD.",
+        "price": 101.0,
+        "market_cap": 634280000.0,
+        "beta": 0.059,
+        "pe": 12.407862,
+        "sector": "Industrials",
+        "industry": "Engineering & Construction",
+        "dividend_yield": 0.0
+    },
+    "CONCORDBIO.NS": {
+        "symbol": "CONCORDBIO.NS",
+        "name": "Concord Biotech Ltd",
+        "price": 1201.5,
+        "market_cap": 125696369106.0,
+        "beta": 0.642,
+        "pe": 48.60437,
+        "sector": "Healthcare",
+        "industry": "Biotechnology",
+        "dividend_yield": 0.65
+    },
+    "CNCRD.BO": {
+        "symbol": "CNCRD.BO",
+        "name": "Concord Control Systems Ltd",
+        "price": 2937.89990234375,
+        "market_cap": 29732257983.495117,
+        "beta": 1.0,
+        "pe": 70.31834,
+        "sector": "Industrials",
+        "industry": "Railroads",
+        "dividend_yield": 0.0
     }
 }
