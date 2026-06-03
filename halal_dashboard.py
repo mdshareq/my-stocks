@@ -1455,7 +1455,9 @@ if not stock_data.empty:
         st.markdown("### TOP 10 ALGORITHMIC PICKS")
         if not UNIVERSE_METRICS_DF.empty:
             st.markdown("<span style='font-size:0.8rem; color:var(--primary-color);'>Scanning the 2,700+ Master Database</span>", unsafe_allow_html=True)
-            top_10 = UNIVERSE_METRICS_DF.sort_values(by='Buy Score', ascending=False).head(10)
+            # Ensure the TOP 10 picks are strictly highly liquid Mid/Large Caps (> ₹2,000 Crores) to avoid suggesting penny stocks
+            safe_universe = UNIVERSE_METRICS_DF[UNIVERSE_METRICS_DF['market_cap'] >= 20000000000]
+            top_10 = safe_universe.sort_values(by='Buy Score', ascending=False).head(10)
         else:
             top_10 = stock_data.head(10)
         st.dataframe(
