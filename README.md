@@ -2,47 +2,57 @@
 
 **Institutional Shariah-Compliant Algorithmic Screener**
 
-Shareq Equities is a modern, futuristic web dashboard built with Streamlit that tracks, analyzes, and provides AI-driven insights on the top 50 Shariah-compliant Indian stocks. It features algorithmic buy scoring, historical backtesting, real-time news radar, and interactive technical charts.
-
-
----
-
-## Key Features
-
-- **Live Market Tracker:** Real-time tracking of top 50 Halal stocks with custom SVG Sparklines showing 30-day closing trends, Relative Strength Index (RSI), and Simple Moving Average (SMA50) metrics.
-- **Algorithmic Buy Score:** A proprietary algorithmic score evaluating stock momentum, RSI, and debt-to-equity ratios.
-- **Advanced AI Advisor:** Integrated with Google's Gemini Pro AI to provide minimalist, institutional financial insights via an interactive chat terminal (requires API Key).
-- **Advanced Charts:** Interactive 90-day technical price action charts powered by Plotly.
-- **News Radar:** Fetches recent, relevant headlines from Google News RSS for any selected asset.
-- **Algo Accuracy Backtester:** Simulates historical telemetry from 30 days ago to test the success rate of past 'Strong Buy' signals.
-- **Futuristic UI:** Custom minimalist, dark-themed CSS with neon accents.
+Shareq Equities is a modern, futuristic web dashboard built with Streamlit that tracks, analyzes, and provides AI-driven insights on the top 50+ Shariah-compliant Indian stocks. It features algorithmic buy scoring, dynamic portfolio generation, historical backtesting powered by Firebase, real-time news radar, and interactive technical charts.
 
 ---
 
-## Algorithmic Buy Score Logic
+## 🌟 Key Features
 
-The screener evaluates each asset based on a proprietary algorithmic scoring system (Base: 50 points):
-
-- **Trend & Momentum:** `+5` points if Price > 50-Day SMA. `+10` points if Price > 200-Day SMA.
-- **MACD Crossover:** `+15` points for a fresh Bullish MACD Crossover, or `+5` points for ongoing bullish momentum.
-- **Oversold Indicators (RSI & Bollinger):** `+10` points if RSI < 30 (`+5` if RSI < 40); `-20` points if RSI > 70. `+10` points if Price is at or below the Lower Bollinger Band.
-- **Volume Surge:** `+10` points if current daily volume exceeds the 20-day average.
-- **Shariah Financials:** `+10` points if Debt/Equity < 33%; `+10` points if Cash/Assets < 33%.
-- **Broader Market Filter:** `-15` points penalty if the NIFTY 50 index is trading below its 50-Day SMA (protects against market crashes).
-- **Strong Buy Signal:** Achieved when the total score is `≥ 85`.
+- **📊 Live Market Tracker:** Real-time tracking of Halal stocks with custom SVG Sparklines showing 30-day closing trends, Relative Strength Index (RSI), Simple Moving Average (SMA50), and 14-Day return metrics.
+- **🧠 Algorithmic Buy Score:** A proprietary mathematical engine that evaluates stock momentum, MACD Crossovers, RSI, Bollinger Bands, and debt-to-equity ratios.
+- **💼 Dynamic Model Portfolios:** A "Smart Waterfall Allocator" that takes your monthly SIP budget and dynamically builds Short-Term Momentum, Mid-Term Balanced, and Long-Term Compounder portfolios, calculating exact share quantities to buy without wasting a single rupee.
+- **🤖 Advanced AI Advisor:** Integrated with Google's Gemini Pro AI to provide minimalist, institutional financial insights via an interactive chat terminal.
+- **🗄️ Firebase Data Telemetry:** Secure, NoSQL data persistence that logs daily algorithmic snapshots to Firebase Firestore.
+- **🎯 Real-World Backtesting:** The *Algo Accuracy* engine actively queries Firebase for predictions made exactly 30 days ago, comparing them to live prices today to calculate the algorithm's actual Win/Loss percentage.
+- **📈 Advanced Charts & News:** Interactive 90-day technical price action charts and live RSS headlines from Google News.
 
 ---
 
-## How to Run the App (Installation & Setup)
+## 🛠️ How it Works
 
-Follow these steps to set up and run the application locally on your machine:
+The backend engine processes data in four distinct phases:
 
-### 1. Clone or Download the Repository
-Open a terminal in the directory where you want the project to live, or extract the downloaded zip file into a folder.
+1. **Market Scanning:** The app pulls live trading data from Yahoo Finance for over 60 pre-vetted Shariah-compliant assets.
+2. **Technical Telemetry:** It calculates rolling indicators like the 50-Day & 200-Day SMA, 14-Day RSI, MACD histograms, and Bollinger Bands.
+3. **Scoring & Matrixing:** It assigns points (from a baseline of 50) based on momentum signals. For example, a fresh bullish MACD crossover grants +15 points, while an oversold RSI grants +10. A penalty is applied if the broader NIFTY 50 index is crashing.
+4. **Data Persistence:** The Top 20 "Strong Buy" predictions are packaged into a JSON snapshot and pushed silently to your Firebase database to serve as a historical record for future backtesting.
+
+---
+
+## 📖 How to Use the App
+
+### The Core Modules
+- **System Settings (Sidebar):** Filter assets to monitor, trigger a manual scan, or configure the AI core by entering your Gemini API key.
+- **Model Portfolios (SIP Calculator):** Drag the "Monthly SIP Investment" slider. The engine will instantly recalculate exactly which stocks you should buy today, how many shares you can afford, and exactly how much uninvested cash will be leftover in your brokerage.
+- **Algo Accuracy Tab:** Check this tab to see a real-world backtest of how the algorithm's "Strong Buy" signals from 30 days ago actually performed in the market today.
+
+### Setting up the Gemini AI Advisor
+To unlock the Interactive Terminal:
+1. Obtain an API Key from [Google AI Studio](https://aistudio.google.com/).
+2. **Local Usage:** Paste it into the sidebar. It will securely save to a local `.env_gemini_key` file.
+3. **Cloud Usage:** If deploying to Streamlit Cloud, add `GEMINI_API_KEY = "your-key"` to your App Settings -> Secrets.
+
+---
+
+## 🚀 Installation & Setup
+
+Follow these steps to set up and run the application locally:
+
+### 1. Clone the Repository
+Open a terminal in the directory where you want the project to live.
 
 ### 2. Set Up a Virtual Environment (Recommended)
-Create and activate a virtual environment to manage dependencies securely without breaking global Python packages:
-
+Create and activate a virtual environment to manage dependencies:
 ```bash
 # Windows
 python -m venv venv
@@ -56,41 +66,23 @@ source venv/bin/activate
 ### 3. Install Dependencies
 Install all required Python packages via pip:
 ```bash
-pip install streamlit yfinance pandas plotly requests google-generativeai
+pip install -r requirements.txt
 ```
 
-### 4. Run the Application
+### 4. Firebase Configuration (Optional but Recommended)
+To enable historical data telemetry and real-world backtesting:
+1. Create a [Firebase Project](https://console.firebase.google.com/) with a Firestore database.
+2. Generate a Service Account JSON key from your project settings.
+3. Rename the downloaded file to exactly `.firebase_key.json` and place it in the root directory. *(Note: This file is ignored by git and will never be uploaded).*
+
+### 5. Run the Application
 Execute the Streamlit application from your terminal:
 ```bash
-# Recommended command for Windows
 py -m streamlit run halal_dashboard.py
-
-# Alternative for macOS/Linux
-streamlit run halal_dashboard.py
 ```
 *(Once run, a browser tab will automatically open at `http://localhost:8501`)*
 
 ---
 
-## Platform Navigation & Usage
-
-- **System Settings (Sidebar):** Filter assets to monitor, trigger a manual scan, or configure the AI core.
-- **API Key Management:** Input your Gemini API Key in the sidebar to activate the **Advanced AI Advisor** module. The key is securely saved locally to an `.env_gemini_key` file (which is ignored by Git via `.gitignore`) to preserve state across sessions.
-- **Interactive Tabs:**
-  - **📊 Live Tracker:** Grid view of all assets with dynamic sparkline charts and indicator telemetry.
-  - **📈 Advanced Charts:** Deep dive into 90 days of historical price action.
-  - **📰 News Radar:** RSS-parsed recent news feed regarding the selected stock.
-  - **🎯 Algo Accuracy:** Displays the historical win-rate of the algorithm's recommendations from 30 days ago.
-
----
-
-## Project Structure
-
-- `halal_dashboard.py`: Core Streamlit application containing the dashboard layout, data fetching logic from `yfinance`, technical calculations, and the Gemini AI integration.
-- `.gitignore`: Configured to exclude system caches, virtual environments, and the local `.env_gemini_key` file to prevent accidental leaks of your API keys.
-- `README.md`: System documentation (this file).
-
----
-
-## Disclaimer
-This project is for educational and informational purposes only. The "Algorithmic Buy Score" and AI advice are simulated metrics and should not be considered professional financial advice. Always perform your own due diligence before making investment decisions.
+## ⚠️ Disclaimer
+This project is for educational and informational purposes only. The "Algorithmic Buy Score", SIP Portfolios, and AI advice are simulated metrics and should not be considered professional financial advice. Always perform your own due diligence before making investment decisions.
