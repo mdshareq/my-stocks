@@ -386,15 +386,12 @@ HALAL_STOCKS = {
     "MARUTI.NS": {"name": "Maruti Suzuki", "sector": "Auto", "color": "#8b5cf6"}, 
     "BAJAJ-AUTO.NS": {"name": "Bajaj Auto", "sector": "Auto", "color": "#8b5cf6"}, 
     "EICHERMOT.NS": {"name": "Eicher Motors", "sector": "Auto", "color": "#8b5cf6"}, 
-    "HEROMOTOCO.NS": {"name": "Hero MotoCorp", "sector": "Auto", "color": "#8b5cf6"}, 
-    "TVSMOTOR.NS": {"name": "TVS Motor Company", "sector": "Auto", "color": "#8b5cf6"}, 
+    "HEROMOTOCO.NS": {"name": "Hero MotoCorp", "sector": "Auto", "color": "#8b5cf6"},
     "BOSCHLTD.NS": {"name": "Bosch Limited", "sector": "Auto", "color": "#8b5cf6"},
     
     # Cement / Core
     "ULTRACEMCO.NS": {"name": "Ultratech Cement", "sector": "Core", "color": "#f59e0b"}, 
-    "SHREECEM.NS": {"name": "Shree Cement", "sector": "Core", "color": "#f59e0b"}, 
-    "GRASIM.NS": {"name": "Grasim Industries", "sector": "Core", "color": "#f59e0b"}, 
-    "AMBUJACEM.NS": {"name": "Ambuja Cements", "sector": "Core", "color": "#f59e0b"}, 
+    "SHREECEM.NS": {"name": "Shree Cement", "sector": "Core", "color": "#f59e0b"},
     "ACC.NS": {"name": "ACC Limited", "sector": "Core", "color": "#f59e0b"}, 
     
     # Chemicals / Paints
@@ -411,8 +408,8 @@ HALAL_STOCKS = {
     
     # Energy / Miscellaneous
     "RELIANCE.NS": {"name": "Reliance Industries", "sector": "Energy", "color": "#f97316"}, 
-    "ONGC.NS": {"name": "Oil & Natural Gas Corp", "sector": "Energy", "color": "#f97316"}, 
-    "TITAN.NS": {"name": "Titan Company", "sector": "Consumer", "color": "#eab308"},
+     
+    
 }
 REVERSE_LOOKUP = {info["name"]: ticker for ticker, info in HALAL_STOCKS.items()}
 KEY_FILE = ".env_gemini_key"
