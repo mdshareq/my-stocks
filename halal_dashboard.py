@@ -1128,13 +1128,11 @@ Check that `.firebase_key.json` exists in `E:\\my-stocks\\` and is a valid JSON 
 
                 st.markdown("<hr style='border-color: rgba(255,255,255,0.08); margin: 15px 0;'>", unsafe_allow_html=True)
                 st.markdown("<div style='text-align:center; font-size:0.75rem; color:#64748b; margin-bottom:8px;'>— or try the demo —</div>", unsafe_allow_html=True)
-                if st.button("⚡ Demo Access  (Shareq / Shareq12345)", use_container_width=True):
-                    demo_doc = db.collection("users").document("Shareq").get()
-                    if demo_doc.exists:
-                        st.session_state.user = demo_doc.to_dict()
-                        st.rerun()
-                    else:
-                        st.error("Demo account not found. Please register.")
+                if st.button("⚡ Use Demo Credentials", use_container_width=True):
+                    st.session_state["demo_prefill"] = True
+                    st.rerun()
+                if st.session_state.get("demo_prefill"):
+                    st.info("**Demo login:** Username: `Shareq` · Password: `Shareq12345`")
                 st.markdown("</div>", unsafe_allow_html=True)
         st.stop()
 
