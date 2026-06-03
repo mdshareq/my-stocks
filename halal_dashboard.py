@@ -11,13 +11,17 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 from datetime import datetime, timedelta
 
+# Resolve firebase key path relative to this script's location (not CWD)
+_SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+_FIREBASE_KEY_PATH = os.path.join(_SCRIPT_DIR, ".firebase_key.json")
+
 # --- FIREBASE INITIALIZATION ---
 db = None
 _firebase_error = None
 try:
     if not firebase_admin._apps:
-        if os.path.exists(".firebase_key.json"):
-            cred = credentials.Certificate(".firebase_key.json")
+        if os.path.exists(_FIREBASE_KEY_PATH):
+            cred = credentials.Certificate(_FIREBASE_KEY_PATH)
             firebase_admin.initialize_app(cred)
             print("Firebase: Initialized from local key file.")
         else:
