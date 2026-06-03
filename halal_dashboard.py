@@ -237,7 +237,7 @@ st.markdown(
         
         /* Streamlit inputs overrides */
         [data-testid="stSidebar"] {
-            background-color: rgba(255, 255, 255, 0.02) !important;
+            background-color: #0a0b12 !important;
             border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
         }
         [data-testid="stSidebar"] h3 {
