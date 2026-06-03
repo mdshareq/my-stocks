@@ -11,36 +11,35 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 from datetime import datetime, timedelta
 
-# Try multiple known locations for the Firebase key file
-_KEY_CANDIDATES = [
-    os.path.join(os.path.dirname(os.path.abspath(__file__)), ".firebase_key.json"),
-    os.path.join(os.getcwd(), ".firebase_key.json"),
-    r"E:\my-stocks\.firebase_key.json",
-]
-_FIREBASE_KEY_PATH = next((p for p in _KEY_CANDIDATES if os.path.exists(p)), None)
-
 # --- FIREBASE INITIALIZATION ---
+import os
 db = None
 _firebase_error = None
+_hardcoded_path = r"E:\my-stocks\.firebase_key.json"
+
 try:
     if not firebase_admin._apps:
-        if _FIREBASE_KEY_PATH:
-            cred = credentials.Certificate(_FIREBASE_KEY_PATH)
+        try:
+            cred = credentials.Certificate(_hardcoded_path)
             firebase_admin.initialize_app(cred)
-            print(f"Firebase: Initialized from {_FIREBASE_KEY_PATH}")
-        else:
+            print(f"Firebase: Initialized from {_hardcoded_path}")
+        except Exception as file_e:
             try:
                 if "firebase" in st.secrets:
                     cred = credentials.Certificate(dict(st.secrets["firebase"]))
                     firebase_admin.initialize_app(cred)
                     print("Firebase: Initialized from Streamlit secrets.")
-            except Exception:
-                pass
+                else:
+                    _firebase_error = f"File error: {file_e}"
+            except Exception as secret_e:
+                _firebase_error = f"Secrets error: {secret_e}"
+    
     if firebase_admin._apps:
         db = firestore.client()
         print("Firebase: Firestore client connected.")
     else:
-        _firebase_error = "Key not found in any candidate path."
+        if not _firebase_error:
+            _firebase_error = "Initialization skipped."
 except Exception as e:
     db = None
     _firebase_error = str(e)
