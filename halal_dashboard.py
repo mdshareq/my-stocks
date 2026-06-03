@@ -194,6 +194,13 @@ st.markdown(
             100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 184, 196, 0); }
         }
         
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
         /* Terminal Window */
         .terminal-window {
             background: rgba(255, 255, 255, 0.02) !important;
@@ -392,8 +399,11 @@ KEY_FILE = ".env_gemini_key"
 
 # --- API KEY MANAGEMENT ---
 def load_saved_key():
-    if "GEMINI_API_KEY" in st.secrets:
-        return st.secrets["GEMINI_API_KEY"]
+    try:
+        if "GEMINI_API_KEY" in st.secrets:
+            return st.secrets["GEMINI_API_KEY"]
+    except Exception:
+        pass
     if os.path.exists(KEY_FILE):
         with open(KEY_FILE, "r") as f:
             return f.read().strip()
@@ -1077,44 +1087,44 @@ if not stock_data.empty:
         if stock_filter:
             filtered_data = filtered_data[filtered_data["Company Name"].isin(stock_filter)]
             
-        def render_cards(df_chunk, cols):
-            for idx, row in enumerate(df_chunk.to_dict(orient="records")):
-                with cols[idx % 4]:
-                    direction = "positive" if row["% Change"] > 0 else "negative" if row["% Change"] < 0 else "neutral"
-                    sign = "+" if row["% Change"] > 0 else ""
-                    color_hex = "#00F0FF" if row["% Change"] > 0 else "#FF0055" if row["% Change"] < 0 else "#555555"
-                    
-                    ticker = REVERSE_LOOKUP[row['Company Name']]
-                    svg_chart = ""
-                    if not sparkline_data.empty and ticker in sparkline_data.columns:
-                        svg_chart = generate_svg_sparkline(sparkline_data[ticker].dropna(), color_hex)
-                    
-                    st.markdown(f"""
-                    <div class='stock-card {direction}'>
-                        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                            <div>
-                                <div class='symbol'>{row['Symbol']}</div>
-                                <div class='company'>{row['Company Name']}</div>
-                            </div>
-                            <div style="margin-top: 4px;">{svg_chart}</div>
+        def render_cards_html(df_chunk):
+            html = "<div class='card-grid'>"
+            for row in df_chunk.to_dict(orient="records"):
+                direction = "positive" if row["% Change"] > 0 else "negative" if row["% Change"] < 0 else "neutral"
+                sign = "+" if row["% Change"] > 0 else ""
+                color_hex = "#00F0FF" if row["% Change"] > 0 else "#FF0055" if row["% Change"] < 0 else "#555555"
+                
+                ticker = REVERSE_LOOKUP[row['Company Name']]
+                svg_chart = ""
+                if not sparkline_data.empty and ticker in sparkline_data.columns:
+                    svg_chart = generate_svg_sparkline(sparkline_data[ticker].dropna(), color_hex)
+                
+                html += f'''
+                <div class='stock-card {direction}'>
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div>
+                            <div class='symbol'>{row['Symbol']}</div>
+                            <div class='company'>{row['Company Name']}</div>
                         </div>
-                        <div class='value'>₹{row['Live Price (₹)']:.2f}</div>
-                        <div class='delta'>{sign}{row['Change (₹)']:.2f} ({sign}{row['% Change']:.2f}%)</div>
-                        <div style='margin-top: 15px; font-size: 0.75rem; font-family: monospace; color: #555;'>RSI: {row['RSI']} &nbsp;|&nbsp; SCORE: {row['Buy Score']}</div>
+                        <div style="margin-top: 4px;">{svg_chart}</div>
                     </div>
-                    """, unsafe_allow_html=True)
+                    <div class='value'>₹{row['Live Price (₹)']:.2f}</div>
+                    <div class='delta'>{sign}{row['Change (₹)']:.2f} ({sign}{row['% Change']:.2f}%)</div>
+                    <div style='margin-top: 15px; font-size: 0.75rem; font-family: monospace; color: #555;'>RSI: {row['RSI']} &nbsp;|&nbsp; SCORE: {row['Buy Score']}</div>
+                </div>
+                '''
+            html += "</div>"
+            st.markdown(html, unsafe_allow_html=True)
                     
         top_data = filtered_data.head(8)
         rest_data = filtered_data.iloc[8:]
         
-        main_cols = st.columns(4)
-        render_cards(top_data, main_cols)
+        render_cards_html(top_data)
         
         if not rest_data.empty:
             st.markdown("<br>", unsafe_allow_html=True)
             with st.expander("VIEW ALL QUALIFYING ASSETS", expanded=False):
-                expander_cols = st.columns(4)
-                render_cards(rest_data, expander_cols)
+                render_cards_html(rest_data)
 
     with tab_charts:
         st.markdown("### Technical Price Action (90 Days)")
