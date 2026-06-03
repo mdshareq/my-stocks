@@ -1010,7 +1010,7 @@ if not stock_data.empty:
                 
                 return_color = "#00F0FF" if avg_return > 0 else "#FF0055"
                 
-                holdings_html = "<div style='display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 15px;'>"
+                holdings_html = "<div style='display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-top: 15px;'>"
                 for h in holding_defs:
                     alloc_amt = monthly_sip * (h['weight'] / 100)
                     holdings_html += f"<div style='background: rgba(0,0,0,0.3); padding: 10px 15px; border-radius: 6px; border-left: 3px solid {h['color']};'><div style='display: flex; justify-content: space-between; margin-bottom: 5px;'><strong style='color: #fafafa; font-size: 0.9rem;'>{h['ticker']}</strong><span style='color: #00F0FF; font-weight: bold; font-size: 0.9rem;'>₹{alloc_amt:,.0f}</span></div><div style='display: flex; justify-content: space-between; align-items: center;'><div style='display: flex; align-items: center; gap: 5px;'><div style='width: 8px; height: 8px; border-radius: 50%; background: {h['color']};'></div><span style='color: #94a3b8; font-size: 0.75rem;'>{h['sector']}</span></div><span style='color: #94a3b8; font-size: 0.75rem;'>{h['weight']}% Alloc</span></div></div>"
@@ -1025,7 +1025,7 @@ if not stock_data.empty:
                             <div style='font-size: 1.8rem; font-weight: bold; color: {p_color};'>{avg_score:.1f}</div>
                         </div>
                     </div>
-                    <div style='display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;'>
+                    <div style='display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 15px;'>
                         <div style='background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px;'>
                             <div style='color: #94a3b8; font-size: 0.85rem; margin-bottom: 5px;'>Historical 5Y CAGR</div>
                             <div style='font-size: 1.3rem; font-weight: bold; color: #a78bfa;'>{cagr*100:.1f}%</div>
