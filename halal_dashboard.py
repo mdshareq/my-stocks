@@ -1260,22 +1260,168 @@ def hash_password(password):
 if 'user' not in st.session_state:
     st.session_state.user = None
 
-if st.session_state.user is None:
-    st.markdown("<div class='page-title' style='text-align:center;display:block;margin-top:80px;'>SHAREQ EQUITIES</div>", unsafe_allow_html=True)
-    st.markdown("<div style='text-align:center;margin-bottom:25px;color:#94a3b8;font-family:\"Space Grotesk\",sans-serif;letter-spacing:2px;'>SECURE AUTHENTICATION GATEWAY</div>", unsafe_allow_html=True)
+if 'auth_action' not in st.session_state:
+    st.session_state.auth_action = 'Login'
 
-    col1, col2, col3 = st.columns([1, 1.2, 1])
+if st.session_state.user is None:
+    st.markdown("""
+    <style>
+        /* Hide default Streamlit elements */
+        [data-testid="stSidebar"] {display: none;}
+        [data-testid="stHeader"] {display: none;}
+        
+        /* Full screen leaf background */
+        .stApp {
+            background-image: url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=2000&auto=format&fit=crop') !important;
+            background-size: cover !important;
+            background-position: center !important;
+        }
+        
+        /* Remove padding to allow full bleed */
+        .main .block-container {
+            max-width: 100% !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+        
+        /* The custom columns container */
+        [data-testid="stHorizontalBlock"] {
+            height: 100vh;
+            align-items: center;
+        }
+        
+        /* Left Column (Empty for background) */
+        [data-testid="column"]:nth-of-type(1) {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Right Column (White curved panel) */
+        [data-testid="column"]:nth-of-type(2) {
+            background-color: white !important;
+            height: 100vh !important;
+            border-top-left-radius: 40vh !important;
+            border-bottom-left-radius: 40vh !important;
+            padding: 0 10vw !important;
+            box-shadow: -20px 0 50px rgba(0,0,0,0.5) !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: center !important;
+            color: #333 !important;
+        }
+        
+        /* Typography overrides for Light Mode inside panel */
+        [data-testid="column"]:nth-of-type(2) h1 {
+            color: #4a4a4a !important;
+            font-family: 'Outfit', sans-serif !important;
+            font-size: 3.5rem !important;
+            margin-bottom: 5px !important;
+            font-weight: 700 !important;
+            text-align: center !important;
+        }
+        [data-testid="column"]:nth-of-type(2) p {
+            color: #888 !important;
+            font-size: 1.1rem !important;
+            margin-top: 0 !important;
+            margin-bottom: 30px !important;
+            text-align: center !important;
+        }
+        
+        /* Input fields */
+        [data-testid="stTextInput"] label {
+            color: #b0b0b0 !important;
+            font-size: 0.9rem !important;
+            font-weight: 300 !important;
+            margin-bottom: 5px !important;
+        }
+        [data-testid="stTextInput"] input {
+            background: transparent !important;
+            border: 2px solid #f0f0f0 !important;
+            border-radius: 40px !important;
+            color: #333 !important;
+            padding: 15px 20px !important;
+        }
+        [data-testid="stTextInput"] input:focus {
+            border-color: #a7f3d0 !important;
+            box-shadow: none !important;
+        }
+        
+        /* Primary Button */
+        [data-testid="stButton"] button[kind="primary"] {
+            background: linear-gradient(135deg, #a7f3d0 0%, #86efac 100%) !important;
+            color: white !important;
+            border: none !important;
+            border-radius: 40px !important;
+            padding: 10px 0 !important;
+            font-size: 1.3rem !important;
+            font-weight: 600 !important;
+            box-shadow: 0 10px 20px rgba(134, 239, 172, 0.4) !important;
+            width: 50% !important;
+            margin: 0 auto !important;
+            display: block !important;
+        }
+        
+        /* Secondary Button (Sign up toggle) */
+        [data-testid="stButton"] button[kind="secondary"] {
+            background: transparent !important;
+            color: #86efac !important;
+            border: none !important;
+            box-shadow: none !important;
+            font-weight: 500 !important;
+            font-size: 1.1rem !important;
+            text-decoration: underline !important;
+            margin: 0 auto !important;
+            display: block !important;
+        }
+        
+        /* Warning banner */
+        [data-testid="stNotification"] {
+            border-radius: 20px !important;
+            margin-bottom: 20px !important;
+        }
+        
+        [data-testid="stVerticalBlock"] > div > div {
+             gap: 0.8rem;
+        }
+    </style>
+    """, unsafe_allow_html=True)
+
+    col1, col2 = st.columns([1, 1.2])
+    with col1:
+        # Central leaf logo on the background
+        st.markdown("""
+        <div style='display:flex; justify-content:center; align-items:center; height: 100vh;'>
+            <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0px 4px 10px rgba(0,0,0,0.5));">
+                <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path>
+                <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path>
+            </svg>
+        </div>
+        """, unsafe_allow_html=True)
+        
     with col2:
+        # Extra vertical spacer to push content to the center visually
+        st.markdown("<div style='height: 15vh;'></div>", unsafe_allow_html=True)
+        
+        st.markdown("<h1>Welcome</h1>", unsafe_allow_html=True)
+        
+        is_login = st.session_state.auth_action == 'Login'
+        subtitle = "Login in to your account" if is_login else "Register a new account"
+        st.markdown(f"<p>{subtitle}</p>", unsafe_allow_html=True)
+        
         if db is None:
             st.warning(f"⚠️ Firebase offline — entering local mode. ({_firebase_error})")
+            
+        email_val = st.text_input("Login, email or phone number" if is_login else "Email address", placeholder=" ")
+        password_val = st.text_input("Password", type="password", placeholder=" ")
+        
+        if is_login:
+            st.markdown("<div style='text-align: right; margin-top: -5px; margin-bottom: 25px;'><a href='#' style='color: #ccc; text-decoration: underline; font-size: 0.85rem;'>Forgot the password?</a></div>", unsafe_allow_html=True)
+        else:
+            st.markdown("<div style='margin-bottom: 25px;'></div>", unsafe_allow_html=True)
 
-        st.markdown("<div style='padding:24px;background:rgba(255,255,255,0.03);border-radius:14px;border:1px solid rgba(255,255,255,0.1);'>", unsafe_allow_html=True)
-        auth_mode = st.radio("Authentication Mode", ["Login", "Register"], horizontal=True)
-        email_val = st.text_input("Username / Email", placeholder="e.g. Shareq")
-        password_val = st.text_input("Password", type="password", placeholder="••••••••")
-        st.markdown("<br>", unsafe_allow_html=True)
-
-        if st.button("Authenticate →", width="stretch", type="primary"):
+        if st.button("Login In" if is_login else "Register Now", type="primary"):
             if not email_val or not password_val:
                 st.error("Both fields are required.")
             elif db is None:
@@ -1284,7 +1430,7 @@ if st.session_state.user is None:
             else:
                 users_ref = db.collection("users").document(email_val)
                 doc = users_ref.get()
-                if auth_mode == "Register":
+                if not is_login:
                     if doc.exists:
                         st.error("Account already exists. Please log in.")
                     else:
@@ -1307,14 +1453,33 @@ if st.session_state.user is None:
                         else:
                             st.error("Incorrect password.")
 
-        st.markdown("<hr style='border-color:rgba(255,255,255,0.08);margin:25px 0;'>", unsafe_allow_html=True)
-        st.markdown("<div style='text-align:center;font-size:0.85rem;color:#94a3b8;margin-bottom:15px;'>— or try the demo —</div>", unsafe_allow_html=True)
-        if st.button("⚡ Show Demo Credentials", width="stretch"):
+        st.markdown("<div style='text-align: center; margin-top: 5px;'>", unsafe_allow_html=True)
+        
+        if st.button("Sign Up" if is_login else "Back to Login", key="toggle_auth"):
+            st.session_state.auth_action = 'Register' if is_login else 'Login'
+            st.rerun()
+            
+        st.markdown("<p style='color:#ccc !important; font-size: 0.9rem !important; margin: 20px 0 15px 0 !important;'>- or log in with -</p>", unsafe_allow_html=True)
+        
+        st.markdown("""
+        <div style='display: flex; justify-content: center; gap: 15px;'>
+            <div style='width: 45px; height: 45px; border-radius: 50%; border: 1px solid #eee; display: flex; align-items: center; justify-content: center; color: #DB4437; font-weight: bold; cursor: pointer; font-size: 1.2rem; background: white;'>G</div>
+            <div style='width: 45px; height: 45px; border-radius: 50%; border: 1px solid #eee; display: flex; align-items: center; justify-content: center; color: #4267B2; font-weight: bold; cursor: pointer; font-size: 1.2rem; background: white;'>f</div>
+        </div>
+        """, unsafe_allow_html=True)
+        st.markdown("</div>", unsafe_allow_html=True)
+
+        st.markdown("<div style='margin-top: 40px; text-align:center;'>", unsafe_allow_html=True)
+        if st.button("⚡ Show Demo Credentials"):
             st.session_state["demo_prefill"] = True
             st.rerun()
         if st.session_state.get("demo_prefill"):
             st.info("🔑 **Demo:** Username: `Shareq`")
         st.markdown("</div>", unsafe_allow_html=True)
+        
+        # Spacer at bottom
+        st.markdown("<div style='height: 15vh;'></div>", unsafe_allow_html=True)
+            
     st.stop()
 
 # --- UI LAYOUT ---
