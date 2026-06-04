@@ -1267,127 +1267,100 @@ if st.session_state.user is None:
     st.markdown("""
     <style>
         /* Overall page background */
-        .stApp {
+        [data-testid="stAppViewContainer"], .stApp {
             background-color: #f0f2f5 !important;
             background-image: none !important;
         }
         [data-testid="stSidebar"] {display: none;}
         [data-testid="stHeader"] {display: none;}
         
-        /* The main container wrapper to center everything */
+        /* Center the main container */
         .main .block-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem !important;
             max-width: 900px !important;
-            margin: 0 auto;
+            padding-top: 8vh !important;
         }
         
-        /* Style the stHorizontalBlock as the card */
-        [data-testid="stHorizontalBlock"] {
-            background-color: white;
-            border-radius: 16px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            overflow: hidden;
-            width: 100%;
-            margin-top: 8vh;
+        /* Card container (The horizontal block of columns) */
+        div[data-testid="stHorizontalBlock"] {
+            background-color: white !important;
+            border-radius: 16px !important;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1) !important;
+            overflow: hidden !important;
         }
         
         /* Left Column (White Login Area) */
-        [data-testid="column"]:nth-of-type(1) {
-            padding: 50px 60px !important;
-            background-color: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+        div[data-testid="column"]:first-child {
+            background-color: white !important;
+            padding: 40px 50px !important;
+        }
+        div[data-testid="column"]:first-child * {
+            color: #212529 !important;
         }
         
         /* Right Column (Blue Branding Area) */
-        [data-testid="column"]:nth-of-type(2) {
-            background-color: #0d6efd;
-            padding: 50px !important;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+        div[data-testid="column"]:nth-child(2) {
+            background-color: #0d6efd !important;
+            padding: 40px 50px !important;
+        }
+        div[data-testid="column"]:nth-child(2) * {
             color: white !important;
-            text-align: center;
         }
         
         /* Typography overrides */
-        [data-testid="column"]:nth-of-type(1) h1 {
-            color: #212529 !important;
+        div[data-testid="column"]:first-child h1 {
             font-family: 'Inter', sans-serif !important;
             font-size: 2rem !important;
             margin-bottom: 5px !important;
             font-weight: 700 !important;
-            text-align: left !important;
         }
-        [data-testid="column"]:nth-of-type(1) p {
+        div[data-testid="column"]:first-child p {
             color: #6c757d !important;
-            font-size: 1rem !important;
             margin-bottom: 30px !important;
-            text-align: left !important;
         }
         
-        /* Right column text */
-        [data-testid="column"]:nth-of-type(2) h2 {
-            color: white !important;
+        div[data-testid="column"]:nth-child(2) h2 {
             font-family: 'Inter', sans-serif !important;
             font-size: 1.6rem !important;
             margin-top: 30px !important;
             margin-bottom: 10px !important;
             font-weight: 600 !important;
         }
-        [data-testid="column"]:nth-of-type(2) p {
-            color: rgba(255,255,255,0.85) !important;
-            font-size: 0.95rem !important;
-            line-height: 1.5 !important;
-        }
         
         /* Input fields */
-        [data-testid="stTextInput"] label {
+        div[data-testid="stTextInput"] label p {
             color: #495057 !important;
-            font-size: 0.9rem !important;
-            font-weight: 500 !important;
-            margin-bottom: 5px !important;
+            font-weight: 600 !important;
         }
-        [data-testid="stTextInput"] input {
-            background: #f8f9fa !important;
+        div[data-testid="stTextInput"] input {
+            background-color: #f8f9fa !important;
             border: 1px solid #dee2e6 !important;
             border-radius: 6px !important;
             color: #212529 !important;
-            padding: 10px 15px !important;
         }
-        [data-testid="stTextInput"] input:focus {
+        div[data-testid="stTextInput"] input:focus {
             border-color: #0d6efd !important;
             box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25) !important;
         }
         
         /* Primary Button */
-        [data-testid="stButton"] button[kind="primary"] {
+        button[data-testid="baseButton-primary"], 
+        div[data-testid="stButton"] button:first-child {
             background-color: #0d6efd !important;
             color: white !important;
             border: none !important;
             border-radius: 6px !important;
-            padding: 12px 0 !important;
-            font-size: 1rem !important;
+            padding: 10px 0 !important;
             font-weight: 600 !important;
             width: 100% !important;
-            margin-top: 15px !important;
         }
         
-        /* Secondary Button (Sign up toggle) */
-        [data-testid="stButton"] button[kind="secondary"] {
+        /* Secondary Button overrides (Sign up toggle) */
+        button[data-testid="baseButton-secondary"] {
             background: transparent !important;
             color: #0d6efd !important;
             border: none !important;
             box-shadow: none !important;
             font-weight: 600 !important;
-            font-size: 0.9rem !important;
-            padding: 0 !important;
-            margin-left: 5px !important;
         }
         
         /* Warning banner */
