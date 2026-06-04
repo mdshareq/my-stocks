@@ -1721,6 +1721,12 @@ with st.sidebar:
                 st.rerun()
             else:
                 st.error(msg)
+
+    st.markdown("### LIVE DATA")
+    auto_refresh = st.toggle("Enable Live Auto-Refresh (1m)", value=False)
+    if auto_refresh:
+        from streamlit_autorefresh import st_autorefresh
+        st_autorefresh(interval=60000, key="data_refresh")
         
     st.markdown("### DYNAMIC FILTERS")
     min_score = st.slider("Min Algo Score", min_value=0, max_value=100, value=50, step=5)
