@@ -73,5 +73,33 @@ py -m streamlit run halal_dashboard.py
 
 ---
 
+## 🏗️ System Architecture
+
+Shareq Equities uses a **Zero-Maintenance GitOps** architecture to automatically update the financial data for free without requiring a running database server.
+
+```mermaid
+graph TD
+    subgraph "Automation (GitHub Actions)"
+        A[update_metrics.yml] -->|Runs Daily| B(ingest_metrics.py)
+        B -->|Scrapes Live Data| C((Yahoo Finance))
+        B -->|Calculates AAOIFI Ratios| D{halal_metrics.json}
+        D -->|Auto-Commits to Repo| E[GitHub Repository]
+    end
+
+    subgraph "Frontend (Streamlit Cloud)"
+        E -->|Triggers UI Redeploy| F[halal_dashboard.py]
+        F -->|Loads Static JSON| G(Universal Metrics Engine)
+        G -->|Filters & Sorts| H((Top 10 Screener))
+        G -->|Allocates Capital| I((SIP Portfolios))
+    end
+
+    subgraph "External Cloud Integrations"
+        F <-->|Saved Portfolios| J[(Firebase Firestore)]
+        F <-->|AI Terminal Insights| K((Google Gemini AI))
+    end
+```
+
+---
+
 ## ⚠️ Disclaimer
 This project is for educational and informational purposes only. The "Algorithmic Buy Score", SIP Portfolios, and AI advice are simulated metrics and should not be considered professional financial advice. Always perform your own due diligence before making investment decisions.
