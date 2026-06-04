@@ -1,6 +1,7 @@
 import streamlit as st
 import yfinance as yf
 import pandas as pd
+pd.set_option('future.no_silent_downcasting', True)
 import plotly.express as px
 import requests
 import xml.etree.ElementTree as ET
@@ -1266,198 +1267,412 @@ if 'auth_action' not in st.session_state:
 if st.session_state.user is None:
     st.markdown("""
     <style>
-        /* Overall page background */
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap');
+
+        /* ── Keyframes for pure-CSS abstract background ── */
+        @keyframes orbDrift1 {
+            0%   { transform: translate(0px, 0px); }
+            33%  { transform: translate(40px, -30px); }
+            66%  { transform: translate(-20px, 20px); }
+            100% { transform: translate(0px, 0px); }
+        }
+        @keyframes orbDrift2 {
+            0%   { transform: translate(0px, 0px); }
+            33%  { transform: translate(-35px, 25px); }
+            66%  { transform: translate(15px, -40px); }
+            100% { transform: translate(0px, 0px); }
+        }
+        @keyframes scanline {
+            0%   { top: -80px; opacity: 0; }
+            5%   { opacity: 1; }
+            95%  { opacity: 1; }
+            100% { top: 110vh; opacity: 0; }
+        }
+
+        /* Full dark background */
         [data-testid="stAppViewContainer"], .stApp {
-            background-color: #f0f2f5 !important;
+            background: #080a10 !important;
             background-image: none !important;
-        }
-        [data-testid="stSidebar"] {display: none;}
-        [data-testid="stHeader"] {display: none;}
-        
-        /* Center the main container */
-        .main .block-container {
-            max-width: 900px !important;
-            padding-top: 8vh !important;
-        }
-        
-        /* Card container (The horizontal block of columns) */
-        div[data-testid="stHorizontalBlock"] {
-            background-color: white !important;
-            border-radius: 16px !important;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1) !important;
             overflow: hidden !important;
         }
-        
-        /* Left Column (White Login Area) */
-        div[data-testid="column"]:first-child {
-            background-color: white !important;
-            padding: 40px 50px !important;
+        [data-testid="stSidebar"] {display: none !important;}
+        [data-testid="stHeader"] {display: none !important;}
+        footer {display: none !important;}
+
+        /* ── Abstract orb layer via stApp pseudo-elements ── */
+        .stApp::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(circle at 12% 22%, rgba(0,240,255,0.07) 0%, transparent 38%),
+                radial-gradient(circle at 85% 68%, rgba(167,139,250,0.06) 0%, transparent 40%),
+                radial-gradient(circle at 50% 88%, rgba(0,184,196,0.05) 0%, transparent 32%),
+                radial-gradient(circle at 78% 15%, rgba(99,102,241,0.05) 0%, transparent 28%);
+            animation: orbDrift1 18s ease-in-out infinite;
         }
-        div[data-testid="column"]:first-child * {
-            color: #212529 !important;
+        .stApp::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background-image: radial-gradient(circle, rgba(148,163,184,0.07) 1px, transparent 1px);
+            background-size: 52px 52px;
+            animation: orbDrift2 22s ease-in-out infinite;
         }
-        
-        /* Right Column (Blue Branding Area) */
-        div[data-testid="column"]:nth-child(2) {
-            background-color: #0d6efd !important;
-            padding: 40px 50px !important;
+
+        /* Scanline sweep */
+        [data-testid="stAppViewContainer"]::after {
+            content: '';
+            position: fixed;
+            left: 0; right: 0;
+            height: 80px;
+            background: linear-gradient(to bottom, transparent, rgba(0,240,255,0.025), transparent);
+            animation: scanline 8s linear infinite;
+            z-index: 1;
+            pointer-events: none;
         }
-        div[data-testid="column"]:nth-child(2) * {
-            color: white !important;
+
+        /* ── Login card = the block-container itself ── */
+        .main .block-container {
+            max-width: 430px !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+            margin-top: 8vh !important;
+            margin-bottom: 5vh !important;
+            padding: 44px 44px 40px !important;
+            position: relative !important;
+            z-index: 10 !important;
+            background: rgba(255, 255, 255, 0.03) !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            border-radius: 20px !important;
+            backdrop-filter: blur(20px) !important;
+            -webkit-backdrop-filter: blur(20px) !important;
+            box-shadow: 0 24px 64px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.06) !important;
         }
-        
-        /* Typography overrides */
-        div[data-testid="column"]:first-child h1 {
-            font-family: 'Inter', sans-serif !important;
-            font-size: 2rem !important;
-            margin-bottom: 5px !important;
-            font-weight: 700 !important;
+
+        /* Brand tag */
+        .login-brand {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(0, 240, 255, 0.55);
+            margin-bottom: 28px;
         }
-        div[data-testid="column"]:first-child p {
-            color: #6c757d !important;
-            margin-bottom: 30px !important;
+
+        /* Heading */
+        .login-heading {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.65rem;
+            font-weight: 600;
+            color: #f0f4f8;
+            margin-bottom: 4px;
+            letter-spacing: -0.3px;
         }
-        
-        div[data-testid="column"]:nth-child(2) h2 {
-            font-family: 'Inter', sans-serif !important;
-            font-size: 1.6rem !important;
-            margin-top: 30px !important;
-            margin-bottom: 10px !important;
-            font-weight: 600 !important;
+
+        /* Sub-heading */
+        .login-sub {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.32);
+            margin-bottom: 28px;
+            letter-spacing: 0.2px;
         }
-        
-        /* Input fields */
+
+        /* Input label */
         div[data-testid="stTextInput"] label p {
-            color: #495057 !important;
-            font-weight: 600 !important;
+            font-family: 'Space Grotesk', sans-serif !important;
+            font-size: 0.7rem !important;
+            font-weight: 500 !important;
+            letter-spacing: 1.2px !important;
+            text-transform: uppercase !important;
+            color: rgba(255,255,255,0.38) !important;
+            margin-bottom: 5px !important;
         }
+
+        /* Input field */
         div[data-testid="stTextInput"] input {
-            background-color: #f8f9fa !important;
-            border: 1px solid #dee2e6 !important;
-            border-radius: 6px !important;
-            color: #212529 !important;
+            background: rgba(255, 255, 255, 0.04) !important;
+            border: 1px solid rgba(255, 255, 255, 0.09) !important;
+            border-radius: 10px !important;
+            color: #f0f4f8 !important;
+            font-family: 'Space Grotesk', sans-serif !important;
+            font-size: 0.9rem !important;
+            padding: 11px 13px !important;
+            transition: all 0.2s ease !important;
+        }
+        div[data-testid="stTextInput"] input::placeholder {
+            color: rgba(255,255,255,0.16) !important;
         }
         div[data-testid="stTextInput"] input:focus {
-            border-color: #0d6efd !important;
-            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25) !important;
+            border-color: rgba(0, 240, 255, 0.38) !important;
+            box-shadow: 0 0 0 3px rgba(0, 240, 255, 0.07) !important;
+            background: rgba(0, 240, 255, 0.03) !important;
         }
-        
-        /* Primary Button */
-        button[data-testid="baseButton-primary"], 
-        div[data-testid="stButton"] button:first-child {
-            background-color: #0d6efd !important;
-            color: white !important;
-            border: none !important;
-            border-radius: 6px !important;
-            padding: 10px 0 !important;
-            font-weight: 600 !important;
-            width: 100% !important;
-        }
-        
-        /* Secondary Button overrides (Sign up toggle) */
-        button[data-testid="baseButton-secondary"] {
-            background: transparent !important;
-            color: #0d6efd !important;
+        div[data-testid="stTextInput"] > div {
             border: none !important;
             box-shadow: none !important;
-            font-weight: 600 !important;
         }
-        
-        /* Warning banner */
-        [data-testid="stNotification"] {
+
+        /* Primary button (Sign In) */
+        div[data-testid="stButton"] button[kind="primary"] {
+            background: linear-gradient(135deg, rgba(0,240,255,0.13) 0%, rgba(167,139,250,0.13) 100%) !important;
+            border: 1px solid rgba(0,240,255,0.32) !important;
+            color: #d8f8ff !important;
+            border-radius: 10px !important;
+            font-family: 'Space Grotesk', sans-serif !important;
+            font-size: 0.78rem !important;
+            font-weight: 600 !important;
+            letter-spacing: 1.8px !important;
+            text-transform: uppercase !important;
+            padding: 12px 0 !important;
+            width: 100% !important;
+            transition: all 0.22s ease !important;
+            box-shadow: 0 0 18px rgba(0,240,255,0.07) !important;
+        }
+        div[data-testid="stButton"] button[kind="primary"]:hover {
+            background: linear-gradient(135deg, rgba(0,240,255,0.2) 0%, rgba(167,139,250,0.2) 100%) !important;
+            border-color: rgba(0,240,255,0.55) !important;
+            box-shadow: 0 0 28px rgba(0,240,255,0.15) !important;
+            transform: translateY(-1px) !important;
+        }
+
+        /* Ghost / secondary buttons */
+        div[data-testid="stButton"] button[kind="secondary"],
+        div[data-testid="stButton"] button:not([kind="primary"]) {
+            background: transparent !important;
+            border: none !important;
+            color: rgba(0,240,255,0.5) !important;
+            font-family: 'Space Grotesk', sans-serif !important;
+            font-size: 0.8rem !important;
+            font-weight: 500 !important;
+            box-shadow: none !important;
+            padding: 2px 0 !important;
+            text-decoration: underline !important;
+            text-underline-offset: 3px !important;
+        }
+        div[data-testid="stButton"] button:not([kind="primary"]):hover {
+            color: rgba(0,240,255,0.82) !important;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        /* Demo button */
+        .demo-btn button {
+            background: rgba(255,255,255,0.03) !important;
+            border: 1px solid rgba(255,255,255,0.07) !important;
+            color: rgba(255,255,255,0.28) !important;
             border-radius: 8px !important;
-            margin-bottom: 20px !important;
+            font-size: 0.72rem !important;
+            letter-spacing: 1.2px !important;
+            text-transform: uppercase !important;
+            text-decoration: none !important;
+            padding: 8px 0 !important;
+            font-weight: 500 !important;
+            transition: all 0.2s !important;
+        }
+        .demo-btn button:hover {
+            border-color: rgba(255,255,255,0.15) !important;
+            color: rgba(255,255,255,0.5) !important;
+            background: rgba(255,255,255,0.06) !important;
+        }
+
+        /* Alert/notification */
+        [data-testid="stNotification"] {
+            background: rgba(255,255,255,0.03) !important;
+            border: 1px solid rgba(255,255,255,0.09) !important;
+            border-radius: 10px !important;
+            color: rgba(255,255,255,0.65) !important;
+        }
+
+        /* Thin divider */
+        .login-divider {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.07), transparent);
+            margin: 24px 0;
+        }
+
+        /* Footer */
+        .login-footer {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6rem;
+            color: rgba(255,255,255,0.15);
+            text-align: center;
+            margin-top: 24px;
+            letter-spacing: 0.5px;
         }
     </style>
     """, unsafe_allow_html=True)
 
-    col1, col2 = st.columns([1.2, 1])
-    
-    with col1:
-        st.markdown("<h1>Log in to your Account</h1>", unsafe_allow_html=True)
-        
-        is_login = st.session_state.auth_action == 'Login'
-        subtitle = "Welcome back! Enter your details." if is_login else "Create a new account."
-        st.markdown(f"<p>{subtitle}</p>", unsafe_allow_html=True)
-        
-        if db is None:
-            st.warning(f"⚠️ Firebase offline — local mode.")
-            
-        email_val = st.text_input("Email", placeholder="name@example.com")
-        password_val = st.text_input("Password", type="password", placeholder="••••••••")
-        
-        if is_login:
-            st.markdown("<div style='text-align: right; margin-top: -10px; margin-bottom: 5px;'><a href='#' style='color: #0d6efd; text-decoration: none; font-size: 0.85rem; font-weight: 500;'>Forgot Password?</a></div>", unsafe_allow_html=True)
+
+    is_login = st.session_state.auth_action == 'Login'
+
+    # Brand tag
+    st.markdown("<div class='login-brand'>Shareq Equities &nbsp;/&nbsp; Terminal Access</div>", unsafe_allow_html=True)
+
+    # Heading
+    heading = "Welcome back" if is_login else "Create account"
+    sub = "Enter your credentials to continue." if is_login else "Register to unlock the full platform."
+    st.markdown(f"<div class='login-heading'>{heading}</div>", unsafe_allow_html=True)
+    st.markdown(f"<div class='login-sub'>{sub}</div>", unsafe_allow_html=True)
+
+    if db is None:
+        st.warning("⚠️ Firebase offline — local mode active.")
+
+    email_val = st.text_input("Email", placeholder="user@example.com", key="auth_email")
+    password_val = st.text_input("Password", type="password", placeholder="••••••••", key="auth_pass")
+
+    if is_login:
+        st.markdown("<div style='text-align:right; margin-top:-8px; margin-bottom:18px;'><a href='#' style='font-family:Space Grotesk,sans-serif; font-size:0.75rem; color:rgba(0,240,255,0.45); text-decoration:none; letter-spacing:0.5px;'>Forgot password?</a></div>", unsafe_allow_html=True)
+    else:
+        st.markdown("<div style='height:18px'></div>", unsafe_allow_html=True)
+
+    # Primary button
+    if st.button("Sign In" if is_login else "Create Account", type="primary", use_container_width=True):
+        if not email_val or not password_val:
+            st.error("Both fields are required.")
+        elif db is None:
+            st.session_state.user = {"email": email_val, "gemini_api_key": ""}
+            st.rerun()
         else:
-            st.markdown("<div style='margin-bottom: 15px;'></div>", unsafe_allow_html=True)
-
-        if st.button("Log In" if is_login else "Register Account", type="primary"):
-            if not email_val or not password_val:
-                st.error("Both fields are required.")
-            elif db is None:
-                st.session_state.user = {"email": email_val, "gemini_api_key": ""}
-                st.rerun()
-            else:
-                users_ref = db.collection("users").document(email_val)
-                doc = users_ref.get()
-                if not is_login:
-                    if doc.exists:
-                        st.error("Account already exists. Please log in.")
-                    else:
-                        users_ref.set({
-                            "email": email_val,
-                            "password_hash": hash_password(password_val),
-                            "gemini_api_key": "",
-                            "created_at": firestore.SERVER_TIMESTAMP
-                        })
-                        st.session_state.user = {"email": email_val, "gemini_api_key": ""}
-                        st.rerun()
+            users_ref = db.collection("users").document(email_val)
+            doc = users_ref.get()
+            if not is_login:
+                if doc.exists:
+                    st.error("Account already exists. Please sign in.")
                 else:
-                    if not doc.exists:
-                        st.error("Account not found. Please register first.")
+                    users_ref.set({
+                        "email": email_val,
+                        "password_hash": hash_password(password_val),
+                        "gemini_api_key": "",
+                        "created_at": firestore.SERVER_TIMESTAMP
+                    })
+                    st.session_state.user = {"email": email_val, "gemini_api_key": ""}
+                    st.rerun()
+            else:
+                if not doc.exists:
+                    st.error("No account found. Please register first.")
+                else:
+                    user_data = doc.to_dict()
+                    if user_data.get("password_hash") == hash_password(password_val):
+                        st.session_state.user = user_data
+                        st.rerun()
                     else:
-                        user_data = doc.to_dict()
-                        if user_data.get("password_hash") == hash_password(password_val):
-                            st.session_state.user = user_data
-                            st.rerun()
-                        else:
-                            st.error("Incorrect password.")
+                        st.error("Incorrect password.")
 
-        st.markdown("<div style='display: flex; align-items: center; justify-content: center; gap: 5px; margin-top: 25px;'>", unsafe_allow_html=True)
-        prompt_text = "Don't have an account?" if is_login else "Already have an account?"
-        st.markdown(f"<span style='font-size: 0.9rem; color: #6c757d;'>{prompt_text}</span>", unsafe_allow_html=True)
-        if st.button("Create an account" if is_login else "Log in", key="toggle_auth"):
-            st.session_state.auth_action = 'Register' if is_login else 'Login'
-            st.rerun()
-        st.markdown("</div>", unsafe_allow_html=True)
+    # Divider
+    st.markdown("<div class='login-divider'></div>", unsafe_allow_html=True)
 
-        st.markdown("<div style='margin-top: 15px; text-align:center;'>", unsafe_allow_html=True)
-        if st.button("⚡ Quick Demo Access"):
-            st.session_state["demo_prefill"] = True
-            st.rerun()
-        if st.session_state.get("demo_prefill"):
-            st.info("🔑 **Demo:** Username: `Shareq`")
-        st.markdown("</div>", unsafe_allow_html=True)
-        
-    with col2:
-        # Illustration / Text on the right blue panel
-        st.markdown("""
-        <div style='display:flex; justify-content:center; align-items:center; margin-bottom: 20px; margin-top: 20px;'>
-            <svg width="200" height="200" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-                <line x1="8" y1="21" x2="16" y2="21"></line>
-                <line x1="12" y1="17" x2="12" y2="21"></line>
-                <circle cx="12" cy="10" r="3"></circle>
-                <path d="M7 10h.01"></path>
-                <path d="M17 10h.01"></path>
-            </svg>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown("<h2>Connect with everything.</h2>", unsafe_allow_html=True)
-        st.markdown("<p>Institutional Shariah-Compliant Algorithmic Screener & Telemetry Dashboard.</p>", unsafe_allow_html=True)
-            
+    # Toggle auth mode
+    prompt_text = "No account yet?" if is_login else "Already registered?"
+    toggle_label = "Register here" if is_login else "Sign in instead"
+    st.markdown(f"<div style='text-align:center; font-family:Space Grotesk,sans-serif; font-size:0.8rem; color:rgba(255,255,255,0.28); margin-bottom:10px;'>{prompt_text}</div>", unsafe_allow_html=True)
+    if st.button(toggle_label, key="toggle_auth", use_container_width=True):
+        st.session_state.auth_action = 'Register' if is_login else 'Login'
+        st.rerun()
+
+    # Demo access
+    st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)
+    st.markdown("<div class='demo-btn'>", unsafe_allow_html=True)
+    if st.button("⚡  Quick Demo Access", key="demo_btn", use_container_width=True):
+        st.session_state["demo_prefill"] = True
+        st.rerun()
+    st.markdown("</div>", unsafe_allow_html=True)
+
+    if st.session_state.get("demo_prefill"):
+        st.info("🔑 Demo credential — Username: `Shareq`")
+
+    # Footer
+    st.markdown("<div class='login-footer'>SHAREQ EQUITIES &nbsp;·&nbsp; SHARIAH-COMPLIANT SCREENER &nbsp;·&nbsp; v2.0</div>", unsafe_allow_html=True)
+
     st.stop()
+
+# --- CSS RESET: Undo login-page overrides for the main dashboard ---
+st.markdown("""
+<style>
+    /* Restore full-width block container */
+    .main .block-container {
+        max-width: 1200px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        padding: 3rem 1rem 1rem !important;
+        background: transparent !important;
+        border: none !important;
+        border-radius: 0 !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        box-shadow: none !important;
+    }
+    /* Remove login pseudo-element backgrounds from stApp */
+    .stApp::before, .stApp::after {
+        display: none !important;
+    }
+    [data-testid="stAppViewContainer"]::after {
+        display: none !important;
+    }
+    /* Restore dashboard sidebar */
+    [data-testid="stSidebar"] { display: flex !important; }
+    [data-testid="stHeader"] { display: flex !important; }
+    footer { display: block !important; }
+    /* Restore dashboard button styles (undo login button overrides) */
+    div[data-testid="stButton"] button[kind="primary"] {
+        background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%) !important;
+        border: none !important;
+        color: white !important;
+        border-radius: 8px !important;
+        font-size: inherit !important;
+        font-weight: 600 !important;
+        letter-spacing: 0.5px !important;
+        text-transform: none !important;
+        padding: 8px 20px !important;
+        width: auto !important;
+        box-shadow: 0 4px 15px rgba(99, 102, 241, 0.2) !important;
+        text-decoration: none !important;
+    }
+    div[data-testid="stButton"] button[kind="primary"]:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 20px rgba(168, 85, 247, 0.4) !important;
+    }
+    div[data-testid="stButton"] button:not([kind="primary"]) {
+        background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%) !important;
+        border: none !important;
+        color: white !important;
+        border-radius: 8px !important;
+        font-weight: 600 !important;
+        box-shadow: 0 4px 15px rgba(99, 102, 241, 0.2) !important;
+        text-decoration: none !important;
+        padding: 8px 20px !important;
+    }
+    div[data-testid="stButton"] button:not([kind="primary"]):hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 20px rgba(168, 85, 247, 0.4) !important;
+        color: white !important;
+    }
+    /* Restore input styles for dashboard */
+    div[data-testid="stTextInput"] label p {
+        font-size: 0.875rem !important;
+        font-weight: 400 !important;
+        letter-spacing: 0 !important;
+        text-transform: none !important;
+        color: inherit !important;
+    }
+    div[data-testid="stTextInput"] input {
+        background: rgba(255,255,255,0.05) !important;
+        border: 1px solid rgba(255,255,255,0.1) !important;
+        color: #fafafa !important;
+        font-size: 0.9rem !important;
+        padding: 8px 12px !important;
+    }
+</style>
+""", unsafe_allow_html=True)
 
 # --- UI LAYOUT ---
 # Header Area
