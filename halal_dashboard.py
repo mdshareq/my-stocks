@@ -1451,7 +1451,8 @@ if st.session_state.user is None:
                             st.error("Incorrect password.")
 
         st.markdown("<div style='display: flex; align-items: center; justify-content: center; gap: 5px; margin-top: 25px;'>", unsafe_allow_html=True)
-        st.markdown(f"<span style='font-size: 0.9rem; color: #6c757d;'>{'Don\\'t have an account?' if is_login else 'Already have an account?'}</span>", unsafe_allow_html=True)
+        prompt_text = "Don't have an account?" if is_login else "Already have an account?"
+        st.markdown(f"<span style='font-size: 0.9rem; color: #6c757d;'>{prompt_text}</span>", unsafe_allow_html=True)
         if st.button("Create an account" if is_login else "Log in", key="toggle_auth"):
             st.session_state.auth_action = 'Register' if is_login else 'Login'
             st.rerun()
