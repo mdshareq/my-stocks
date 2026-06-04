@@ -1267,16 +1267,15 @@ if st.session_state.user is None:
     col1, col2, col3 = st.columns([1, 1.2, 1])
     with col2:
         if db is None:
-            st.warning(f"\u26a0\ufe0f Firebase offline \u2014 entering local mode. ({_firebase_error})")
+            st.warning(f"⚠️ Firebase offline — entering local mode. ({_firebase_error})")
 
         st.markdown("<div style='padding:24px;background:rgba(255,255,255,0.03);border-radius:14px;border:1px solid rgba(255,255,255,0.1);'>", unsafe_allow_html=True)
-        auth_mode = st.radio("Mode", ["Login", "Register"], horizontal=True, label_visibility="collapsed")
-        st.markdown("<br>", unsafe_allow_html=True)
+        auth_mode = st.radio("Authentication Mode", ["Login", "Register"], horizontal=True)
         email_val = st.text_input("Username / Email", placeholder="e.g. Shareq")
-        password_val = st.text_input("Password", type="password", placeholder="\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022")
+        password_val = st.text_input("Password", type="password", placeholder="••••••••")
         st.markdown("<br>", unsafe_allow_html=True)
 
-        if st.button("Authenticate \u2192", width="stretch"):
+        if st.button("Authenticate →", width="stretch", type="primary"):
             if not email_val or not password_val:
                 st.error("Both fields are required.")
             elif db is None:
@@ -1308,13 +1307,13 @@ if st.session_state.user is None:
                         else:
                             st.error("Incorrect password.")
 
-        st.markdown("<hr style='border-color:rgba(255,255,255,0.08);margin:16px 0;'>", unsafe_allow_html=True)
-        st.markdown("<div style='text-align:center;font-size:0.75rem;color:#64748b;margin-bottom:8px;'>\u2014 or try the demo \u2014</div>", unsafe_allow_html=True)
-        if st.button("\u26a1 Show Demo Credentials", width="stretch"):
+        st.markdown("<hr style='border-color:rgba(255,255,255,0.08);margin:25px 0;'>", unsafe_allow_html=True)
+        st.markdown("<div style='text-align:center;font-size:0.85rem;color:#94a3b8;margin-bottom:15px;'>— or try the demo —</div>", unsafe_allow_html=True)
+        if st.button("⚡ Show Demo Credentials", width="stretch"):
             st.session_state["demo_prefill"] = True
             st.rerun()
         if st.session_state.get("demo_prefill"):
-            st.info("\U0001f511 **Demo:** Username: `Shareq`")
+            st.info("🔑 **Demo:** Username: `Shareq`")
         st.markdown("</div>", unsafe_allow_html=True)
     st.stop()
 
@@ -1375,14 +1374,10 @@ with st.sidebar:
     stock_filter = st.multiselect("ASSET FILTER (Optional)", options=ordered_companies, default=[])
     if st.button("EXECUTE SCAN"): st.rerun()
 
-with st.status("Initializing Shareq Matrix Core...", expanded=True) as status:
-    st.write("📡 Establishing uplink to primary exchanges...")
+with st.spinner("Initializing Shareq Matrix Core & Syncing Live Data..."):
     stock_data, sparkline_data = fetch_live_and_spark_data()
-    st.write("📊 Synchronizing Shariah-compliant universe...")
     if not stock_data.empty:
         log_daily_predictions_to_firebase(stock_data)
-    st.write("🧠 Calibrating algorithmic models...")
-    status.update(label="System Ready", state="complete", expanded=False)
 
 if not stock_data.empty:
     gainers = stock_data[stock_data["% Change"] > 0].shape[0]
