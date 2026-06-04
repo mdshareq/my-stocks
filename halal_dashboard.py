@@ -1266,162 +1266,159 @@ if 'auth_action' not in st.session_state:
 if st.session_state.user is None:
     st.markdown("""
     <style>
-        /* Hide default Streamlit elements */
+        /* Overall page background */
+        .stApp {
+            background-color: #f0f2f5 !important;
+            background-image: none !important;
+        }
         [data-testid="stSidebar"] {display: none;}
         [data-testid="stHeader"] {display: none;}
         
-        /* Full screen leaf background */
-        .stApp {
-            background-image: url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=2000&auto=format&fit=crop') !important;
-            background-size: cover !important;
-            background-position: center !important;
-        }
-        
-        /* Remove padding to allow full bleed */
+        /* The main container wrapper to center everything */
         .main .block-container {
-            max-width: 100% !important;
-            padding: 0 !important;
-            margin: 0 !important;
-        }
-        
-        /* The custom columns container */
-        [data-testid="stHorizontalBlock"] {
-            height: 100vh;
-            align-items: center;
-        }
-        
-        /* Left Column (Empty for background) */
-        [data-testid="column"]:nth-of-type(1) {
-            height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 2rem !important;
+            max-width: 900px !important;
+            margin: 0 auto;
         }
         
-        /* Right Column (White curved panel) */
+        /* Style the stHorizontalBlock as the card */
+        [data-testid="stHorizontalBlock"] {
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            overflow: hidden;
+            width: 100%;
+            margin-top: 8vh;
+        }
+        
+        /* Left Column (White Login Area) */
+        [data-testid="column"]:nth-of-type(1) {
+            padding: 50px 60px !important;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        /* Right Column (Blue Branding Area) */
         [data-testid="column"]:nth-of-type(2) {
-            background-color: white !important;
-            height: 100vh !important;
-            border-top-left-radius: 40vh !important;
-            border-bottom-left-radius: 40vh !important;
-            padding: 0 10vw !important;
-            box-shadow: -20px 0 50px rgba(0,0,0,0.5) !important;
-            display: flex !important;
-            flex-direction: column !important;
-            justify-content: center !important;
-            color: #333 !important;
+            background-color: #0d6efd;
+            padding: 50px !important;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white !important;
+            text-align: center;
         }
         
-        /* Typography overrides for Light Mode inside panel */
-        [data-testid="column"]:nth-of-type(2) h1 {
-            color: #4a4a4a !important;
-            font-family: 'Outfit', sans-serif !important;
-            font-size: 3.5rem !important;
+        /* Typography overrides */
+        [data-testid="column"]:nth-of-type(1) h1 {
+            color: #212529 !important;
+            font-family: 'Inter', sans-serif !important;
+            font-size: 2rem !important;
             margin-bottom: 5px !important;
             font-weight: 700 !important;
-            text-align: center !important;
+            text-align: left !important;
+        }
+        [data-testid="column"]:nth-of-type(1) p {
+            color: #6c757d !important;
+            font-size: 1rem !important;
+            margin-bottom: 30px !important;
+            text-align: left !important;
+        }
+        
+        /* Right column text */
+        [data-testid="column"]:nth-of-type(2) h2 {
+            color: white !important;
+            font-family: 'Inter', sans-serif !important;
+            font-size: 1.6rem !important;
+            margin-top: 30px !important;
+            margin-bottom: 10px !important;
+            font-weight: 600 !important;
         }
         [data-testid="column"]:nth-of-type(2) p {
-            color: #888 !important;
-            font-size: 1.1rem !important;
-            margin-top: 0 !important;
-            margin-bottom: 30px !important;
-            text-align: center !important;
+            color: rgba(255,255,255,0.85) !important;
+            font-size: 0.95rem !important;
+            line-height: 1.5 !important;
         }
         
         /* Input fields */
         [data-testid="stTextInput"] label {
-            color: #b0b0b0 !important;
+            color: #495057 !important;
             font-size: 0.9rem !important;
-            font-weight: 300 !important;
+            font-weight: 500 !important;
             margin-bottom: 5px !important;
         }
         [data-testid="stTextInput"] input {
-            background: transparent !important;
-            border: 2px solid #f0f0f0 !important;
-            border-radius: 40px !important;
-            color: #333 !important;
-            padding: 15px 20px !important;
+            background: #f8f9fa !important;
+            border: 1px solid #dee2e6 !important;
+            border-radius: 6px !important;
+            color: #212529 !important;
+            padding: 10px 15px !important;
         }
         [data-testid="stTextInput"] input:focus {
-            border-color: #a7f3d0 !important;
-            box-shadow: none !important;
+            border-color: #0d6efd !important;
+            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25) !important;
         }
         
         /* Primary Button */
         [data-testid="stButton"] button[kind="primary"] {
-            background: linear-gradient(135deg, #a7f3d0 0%, #86efac 100%) !important;
+            background-color: #0d6efd !important;
             color: white !important;
             border: none !important;
-            border-radius: 40px !important;
-            padding: 10px 0 !important;
-            font-size: 1.3rem !important;
+            border-radius: 6px !important;
+            padding: 12px 0 !important;
+            font-size: 1rem !important;
             font-weight: 600 !important;
-            box-shadow: 0 10px 20px rgba(134, 239, 172, 0.4) !important;
-            width: 50% !important;
-            margin: 0 auto !important;
-            display: block !important;
+            width: 100% !important;
+            margin-top: 15px !important;
         }
         
         /* Secondary Button (Sign up toggle) */
         [data-testid="stButton"] button[kind="secondary"] {
             background: transparent !important;
-            color: #86efac !important;
+            color: #0d6efd !important;
             border: none !important;
             box-shadow: none !important;
-            font-weight: 500 !important;
-            font-size: 1.1rem !important;
-            text-decoration: underline !important;
-            margin: 0 auto !important;
-            display: block !important;
+            font-weight: 600 !important;
+            font-size: 0.9rem !important;
+            padding: 0 !important;
+            margin-left: 5px !important;
         }
         
         /* Warning banner */
         [data-testid="stNotification"] {
-            border-radius: 20px !important;
+            border-radius: 8px !important;
             margin-bottom: 20px !important;
-        }
-        
-        [data-testid="stVerticalBlock"] > div > div {
-             gap: 0.8rem;
         }
     </style>
     """, unsafe_allow_html=True)
 
-    col1, col2 = st.columns([1, 1.2])
+    col1, col2 = st.columns([1.2, 1])
+    
     with col1:
-        # Central leaf logo on the background
-        st.markdown("""
-        <div style='display:flex; justify-content:center; align-items:center; height: 100vh;'>
-            <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0px 4px 10px rgba(0,0,0,0.5));">
-                <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path>
-                <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path>
-            </svg>
-        </div>
-        """, unsafe_allow_html=True)
-        
-    with col2:
-        # Extra vertical spacer to push content to the center visually
-        st.markdown("<div style='height: 15vh;'></div>", unsafe_allow_html=True)
-        
-        st.markdown("<h1>Welcome</h1>", unsafe_allow_html=True)
+        st.markdown("<h1>Log in to your Account</h1>", unsafe_allow_html=True)
         
         is_login = st.session_state.auth_action == 'Login'
-        subtitle = "Login in to your account" if is_login else "Register a new account"
+        subtitle = "Welcome back! Enter your details." if is_login else "Create a new account."
         st.markdown(f"<p>{subtitle}</p>", unsafe_allow_html=True)
         
         if db is None:
-            st.warning(f"⚠️ Firebase offline — entering local mode. ({_firebase_error})")
+            st.warning(f"⚠️ Firebase offline — local mode.")
             
-        email_val = st.text_input("Login, email or phone number" if is_login else "Email address", placeholder=" ")
-        password_val = st.text_input("Password", type="password", placeholder=" ")
+        email_val = st.text_input("Email", placeholder="name@example.com")
+        password_val = st.text_input("Password", type="password", placeholder="••••••••")
         
         if is_login:
-            st.markdown("<div style='text-align: right; margin-top: -5px; margin-bottom: 25px;'><a href='#' style='color: #ccc; text-decoration: underline; font-size: 0.85rem;'>Forgot the password?</a></div>", unsafe_allow_html=True)
+            st.markdown("<div style='text-align: right; margin-top: -10px; margin-bottom: 5px;'><a href='#' style='color: #0d6efd; text-decoration: none; font-size: 0.85rem; font-weight: 500;'>Forgot Password?</a></div>", unsafe_allow_html=True)
         else:
-            st.markdown("<div style='margin-bottom: 25px;'></div>", unsafe_allow_html=True)
+            st.markdown("<div style='margin-bottom: 15px;'></div>", unsafe_allow_html=True)
 
-        if st.button("Login In" if is_login else "Register Now", type="primary"):
+        if st.button("Log In" if is_login else "Register Account", type="primary"):
             if not email_val or not password_val:
                 st.error("Both fields are required.")
             elif db is None:
@@ -1453,32 +1450,38 @@ if st.session_state.user is None:
                         else:
                             st.error("Incorrect password.")
 
-        st.markdown("<div style='text-align: center; margin-top: 5px;'>", unsafe_allow_html=True)
-        
-        if st.button("Sign Up" if is_login else "Back to Login", key="toggle_auth"):
+        st.markdown("<div style='display: flex; align-items: center; justify-content: center; gap: 5px; margin-top: 25px;'>", unsafe_allow_html=True)
+        st.markdown(f"<span style='font-size: 0.9rem; color: #6c757d;'>{'Don\\'t have an account?' if is_login else 'Already have an account?'}</span>", unsafe_allow_html=True)
+        if st.button("Create an account" if is_login else "Log in", key="toggle_auth"):
             st.session_state.auth_action = 'Register' if is_login else 'Login'
             st.rerun()
-            
-        st.markdown("<p style='color:#ccc !important; font-size: 0.9rem !important; margin: 20px 0 15px 0 !important;'>- or log in with -</p>", unsafe_allow_html=True)
-        
-        st.markdown("""
-        <div style='display: flex; justify-content: center; gap: 15px;'>
-            <div style='width: 45px; height: 45px; border-radius: 50%; border: 1px solid #eee; display: flex; align-items: center; justify-content: center; color: #DB4437; font-weight: bold; cursor: pointer; font-size: 1.2rem; background: white;'>G</div>
-            <div style='width: 45px; height: 45px; border-radius: 50%; border: 1px solid #eee; display: flex; align-items: center; justify-content: center; color: #4267B2; font-weight: bold; cursor: pointer; font-size: 1.2rem; background: white;'>f</div>
-        </div>
-        """, unsafe_allow_html=True)
         st.markdown("</div>", unsafe_allow_html=True)
 
-        st.markdown("<div style='margin-top: 40px; text-align:center;'>", unsafe_allow_html=True)
-        if st.button("⚡ Show Demo Credentials"):
+        st.markdown("<div style='margin-top: 15px; text-align:center;'>", unsafe_allow_html=True)
+        if st.button("⚡ Quick Demo Access"):
             st.session_state["demo_prefill"] = True
             st.rerun()
         if st.session_state.get("demo_prefill"):
             st.info("🔑 **Demo:** Username: `Shareq`")
         st.markdown("</div>", unsafe_allow_html=True)
         
-        # Spacer at bottom
-        st.markdown("<div style='height: 15vh;'></div>", unsafe_allow_html=True)
+    with col2:
+        # Illustration / Text on the right blue panel
+        st.markdown("""
+        <div style='display:flex; justify-content:center; align-items:center; margin-bottom: 20px; margin-top: 20px;'>
+            <svg width="200" height="200" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                <line x1="8" y1="21" x2="16" y2="21"></line>
+                <line x1="12" y1="17" x2="12" y2="21"></line>
+                <circle cx="12" cy="10" r="3"></circle>
+                <path d="M7 10h.01"></path>
+                <path d="M17 10h.01"></path>
+            </svg>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("<h2>Connect with everything.</h2>", unsafe_allow_html=True)
+        st.markdown("<p>Institutional Shariah-Compliant Algorithmic Screener & Telemetry Dashboard.</p>", unsafe_allow_html=True)
             
     st.stop()
 
