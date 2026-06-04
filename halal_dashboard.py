@@ -1160,8 +1160,8 @@ def generate_dynamic_portfolios(stock_data, monthly_sip, risk_profile="Balanced"
 
     # If the 2700+ universe exists, filter it!
     if universe_df is not None and not universe_df.empty:
-        # Globally remove dangerous penny stocks and micro-caps (< ₹250 Crores) from the screener
-        universe_df = universe_df[universe_df['market_cap'] >= 2500000000]
+        # Globally remove dangerous penny stocks and micro-caps (< ₹250 Crores) and ensure Halal compliance
+        universe_df = universe_df[(universe_df['market_cap'] >= 2500000000) & (universe_df['is_compliant'] == True)]
         
         if "Conservative" in risk_profile:
             # Conservative: Strictly Mid & Large-Cap (> ₹5,000 Crores) and low Beta
@@ -1482,7 +1482,7 @@ if not stock_data.empty:
         st.markdown("### TOP 10 ALGORITHMIC PICKS")
         if not UNIVERSE_METRICS_DF.empty:
             st.markdown("<span style='font-size:0.8rem; color:var(--primary-color);'>Scanning the 2,700+ Master Database</span>", unsafe_allow_html=True)
-            safe_universe = UNIVERSE_METRICS_DF[UNIVERSE_METRICS_DF['market_cap'] >= 20000000000]
+            safe_universe = UNIVERSE_METRICS_DF[(UNIVERSE_METRICS_DF['market_cap'] >= 20000000000) & (UNIVERSE_METRICS_DF['is_compliant'] == True)]
             top_10 = safe_universe.sort_values(by='Buy Score', ascending=False).head(10)
             
             st.dataframe(
@@ -1786,6 +1786,8 @@ if not stock_data.empty:
         if submitted:
             with st.spinner("Synthesizing algorithmic portfolios..."):
                 portfolios = generate_dynamic_portfolios(stock_data, monthly_sip, risk_profile, strategy)
+            
+            st.markdown("<div style='margin-bottom: 25px; padding: 15px; background: rgba(255,255,255,0.02); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); display: flex; flex-wrap: wrap; gap: 15px; font-size: 0.75rem;'> <div style='color: #94a3b8; margin-right: 10px; font-weight: 600; font-family: \"Space Grotesk\", sans-serif; letter-spacing: 1px;'>SECTOR LEGEND</div> <div style='display: flex; align-items: center; gap: 6px;'><span style='width: 10px; height: 10px; border-radius: 50%; background: #0ea5e9;'></span> Tech/IT</div> <div style='display: flex; align-items: center; gap: 6px;'><span style='width: 10px; height: 10px; border-radius: 50%; background: #10b981;'></span> Pharma/Healthcare</div> <div style='display: flex; align-items: center; gap: 6px;'><span style='width: 10px; height: 10px; border-radius: 50%; background: #8b5cf6;'></span> Auto/Financials</div> <div style='display: flex; align-items: center; gap: 6px;'><span style='width: 10px; height: 10px; border-radius: 50%; background: #eab308;'></span> Consumer/Energy</div> <div style='display: flex; align-items: center; gap: 6px;'><span style='width: 10px; height: 10px; border-radius: 50%; background: #ec4899;'></span> FMCG/Real Estate</div> <div style='display: flex; align-items: center; gap: 6px;'><span style='width: 10px; height: 10px; border-radius: 50%; background: #06b6d4;'></span> Chemicals/Utilities</div> <div style='display: flex; align-items: center; gap: 6px;'><span style='width: 10px; height: 10px; border-radius: 50%; background: #64748b;'></span> Industrials/Others</div> </div>", unsafe_allow_html=True)
         else:
             st.info("Set your parameters and click Run Universal Screener to generate custom portfolios.")
             portfolios = {}
@@ -1826,8 +1828,7 @@ if not stock_data.empty:
             
             uninvested = p_data_info.get("uninvested_cash", 0)
             if uninvested > 0:
-                holdings_html += f"<div style='background: rgba(255,255,255,0.02); padding: 12px 16px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;'><span style='color: #64748b; font-size: 0.85rem;'>Uninvested Cash Balance</span><span style='color: #e2e8f0; font-weight: 500; font-size: 0.85rem;'>₹{uninvested:,.0f}</span></div>"
-            
+                holdings_html += f"<div style='background: rgba(255,255,255,0.02); padding: 12px 16px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;'><span style='color: #94a3b8; font-size: 0.85rem;'>Uninvested Cash Balance</span><span style='color: #e2e8f0; font-weight: 500; font-size: 0.85rem;'>₹{uninvested:,.0f}</span></div>"
             holdings_html += "</div>"
             
             clean_name = p_name.replace("🛡️", "").replace("🚀", "").replace("⚖️", "").strip()
@@ -1837,28 +1838,28 @@ if not stock_data.empty:
     <div style='display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px;'>
         <div>
             <h3 style='margin:0 0 5px 0; font-family: "Space Grotesk", sans-serif; font-size: 1.2rem; font-weight: 600; color: #f8fafc;'>{clean_name}</h3>
-            <div style='color: #64748b; font-size: 0.8rem; letter-spacing: 0.5px;'>INSTITUTIONAL SIP PROJECTION</div>
+            <div style='color: #94a3b8; font-size: 0.8rem; letter-spacing: 0.5px;'>INSTITUTIONAL SIP PROJECTION</div>
         </div>
         <div style='text-align: right;'>
-            <div style='font-size: 0.75rem; color: #64748b; margin-bottom: 2px;'>FUNDAMENTAL SCORE</div>
+            <div style='font-size: 0.75rem; color: #94a3b8; margin-bottom: 2px;'>FUNDAMENTAL SCORE</div>
             <div style='font-size: 1.5rem; font-weight: 600; color: {p_color};'>{avg_score:.1f}</div>
         </div>
     </div>
     <div style='display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 25px;'>
         <div>
-            <div style='color: #64748b; font-size: 0.75rem; margin-bottom: 4px; text-transform: uppercase;'>Total Invested</div>
+            <div style='color: #94a3b8; font-size: 0.75rem; margin-bottom: 4px; text-transform: uppercase;'>Total Invested</div>
             <div style='font-size: 1.1rem; font-weight: 500; color: #e2e8f0;'>₹{total_invested:,.0f}</div>
         </div>
         <div>
-            <div style='color: #64748b; font-size: 0.75rem; margin-bottom: 4px; text-transform: uppercase;'>Projected Value</div>
+            <div style='color: #94a3b8; font-size: 0.75rem; margin-bottom: 4px; text-transform: uppercase;'>Projected Value</div>
             <div style='font-size: 1.1rem; font-weight: 500; color: #10b981;'>₹{future_value:,.0f}</div>
         </div>
         <div>
-            <div style='color: #64748b; font-size: 0.75rem; margin-bottom: 4px; text-transform: uppercase;'>Hist. 5Y CAGR</div>
+            <div style='color: #94a3b8; font-size: 0.75rem; margin-bottom: 4px; text-transform: uppercase;'>Hist. 5Y CAGR</div>
             <div style='font-size: 1.1rem; font-weight: 500; color: #8b5cf6;'>{cagr*100:.1f}%</div>
         </div>
         <div>
-            <div style='color: #64748b; font-size: 0.75rem; margin-bottom: 4px; text-transform: uppercase;'>Active Assets</div>
+            <div style='color: #94a3b8; font-size: 0.75rem; margin-bottom: 4px; text-transform: uppercase;'>Active Assets</div>
             <div style='font-size: 1.1rem; font-weight: 500; color: #e2e8f0;'>{active_assets}</div>
         </div>
     </div>
