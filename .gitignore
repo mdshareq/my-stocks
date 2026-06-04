@@ -140,3 +140,7 @@ Thumbs.db
 .streamlit/
 .firebase_key.json  
  
+.env
+.env_gemini_key
+.firebase_key.json
+__pycache__/

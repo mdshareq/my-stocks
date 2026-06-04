@@ -57,11 +57,17 @@ try:
             if raw_metrics:
                 valid_metrics = {k: v for k, v in raw_metrics.items() if "error" not in v}
                 df = pd.DataFrame.from_dict(valid_metrics, orient='index')
-                for col in ['pe', 'beta', 'market_cap', 'price']:
+                for col in ['pe', 'beta', 'market_cap', 'price', 'debt_ratio', 'liquidity_ratio', 'receivables_ratio']:
                     if col in df.columns:
                         df[col] = pd.to_numeric(df[col], errors='coerce').fillna(0)
                 if 'dividend_yield' in df.columns:
                     df['dividend_yield'] = pd.to_numeric(df['dividend_yield'], errors='coerce').fillna(0)
+                
+                if 'is_compliant' not in df.columns:
+                    df['is_compliant'] = False
+                else:
+                    df['is_compliant'] = df['is_compliant'].fillna(False).astype(bool)
+                df['Compliance'] = df['is_compliant'].apply(lambda x: "✅ Halal" if x else "❌ Fail/Pending")
                 
                 # Generate a Fundamental Score (0-100)
                 # Ideal: PE between 5 and 25 (score high), Beta near 1.0 (score high)
@@ -1485,12 +1491,12 @@ if not stock_data.empty:
             top_10 = safe_universe.sort_values(by='Buy Score', ascending=False).head(10)
             
             st.dataframe(
-                top_10[['Symbol', 'Company Name', 'Live Price (₹)', 'pe', 'beta', 'Buy Score']],
+                top_10[['Symbol', 'Company Name', 'Live Price (₹)', 'Compliance', 'pe', 'Buy Score']],
                 column_config={
                     "Symbol": "Asset", "Company Name": "Entity",
                     "Live Price (₹)": st.column_config.NumberColumn("Price (₹)", format="%.2f"),
+                    "Compliance": "Shariah Status",
                     "pe": st.column_config.NumberColumn("P/E Ratio", format="%.1f"),
-                    "beta": st.column_config.NumberColumn("Beta (Risk)", format="%.2f"),
                     "Buy Score": st.column_config.ProgressColumn("Signal Strength", min_value=0, max_value=100, format="%.1f"),
                 }, hide_index=True, width="stretch"
             )
@@ -1691,10 +1697,23 @@ if not stock_data.empty:
                             st.error(m)
 
     with tab_charts:
-        st.markdown("### Technical Price Action (90 Days)")
+        st.markdown("### Technical Price Action & Shariah Compliance")
         selected_stock_chart = st.selectbox("Select Asset for Technical Analysis:", options=stock_data["Company Name"].tolist(), key="chart_select")
         selected_ticker = REVERSE_LOOKUP[selected_stock_chart]
         
+        if not UNIVERSE_METRICS_DF.empty and selected_ticker in UNIVERSE_METRICS_DF['Symbol'].values:
+            row_data = UNIVERSE_METRICS_DF[UNIVERSE_METRICS_DF['Symbol'] == selected_ticker].iloc[0]
+            if 'debt_ratio' in row_data and not pd.isna(row_data['debt_ratio']):
+                debt = row_data.get('debt_ratio', 0) * 100
+                liq = row_data.get('liquidity_ratio', 0) * 100
+                rec = row_data.get('receivables_ratio', 0) * 100
+                is_comp = row_data.get('is_compliant', False)
+                
+                status_color = "#10b981" if is_comp else "#ef4444"
+                status_text = "HALAL (PASS)" if is_comp else "HARAM (FAIL)"
+                
+                st.markdown(f"<div style='border: 1px solid {status_color}; border-left: 5px solid {status_color}; padding: 15px; border-radius: 8px; margin-bottom: 20px; background: rgba(0,0,0,0.2);'> <h4 style='margin-top: 0; color: {status_color}; margin-bottom: 15px;'>AAOIFI Shariah Compliance: {status_text}</h4> <div style='display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; font-family: monospace; font-size: 0.95rem; color: #e2e8f0;'> <div><strong style='color: #94a3b8;'>Debt Ratio:</strong><br><span style='font-size: 1.2rem; color: {'#10b981' if debt < 33 else '#ef4444'}'>{debt:.1f}%</span> <span style='font-size: 0.8rem; color: #64748b;'>(Limit 33%)</span></div> <div><strong style='color: #94a3b8;'>Liquidity:</strong><br><span style='font-size: 1.2rem; color: {'#10b981' if liq < 33 else '#ef4444'}'>{liq:.1f}%</span> <span style='font-size: 0.8rem; color: #64748b;'>(Limit 33%)</span></div> <div><strong style='color: #94a3b8;'>Receivables:</strong><br><span style='font-size: 1.2rem; color: {'#10b981' if rec < 33 else '#ef4444'}'>{rec:.1f}%</span> <span style='font-size: 0.8rem; color: #64748b;'>(Limit 33%)</span></div> </div> </div>", unsafe_allow_html=True)
+            
         with st.spinner(f"Loading telemetry for {selected_ticker}..."):
             stock_history = fetch_stock_history(selected_ticker)
             if not stock_history.empty:
