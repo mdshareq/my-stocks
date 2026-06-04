@@ -1858,8 +1858,21 @@ if not stock_data.empty:
 
     with tab_charts:
         st.markdown("### Technical Price Action & Shariah Compliance")
-        selected_stock_chart = st.selectbox("Select Asset for Technical Analysis:", options=stock_data["Company Name"].tolist(), key="chart_select")
-        selected_ticker = REVERSE_LOOKUP[selected_stock_chart]
+        
+        if not UNIVERSE_METRICS_DF.empty:
+            # Source options from the 2700+ Master Database, but only allow Halal assets
+            halal_universe = UNIVERSE_METRICS_DF[UNIVERSE_METRICS_DF['is_compliant'] == True].copy()
+            halal_universe = halal_universe.sort_values(by="Company Name")
+            
+            options = halal_universe["Company Name"].tolist()
+            selected_stock_chart = st.selectbox("Select Asset for Technical Analysis:", options=options, key="chart_select")
+            
+            # Look up the ticker in the master database
+            selected_ticker = halal_universe[halal_universe['Company Name'] == selected_stock_chart].iloc[0]['Symbol']
+        else:
+            # Fallback to the hardcoded list
+            selected_stock_chart = st.selectbox("Select Asset for Technical Analysis:", options=stock_data["Company Name"].tolist(), key="chart_select")
+            selected_ticker = REVERSE_LOOKUP.get(selected_stock_chart, stock_data["Symbol"].iloc[0])
         
         if not UNIVERSE_METRICS_DF.empty and selected_ticker in UNIVERSE_METRICS_DF['Symbol'].values:
             row_data = UNIVERSE_METRICS_DF[UNIVERSE_METRICS_DF['Symbol'] == selected_ticker].iloc[0]
