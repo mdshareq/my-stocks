@@ -1718,6 +1718,14 @@ with st.sidebar:
     
     ai_engine = st.radio("AI Engine", ["Google Gemini (Cloud)", "Local Odysseus Agent"], horizontal=True)
     if ai_engine == "Local Odysseus Agent":
+        if st.button("🚀 Start Local AI Module (run.bat)", use_container_width=True):
+            import subprocess
+            try:
+                subprocess.Popen([r"C:\Users\share\OneDrive\Desktop\run.bat"], creationflags=subprocess.CREATE_NEW_CONSOLE)
+                st.success("Started Local AI Module in a new window!")
+            except Exception as e:
+                st.error(f"Error starting local AI: {e}")
+        
         local_model = st.selectbox("Local Model", ["qwen2.5-coder:3b-instruct", "llama3.2:3b"])
         local_api_url = st.text_input("Local API URL", value="http://localhost:11434/v1/chat/completions")
         local_api_key = st.text_input("Local API Key (If Required)", type="password")
@@ -2167,6 +2175,67 @@ if not stock_data.empty:
                     yaxis=dict(showgrid=True, gridcolor="rgba(128,128,128,0.15)")
                 )
                 st.plotly_chart(fig, width="stretch")
+                
+                # --- ML PREDICTION INTEGRATION ---
+                st.markdown("### 🤖 ML Price Prediction (LSTM + Sentiment)")
+                if os.path.exists("best_model.pth"):
+                    try:
+                        import torch
+                        import numpy as np
+                        from sklearn.preprocessing import MinMaxScaler
+                        from ml_model import StockPredictorLSTM
+                        
+                        # Load Sentiment
+                        sentiment_data = {}
+                        if os.path.exists("sentiment_data.json"):
+                            with open("sentiment_data.json", "r", encoding="utf-8") as f:
+                                sentiment_data = json.load(f)
+                                
+                        sym_sent = sentiment_data.get(selected_ticker, {}).get("score", 0.0)
+                        
+                        # Prepare data
+                        seq_length = 30
+                        if len(stock_history) >= seq_length:
+                            df_ml = stock_history[['Open', 'High', 'Low', 'Close', 'Volume']].tail(seq_length).copy()
+                            if isinstance(df_ml.columns, pd.MultiIndex):
+                                df_ml.columns = df_ml.columns.get_level_values(0)
+                            df_ml['Sentiment'] = sym_sent
+                            
+                            scaler = MinMaxScaler()
+                            # We fit on this small window for simplicity in inference (or load global scaler if we saved it)
+                            scaled_data = scaler.fit_transform(df_ml.values)
+                            
+                            x_tensor = torch.tensor(scaled_data, dtype=torch.float32).unsqueeze(0)
+                            
+                            device = torch.device('cpu')
+                            model = StockPredictorLSTM(input_dim=6, hidden_dim=64, num_layers=2, output_dim=1).to(device)
+                            model.load_state_dict(torch.load("best_model.pth", map_location=device))
+                            model.eval()
+                            
+                            with torch.no_grad():
+                                pred_scaled = model(x_tensor).item()
+                                
+                            # Inverse transform: create a dummy array with 6 columns to inverse transform
+                            dummy = np.zeros((1, 6))
+                            dummy[0, 3] = pred_scaled  # Close is index 3
+                            pred_price = scaler.inverse_transform(dummy)[0, 3]
+                            
+                            current_px = close_data.iloc[-1]
+                            pred_change = ((pred_price - current_px) / current_px) * 100
+                            
+                            pred_color = "#10b981" if pred_change > 0 else "#ef4444"
+                            pred_sign = "+" if pred_change > 0 else ""
+                            
+                            st.markdown(f"<div style='border-left: 4px solid {pred_color}; padding: 15px; background: rgba(0,0,0,0.15); border-radius: 6px;'>", unsafe_allow_html=True)
+                            st.markdown(f"<h4 style='margin-top:0;'>Next Day Forecast: <span style='color: {pred_color};'>₹{pred_price:.2f}</span></h4>", unsafe_allow_html=True)
+                            st.markdown(f"<p style='margin-bottom:0; color: #94a3b8;'>Predicted Change: <strong style='color: {pred_color};'>{pred_sign}{pred_change:.2f}%</strong> (Based on 30-day technicals & FinBERT sentiment score: {sym_sent:.2f})</p>", unsafe_allow_html=True)
+                            st.markdown("</div>", unsafe_allow_html=True)
+                        else:
+                            st.warning("Not enough historical data to generate ML prediction.")
+                    except Exception as e:
+                        st.error(f"Failed to run ML Inference: {e}")
+                else:
+                    st.info("The ML Model hasn't been trained yet. Run `python train_model.py` to activate predictions.")
 
     with tab_news:
         st.markdown("### Algorithmic News Radar")

@@ -7,3 +7,7 @@ google-generativeai
 firebase-admin
 python-dotenv
 streamlit-autorefresh
+torch
+transformers
+finnhub-python
+scikit-learn
