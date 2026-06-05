@@ -122,6 +122,16 @@ st.markdown(
             box-shadow: 0 0 15px rgba(0, 240, 255, 0.1) !important;
         }
 
+        /* Prevent Streamlit from fading stale elements */
+        [data-testid="stAppViewContainer"] [data-stale="true"],
+        [data-testid="stHeader"] [data-stale="true"],
+        [data-testid="stSidebar"] [data-stale="true"],
+        div[data-stale="true"] {
+            opacity: 1 !important;
+            filter: none !important;
+            transition: none !important;
+        }
+
         body, .stApp {
             background: radial-gradient(circle at 50% 0%, #1c1e26 0%, #0a0b12 70%) !important;
             color: #fafafa;
@@ -1265,8 +1275,10 @@ if 'auth_action' not in st.session_state:
     st.session_state.auth_action = 'Login'
 
 if st.session_state.user is None:
-    st.markdown("""
-    <style>
+    auth_container = st.empty()
+    with auth_container.container():
+        st.markdown("""
+        <style>
         @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap');
 
         /* ── Keyframes for pure-CSS abstract background ── */
@@ -1511,85 +1523,89 @@ if st.session_state.user is None:
     """, unsafe_allow_html=True)
 
 
-    is_login = st.session_state.auth_action == 'Login'
+        is_login = st.session_state.auth_action == 'Login'
 
-    # Brand tag
-    st.markdown("<div class='login-brand'>Shareq Equities &nbsp;/&nbsp; Terminal Access</div>", unsafe_allow_html=True)
+        # Brand tag
+        st.markdown("<div class='login-brand'>Shareq Equities &nbsp;/&nbsp; Terminal Access</div>", unsafe_allow_html=True)
 
-    # Heading
-    heading = "Welcome back" if is_login else "Create account"
-    sub = "Enter your credentials to continue." if is_login else "Register to unlock the full platform."
-    st.markdown(f"<div class='login-heading'>{heading}</div>", unsafe_allow_html=True)
-    st.markdown(f"<div class='login-sub'>{sub}</div>", unsafe_allow_html=True)
+        # Heading
+        heading = "Welcome back" if is_login else "Create account"
+        sub = "Enter your credentials to continue." if is_login else "Register to unlock the full platform."
+        st.markdown(f"<div class='login-heading'>{heading}</div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='login-sub'>{sub}</div>", unsafe_allow_html=True)
 
-    if db is None:
-        st.warning("⚠️ Firebase offline — local mode active.")
+        if db is None:
+            st.warning("⚠️ Firebase offline — local mode active.")
 
-    email_val = st.text_input("Email", placeholder="user@example.com", key="auth_email")
-    password_val = st.text_input("Password", type="password", placeholder="••••••••", key="auth_pass")
+        email_val = st.text_input("Email", placeholder="user@example.com", key="auth_email")
+        password_val = st.text_input("Password", type="password", placeholder="••••••••", key="auth_pass")
 
-    if is_login:
-        st.markdown("<div style='text-align:right; margin-top:-8px; margin-bottom:18px;'><a href='#' style='font-family:Space Grotesk,sans-serif; font-size:0.75rem; color:rgba(0,240,255,0.45); text-decoration:none; letter-spacing:0.5px;'>Forgot password?</a></div>", unsafe_allow_html=True)
-    else:
-        st.markdown("<div style='height:18px'></div>", unsafe_allow_html=True)
-
-    # Primary button
-    if st.button("Sign In" if is_login else "Create Account", type="primary", use_container_width=True):
-        if not email_val or not password_val:
-            st.error("Both fields are required.")
-        elif db is None:
-            st.session_state.user = {"email": email_val, "gemini_api_key": ""}
-            st.rerun()
+        if is_login:
+            st.markdown("<div style='text-align:right; margin-top:-8px; margin-bottom:18px;'><a href='#' style='font-family:Space Grotesk,sans-serif; font-size:0.75rem; color:rgba(0,240,255,0.45); text-decoration:none; letter-spacing:0.5px;'>Forgot password?</a></div>", unsafe_allow_html=True)
         else:
-            users_ref = db.collection("users").document(email_val)
-            doc = users_ref.get()
-            if not is_login:
-                if doc.exists:
-                    st.error("Account already exists. Please sign in.")
-                else:
-                    users_ref.set({
-                        "email": email_val,
-                        "password_hash": hash_password(password_val),
-                        "gemini_api_key": "",
-                        "created_at": firestore.SERVER_TIMESTAMP
-                    })
-                    st.session_state.user = {"email": email_val, "gemini_api_key": ""}
-                    st.rerun()
+            st.markdown("<div style='height:18px'></div>", unsafe_allow_html=True)
+
+        # Primary button
+        if st.button("Sign In" if is_login else "Create Account", type="primary", use_container_width=True):
+            if not email_val or not password_val:
+                st.error("Both fields are required.")
+            elif db is None:
+                auth_container.empty()
+                st.session_state.user = {"email": email_val, "gemini_api_key": ""}
+                st.rerun()
             else:
-                if not doc.exists:
-                    st.error("No account found. Please register first.")
-                else:
-                    user_data = doc.to_dict()
-                    if user_data.get("password_hash") == hash_password(password_val):
-                        st.session_state.user = user_data
-                        st.rerun()
+                users_ref = db.collection("users").document(email_val)
+                doc = users_ref.get()
+                if not is_login:
+                    if doc.exists:
+                        st.error("Account already exists. Please sign in.")
                     else:
-                        st.error("Incorrect password.")
+                        users_ref.set({
+                            "email": email_val,
+                            "password_hash": hash_password(password_val),
+                            "gemini_api_key": "",
+                            "created_at": firestore.SERVER_TIMESTAMP
+                        })
+                        auth_container.empty()
+                        st.session_state.user = {"email": email_val, "gemini_api_key": ""}
+                        st.rerun()
+                else:
+                    if not doc.exists:
+                        st.error("No account found. Please register first.")
+                    else:
+                        user_data = doc.to_dict()
+                        if user_data.get("password_hash") == hash_password(password_val):
+                            auth_container.empty()
+                            st.session_state.user = user_data
+                            st.rerun()
+                        else:
+                            st.error("Incorrect password.")
 
-    # Divider
-    st.markdown("<div class='login-divider'></div>", unsafe_allow_html=True)
+        # Divider
+        st.markdown("<div class='login-divider'></div>", unsafe_allow_html=True)
 
-    # Toggle auth mode
-    prompt_text = "No account yet?" if is_login else "Already registered?"
-    toggle_label = "Register here" if is_login else "Sign in instead"
-    st.markdown(f"<div style='text-align:center; font-family:Space Grotesk,sans-serif; font-size:0.8rem; color:rgba(255,255,255,0.28); margin-bottom:10px;'>{prompt_text}</div>", unsafe_allow_html=True)
-    if st.button(toggle_label, key="toggle_auth", use_container_width=True):
-        st.session_state.auth_action = 'Register' if is_login else 'Login'
-        st.rerun()
+        # Toggle auth mode
+        prompt_text = "No account yet?" if is_login else "Already registered?"
+        toggle_label = "Register here" if is_login else "Sign in instead"
+        st.markdown(f"<div style='text-align:center; font-family:Space Grotesk,sans-serif; font-size:0.8rem; color:rgba(255,255,255,0.28); margin-bottom:10px;'>{prompt_text}</div>", unsafe_allow_html=True)
+        if st.button(toggle_label, key="toggle_auth", use_container_width=True):
+            st.session_state.auth_action = 'Register' if is_login else 'Login'
+            st.rerun()
 
-    # Demo access
-    st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)
-    st.markdown("<div class='demo-btn'>", unsafe_allow_html=True)
-    if st.button("⚡  Quick Demo Access", key="demo_btn", use_container_width=True):
-        st.session_state["demo_prefill"] = True
-        st.rerun()
-    st.markdown("</div>", unsafe_allow_html=True)
+        # Demo access
+        st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)
+        st.markdown("<div class='demo-btn'>", unsafe_allow_html=True)
+        if st.button("⚡  Quick Demo Access", key="demo_btn", use_container_width=True):
+            auth_container.empty()
+            st.session_state["demo_prefill"] = True
+            st.rerun()
+        st.markdown("</div>", unsafe_allow_html=True)
 
-    if st.session_state.get("demo_prefill"):
-        st.info("🔑 Demo credential — Username: `Shareq`")
+        if st.session_state.get("demo_prefill"):
+            st.info("🔑 Demo credential — Username: `Shareq`")
 
-    # Footer
-    st.markdown("<div class='login-footer'>SHAREQ EQUITIES &nbsp;·&nbsp; SHARIAH-COMPLIANT SCREENER &nbsp;·&nbsp; v2.0</div>", unsafe_allow_html=True)
+        # Footer
+        st.markdown("<div class='login-footer'>SHAREQ EQUITIES &nbsp;·&nbsp; SHARIAH-COMPLIANT SCREENER &nbsp;·&nbsp; v2.0</div>", unsafe_allow_html=True)
 
     st.stop()
 
