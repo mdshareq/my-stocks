@@ -11,92 +11,90 @@ Shareq Equities is a modern, futuristic web dashboard built with Streamlit that 
 - **📊 Live Market Tracker:** Real-time tracking of Halal stocks with custom SVG Sparklines showing 30-day closing trends, Relative Strength Index (RSI), Simple Moving Average (SMA50), and 14-Day return metrics.
 - **🧠 Algorithmic Buy Score:** A proprietary mathematical engine that evaluates stock momentum, MACD Crossovers, RSI, Bollinger Bands, and debt-to-equity ratios.
 - **💼 Dynamic Model Portfolios:** A "Smart Waterfall Allocator" that takes your monthly SIP budget and dynamically builds Short-Term Momentum, Mid-Term Balanced, and Long-Term Compounder portfolios, calculating exact share quantities to buy without wasting a single rupee.
-- **🤖 Advanced AI Advisor:** Integrated with Google's Gemini Pro AI to provide minimalist, institutional financial insights via an interactive chat terminal.
+- **🤖 Local & Cloud AI Advisor:** Fully integrated with local Ollama LLMs (e.g., `qwen2.5-coder:3b-instruct`) for 100% private, offline financial analysis, with a fallback to Google's Gemini Pro.
 - **🗄️ Firebase Data Telemetry:** Secure, NoSQL data persistence that logs daily algorithmic snapshots to Firebase Firestore.
 - **🎯 Real-World Backtesting:** The *Algo Accuracy* engine actively queries Firebase for predictions made exactly 30 days ago, comparing them to live prices today to calculate the algorithm's actual Win/Loss percentage.
-- **📈 Advanced Charts & News:** Interactive 90-day technical price action charts and live RSS headlines from Google News.
 
 ---
 
-## 📖 How to Use the App
+## 🏗️ Application Blueprint (Architecture)
 
-### The Core Modules
-- **System Settings (Sidebar):** Filter assets to monitor, trigger a manual scan, or configure the AI core by entering your Gemini API key.
-- **Model Portfolios (SIP Calculator):** Drag the "Monthly SIP Investment" slider. The engine will instantly recalculate exactly which stocks you should buy today, how many shares you can afford, and exactly how much uninvested cash will be leftover in your brokerage.
-- **Algo Accuracy Tab:** Check this tab to see a real-world backtest of how the algorithm's "Strong Buy" signals from 30 days ago actually performed in the market today.
+The application utilizes a **Centralized Static Database + Real-time Edge** architecture to ensure maximum performance while maintaining a massive encyclopedia of 2700+ Indian assets.
 
-### Setting up the Gemini AI Advisor
-To unlock the Interactive Terminal:
+```mermaid
+graph TD
+    subgraph "Data Storage Layer"
+        A[halal_metrics.json] -->|Master Database: 2700 Stocks| B(Streamlit Data Pipeline)
+        C[live_watchlist.json] -->|Live Fetch Group: 60 Stocks| B
+    end
+
+    subgraph "Frontend Dashboard (Streamlit)"
+        B -->|Live Volatile Metrics| D((Live Market Tracker))
+        B -->|Fundamental Metrics| E((Model Portfolios))
+        B -->|Technical Rules| F((Algorithmic Buy Score))
+    end
+
+    subgraph "Backend Services"
+        G[(Firebase Firestore)] <-->|Syncs Daily AI Weights & Telemetry| B
+        H((Local AI - Ollama)) <-->|Secure Offline Chat| B
+        I((Yahoo Finance API)) -->|Live Real-time Quotes| D
+    end
+```
+
+**Architecture Breakdown:**
+1. **Master Database (`halal_metrics.json`):** Contains the fundamental data (Debt, Liquidity, Market Cap) for ~2700 stocks. This acts as the source of truth for Shariah-compliance and Company names.
+2. **Live Watchlist (`live_watchlist.json`):** Contains the core ~60 tickers. The dashboard only actively queries `yfinance` for these specific stocks on page reload to ensure lightning-fast performance.
+3. **Local AI Integration:** Connects to `localhost:11434` to keep all financial queries completely private without sending your portfolio data to external cloud providers.
+
+---
+
+## 📖 How to Use the Application
+
+### 1. The Core Modules
+- **Tracker Tab:** View the live market. Stocks are scored from 0-100 based on algorithmic momentum.
+- **Portfolios Tab (SIP Calculator):** Drag the "Monthly SIP Investment" slider. The engine will instantly recalculate exactly which stocks you should buy today, how many shares you can afford, and exactly how much uninvested cash will be leftover in your brokerage.
+- **Advisor Tab:** Chat directly with the Local AI or Gemini. You can ask it to analyze a specific stock in the Master Database, and the dashboard will inject real-time context into the AI prompt so it knows exactly what the stock is doing.
+
+### 2. Managing the Watchlist
+You do not need to edit python code to add a new stock to your live tracking view.
+- Simply open `live_watchlist.json`.
+- Add a new ticker symbol (e.g. `"CRIZAC.NS": {"name": "Crizac Ltd", "sector": "Technology", "color": "#0ea5e9"}`).
+- The dashboard will automatically begin fetching live real-time metrics for it on the next reload!
+
+### 3. Setting up the AI Advisor
+To unlock the Interactive Terminal, you can use either a Local AI (Private) or Cloud AI:
+
+**Option A: Local AI (Recommended for Privacy)**
+1. Install [Ollama](https://ollama.com/) on your local machine.
+2. Run `ollama run qwen2.5-coder:3b-instruct` (or your preferred model) in your terminal.
+3. In the Dashboard sidebar, select **"Local AI"** as your engine.
+
+**Option B: Google Gemini (Cloud)**
 1. Obtain an API Key from [Google AI Studio](https://aistudio.google.com/).
-2. **Local Usage:** Paste it into the sidebar. It will securely save to a local `.env_gemini_key` file.
-3. **Cloud Usage:** If deploying to Streamlit Cloud, add `GEMINI_API_KEY = "your-key"` to your App Settings -> Secrets.
+2. Paste it into the Streamlit sidebar. The dashboard will securely cache it locally. *(Note: Never commit your `.env` or secrets files to GitHub!)*
 
 ---
 
 ## 🚀 Installation & Setup
 
-Follow these steps to set up and run the application locally:
-
-### 1. Clone the Repository
-Open a terminal in the directory where you want the project to live.
-
-### 2. Set Up a Virtual Environment (Recommended)
-Create and activate a virtual environment to manage dependencies:
+### 1. Clone & Install
 ```bash
-# Windows
 python -m venv venv
-venv\Scripts\activate
-
-# macOS / Linux
-python3 -m venv venv
-source venv/bin/activate
-```
-
-### 3. Install Dependencies
-Install all required Python packages via pip:
-```bash
+venv\Scripts\activate   # Windows
+source venv/bin/activate # Mac/Linux
 pip install -r requirements.txt
 ```
 
-### 4. Firebase Configuration (Optional but Recommended)
+### 2. Firebase Configuration (Mandatory for Backtesting)
 To enable historical data telemetry and real-world backtesting:
 1. Create a [Firebase Project](https://console.firebase.google.com/) with a Firestore database.
 2. Generate a Service Account JSON key from your project settings.
-3. Rename the downloaded file to exactly `.firebase_key.json` and place it in the root directory. *(Note: This file is ignored by git and will never be uploaded).*
+3. Rename the downloaded file to exactly `.firebase_key.json` and place it in the root directory.
+> **⚠️ SECURITY WARNING:** The `.firebase_key.json` file contains highly sensitive cloud credentials. **Never commit this file to GitHub.** Ensure it is added to your `.gitignore`.
 
-### 5. Run the Application
-Execute the Streamlit application from your terminal:
+### 3. Run the Application
 ```bash
 py -m streamlit run halal_dashboard.py
-```
-*(Once run, a browser tab will automatically open at `http://localhost:8501`)*
-
----
-
-## 🏗️ System Architecture
-
-Shareq Equities uses a **Zero-Maintenance GitOps** architecture to automatically update the financial data for free without requiring a running database server.
-
-```mermaid
-graph TD
-    subgraph "Automation (GitHub Actions)"
-        A[update_metrics.yml] -->|Runs Daily| B(ingest_metrics.py)
-        B -->|Scrapes Live Data| C((Yahoo Finance))
-        B -->|Calculates AAOIFI Ratios| D{halal_metrics.json}
-        D -->|Auto-Commits to Repo| E[GitHub Repository]
-    end
-
-    subgraph "Frontend (Streamlit Cloud)"
-        E -->|Triggers UI Redeploy| F[halal_dashboard.py]
-        F -->|Loads Static JSON| G(Universal Metrics Engine)
-        G -->|Filters & Sorts| H((Top 10 Screener))
-        G -->|Allocates Capital| I((SIP Portfolios))
-    end
-
-    subgraph "External Cloud Integrations"
-        F <-->|Saved Portfolios| J[(Firebase Firestore)]
-        F <-->|AI Terminal Insights| K((Google Gemini AI))
-    end
 ```
 
 ---

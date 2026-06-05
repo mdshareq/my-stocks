@@ -1,8 +1,6 @@
 name: Daily Metrics Ingestion
 
 on:
-  schedule:
-    - cron: '0 0 * * *' # Run at midnight UTC daily
   workflow_dispatch: # Allow manual triggering
 
 jobs:
