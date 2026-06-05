@@ -1,0 +1,287 @@
+{
+    "TCS.NS": {
+        "name": "Tata Consultancy Services",
+        "sector": "IT",
+        "color": "#0ea5e9"
+    },
+    "INFY.NS": {
+        "name": "Infosys",
+        "sector": "IT",
+        "color": "#0ea5e9"
+    },
+    "HCLTECH.NS": {
+        "name": "HCL Technologies",
+        "sector": "IT",
+        "color": "#0ea5e9"
+    },
+    "WIPRO.NS": {
+        "name": "Wipro",
+        "sector": "IT",
+        "color": "#0ea5e9"
+    },
+    "KPITTECH.NS": {
+        "name": "KPIT Technologies",
+        "sector": "IT",
+        "color": "#0ea5e9"
+    },
+    "TECHM.NS": {
+        "name": "Tech Mahindra",
+        "sector": "IT",
+        "color": "#0ea5e9"
+    },
+    "PERSISTENT.NS": {
+        "name": "Persistent Systems",
+        "sector": "IT",
+        "color": "#0ea5e9"
+    },
+    "COFORGE.NS": {
+        "name": "Coforge",
+        "sector": "IT",
+        "color": "#0ea5e9"
+    },
+    "MPHASIS.NS": {
+        "name": "Mphasis",
+        "sector": "IT",
+        "color": "#0ea5e9"
+    },
+    "LTTS.NS": {
+        "name": "L&T Technology Services",
+        "sector": "IT",
+        "color": "#0ea5e9"
+    },
+    "TATAELXSI.NS": {
+        "name": "Tata Elxsi",
+        "sector": "IT",
+        "color": "#0ea5e9"
+    },
+    "CYIENT.NS": {
+        "name": "Cyient",
+        "sector": "IT",
+        "color": "#0ea5e9"
+    },
+    "HINDUNILVR.NS": {
+        "name": "Hindustan Unilever",
+        "sector": "FMCG",
+        "color": "#ec4899"
+    },
+    "NESTLEIND.NS": {
+        "name": "Nestle India",
+        "sector": "FMCG",
+        "color": "#ec4899"
+    },
+    "BRITANNIA.NS": {
+        "name": "Britannia Industries",
+        "sector": "FMCG",
+        "color": "#ec4899"
+    },
+    "GODREJCP.NS": {
+        "name": "Godrej Consumer Products",
+        "sector": "FMCG",
+        "color": "#ec4899"
+    },
+    "DABUR.NS": {
+        "name": "Dabur India",
+        "sector": "FMCG",
+        "color": "#ec4899"
+    },
+    "MARICO.NS": {
+        "name": "Marico",
+        "sector": "FMCG",
+        "color": "#ec4899"
+    },
+    "COLPAL.NS": {
+        "name": "Colgate-Palmolive",
+        "sector": "FMCG",
+        "color": "#ec4899"
+    },
+    "TATACONSUM.NS": {
+        "name": "Tata Consumer Products",
+        "sector": "FMCG",
+        "color": "#ec4899"
+    },
+    "HATSUN.NS": {
+        "name": "Hatsun Agro",
+        "sector": "FMCG",
+        "color": "#ec4899"
+    },
+    "BATAINDIA.NS": {
+        "name": "Bata India",
+        "sector": "Consumer",
+        "color": "#eab308"
+    },
+    "DMART.NS": {
+        "name": "Avenue Supermarts",
+        "sector": "Retail",
+        "color": "#f43f5e"
+    },
+    "TRENT.NS": {
+        "name": "Trent Ltd",
+        "sector": "Retail",
+        "color": "#f43f5e"
+    },
+    "HAVELLS.NS": {
+        "name": "Havells India",
+        "sector": "Consumer",
+        "color": "#eab308"
+    },
+    "VOLTAS.NS": {
+        "name": "Voltas",
+        "sector": "Consumer",
+        "color": "#eab308"
+    },
+    "SUNPHARMA.NS": {
+        "name": "Sun Pharmaceuticals",
+        "sector": "Pharma",
+        "color": "#10b981"
+    },
+    "DIVISLAB.NS": {
+        "name": "Divi's Laboratories",
+        "sector": "Pharma",
+        "color": "#10b981"
+    },
+    "CIPLA.NS": {
+        "name": "Cipla",
+        "sector": "Pharma",
+        "color": "#10b981"
+    },
+    "DRREDDY.NS": {
+        "name": "Dr. Reddy's Lab",
+        "sector": "Pharma",
+        "color": "#10b981"
+    },
+    "TORNTPHARM.NS": {
+        "name": "Torrent Pharmaceuticals",
+        "sector": "Pharma",
+        "color": "#10b981"
+    },
+    "ZYDUSLIFE.NS": {
+        "name": "Zydus Lifesciences",
+        "sector": "Pharma",
+        "color": "#10b981"
+    },
+    "LUPIN.NS": {
+        "name": "Lupin",
+        "sector": "Pharma",
+        "color": "#10b981"
+    },
+    "AUROPHARMA.NS": {
+        "name": "Aurobindo Pharma",
+        "sector": "Pharma",
+        "color": "#10b981"
+    },
+    "ALKEM.NS": {
+        "name": "Alkem Laboratories",
+        "sector": "Pharma",
+        "color": "#10b981"
+    },
+    "BIOCON.NS": {
+        "name": "Biocon",
+        "sector": "Pharma",
+        "color": "#10b981"
+    },
+    "APOLLOHOSP.NS": {
+        "name": "Apollo Hospitals",
+        "sector": "Healthcare",
+        "color": "#14b8a6"
+    },
+    "SYNGENE.NS": {
+        "name": "Syngene International",
+        "sector": "Healthcare",
+        "color": "#14b8a6"
+    },
+    "MARUTI.NS": {
+        "name": "Maruti Suzuki",
+        "sector": "Auto",
+        "color": "#8b5cf6"
+    },
+    "BAJAJ-AUTO.NS": {
+        "name": "Bajaj Auto",
+        "sector": "Auto",
+        "color": "#8b5cf6"
+    },
+    "EICHERMOT.NS": {
+        "name": "Eicher Motors",
+        "sector": "Auto",
+        "color": "#8b5cf6"
+    },
+    "HEROMOTOCO.NS": {
+        "name": "Hero MotoCorp",
+        "sector": "Auto",
+        "color": "#8b5cf6"
+    },
+    "BOSCHLTD.NS": {
+        "name": "Bosch Limited",
+        "sector": "Auto",
+        "color": "#8b5cf6"
+    },
+    "ULTRACEMCO.NS": {
+        "name": "Ultratech Cement",
+        "sector": "Core",
+        "color": "#f59e0b"
+    },
+    "SHREECEM.NS": {
+        "name": "Shree Cement",
+        "sector": "Core",
+        "color": "#f59e0b"
+    },
+    "ACC.NS": {
+        "name": "ACC Limited",
+        "sector": "Core",
+        "color": "#f59e0b"
+    },
+    "ASIANPAINT.NS": {
+        "name": "Asian Paints",
+        "sector": "Chemicals",
+        "color": "#06b6d4"
+    },
+    "BERGEPAINT.NS": {
+        "name": "Berger Paints",
+        "sector": "Chemicals",
+        "color": "#06b6d4"
+    },
+    "PIDILITIND.NS": {
+        "name": "Pidilite Industries",
+        "sector": "Chemicals",
+        "color": "#06b6d4"
+    },
+    "SRF.NS": {
+        "name": "SRF Limited",
+        "sector": "Chemicals",
+        "color": "#06b6d4"
+    },
+    "DEEPAKNTR.NS": {
+        "name": "Deepak Nitrite",
+        "sector": "Chemicals",
+        "color": "#06b6d4"
+    },
+    "AARTIIND.NS": {
+        "name": "Aarti Industries",
+        "sector": "Chemicals",
+        "color": "#06b6d4"
+    },
+    "PIIND.NS": {
+        "name": "PI Industries",
+        "sector": "Chemicals",
+        "color": "#06b6d4"
+    },
+    "NAVINFLUOR.NS": {
+        "name": "Navin Fluorine",
+        "sector": "Chemicals",
+        "color": "#06b6d4"
+    },
+    "TATACHEM.NS": {
+        "name": "Tata Chemicals",
+        "sector": "Chemicals",
+        "color": "#06b6d4"
+    },
+    "ATUL.NS": {
+        "name": "Atul Ltd",
+        "sector": "Chemicals",
+        "color": "#06b6d4"
+    },
+    "RELIANCE.NS": {
+        "name": "Reliance Industries",
+        "sector": "Energy",
+        "color": "#f97316"
+    }
+}

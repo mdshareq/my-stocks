@@ -14,7 +14,6 @@ from firebase_admin import credentials, firestore
 from datetime import datetime, timedelta
 
 # --- FIREBASE INITIALIZATION ---
-import os
 db = None
 _firebase_error = None
 _hardcoded_path = r"E:\my-stocks\.firebase_key.json"
@@ -409,84 +408,24 @@ st.markdown(
 )
 
 
-# Expanded Shariah-compliant Stocks (60+ Assets)
-HALAL_STOCKS = {
-    # IT / Tech
-    "TCS.NS": {"name": "Tata Consultancy Services", "sector": "IT", "color": "#0ea5e9"}, 
-    "INFY.NS": {"name": "Infosys", "sector": "IT", "color": "#0ea5e9"}, 
-    "HCLTECH.NS": {"name": "HCL Technologies", "sector": "IT", "color": "#0ea5e9"},
-    "WIPRO.NS": {"name": "Wipro", "sector": "IT", "color": "#0ea5e9"}, 
-    "KPITTECH.NS": {"name": "KPIT Technologies", "sector": "IT", "color": "#0ea5e9"}, 
-    "TECHM.NS": {"name": "Tech Mahindra", "sector": "IT", "color": "#0ea5e9"},
-    "PERSISTENT.NS": {"name": "Persistent Systems", "sector": "IT", "color": "#0ea5e9"}, 
-    "COFORGE.NS": {"name": "Coforge", "sector": "IT", "color": "#0ea5e9"}, 
-    "MPHASIS.NS": {"name": "Mphasis", "sector": "IT", "color": "#0ea5e9"},
-    "LTTS.NS": {"name": "L&T Technology Services", "sector": "IT", "color": "#0ea5e9"}, 
-    "TATAELXSI.NS": {"name": "Tata Elxsi", "sector": "IT", "color": "#0ea5e9"}, 
-    "CYIENT.NS": {"name": "Cyient", "sector": "IT", "color": "#0ea5e9"},
-    
-    # FMCG / Consumer / Retail
-    "HINDUNILVR.NS": {"name": "Hindustan Unilever", "sector": "FMCG", "color": "#ec4899"}, 
-    "NESTLEIND.NS": {"name": "Nestle India", "sector": "FMCG", "color": "#ec4899"}, 
-    "BRITANNIA.NS": {"name": "Britannia Industries", "sector": "FMCG", "color": "#ec4899"}, 
-    "GODREJCP.NS": {"name": "Godrej Consumer Products", "sector": "FMCG", "color": "#ec4899"}, 
-    "DABUR.NS": {"name": "Dabur India", "sector": "FMCG", "color": "#ec4899"}, 
-    "MARICO.NS": {"name": "Marico", "sector": "FMCG", "color": "#ec4899"}, 
-    "COLPAL.NS": {"name": "Colgate-Palmolive", "sector": "FMCG", "color": "#ec4899"}, 
-    "TATACONSUM.NS": {"name": "Tata Consumer Products", "sector": "FMCG", "color": "#ec4899"}, 
-    "HATSUN.NS": {"name": "Hatsun Agro", "sector": "FMCG", "color": "#ec4899"}, 
-    "BATAINDIA.NS": {"name": "Bata India", "sector": "Consumer", "color": "#eab308"}, 
-    "DMART.NS": {"name": "Avenue Supermarts", "sector": "Retail", "color": "#f43f5e"}, 
-    "TRENT.NS": {"name": "Trent Ltd", "sector": "Retail", "color": "#f43f5e"}, 
-    "HAVELLS.NS": {"name": "Havells India", "sector": "Consumer", "color": "#eab308"}, 
-    "VOLTAS.NS": {"name": "Voltas", "sector": "Consumer", "color": "#eab308"},
-    
-    # Pharma / Healthcare
-    "SUNPHARMA.NS": {"name": "Sun Pharmaceuticals", "sector": "Pharma", "color": "#10b981"}, 
-    "DIVISLAB.NS": {"name": "Divi's Laboratories", "sector": "Pharma", "color": "#10b981"}, 
-    "CIPLA.NS": {"name": "Cipla", "sector": "Pharma", "color": "#10b981"}, 
-    "DRREDDY.NS": {"name": "Dr. Reddy's Lab", "sector": "Pharma", "color": "#10b981"}, 
-    "TORNTPHARM.NS": {"name": "Torrent Pharmaceuticals", "sector": "Pharma", "color": "#10b981"}, 
-    "ZYDUSLIFE.NS": {"name": "Zydus Lifesciences", "sector": "Pharma", "color": "#10b981"}, 
-    "LUPIN.NS": {"name": "Lupin", "sector": "Pharma", "color": "#10b981"}, 
-    "AUROPHARMA.NS": {"name": "Aurobindo Pharma", "sector": "Pharma", "color": "#10b981"}, 
-    "ALKEM.NS": {"name": "Alkem Laboratories", "sector": "Pharma", "color": "#10b981"}, 
-    "BIOCON.NS": {"name": "Biocon", "sector": "Pharma", "color": "#10b981"}, 
-    "APOLLOHOSP.NS": {"name": "Apollo Hospitals", "sector": "Healthcare", "color": "#14b8a6"}, 
-    "SYNGENE.NS": {"name": "Syngene International", "sector": "Healthcare", "color": "#14b8a6"},
-    
-    # Auto / Manufacturing
-    "MARUTI.NS": {"name": "Maruti Suzuki", "sector": "Auto", "color": "#8b5cf6"}, 
-    "BAJAJ-AUTO.NS": {"name": "Bajaj Auto", "sector": "Auto", "color": "#8b5cf6"}, 
-    "EICHERMOT.NS": {"name": "Eicher Motors", "sector": "Auto", "color": "#8b5cf6"}, 
-    "HEROMOTOCO.NS": {"name": "Hero MotoCorp", "sector": "Auto", "color": "#8b5cf6"},
-    "BOSCHLTD.NS": {"name": "Bosch Limited", "sector": "Auto", "color": "#8b5cf6"},
-    
-    # Cement / Core
-    "ULTRACEMCO.NS": {"name": "Ultratech Cement", "sector": "Core", "color": "#f59e0b"}, 
-    "SHREECEM.NS": {"name": "Shree Cement", "sector": "Core", "color": "#f59e0b"},
-    "ACC.NS": {"name": "ACC Limited", "sector": "Core", "color": "#f59e0b"}, 
-    
-    # Chemicals / Paints
-    "ASIANPAINT.NS": {"name": "Asian Paints", "sector": "Chemicals", "color": "#06b6d4"}, 
-    "BERGEPAINT.NS": {"name": "Berger Paints", "sector": "Chemicals", "color": "#06b6d4"}, 
-    "PIDILITIND.NS": {"name": "Pidilite Industries", "sector": "Chemicals", "color": "#06b6d4"}, 
-    "SRF.NS": {"name": "SRF Limited", "sector": "Chemicals", "color": "#06b6d4"}, 
-    "DEEPAKNTR.NS": {"name": "Deepak Nitrite", "sector": "Chemicals", "color": "#06b6d4"}, 
-    "AARTIIND.NS": {"name": "Aarti Industries", "sector": "Chemicals", "color": "#06b6d4"}, 
-    "PIIND.NS": {"name": "PI Industries", "sector": "Chemicals", "color": "#06b6d4"}, 
-    "NAVINFLUOR.NS": {"name": "Navin Fluorine", "sector": "Chemicals", "color": "#06b6d4"}, 
-    "TATACHEM.NS": {"name": "Tata Chemicals", "sector": "Chemicals", "color": "#06b6d4"}, 
-    "ATUL.NS": {"name": "Atul Ltd", "sector": "Chemicals", "color": "#06b6d4"},
-    
-    # Energy / Miscellaneous
-    "RELIANCE.NS": {"name": "Reliance Industries", "sector": "Energy", "color": "#f97316"}, 
-     
-    
-}
-REVERSE_LOOKUP = {info["name"]: ticker for ticker, info in HALAL_STOCKS.items()}
+HALAL_STOCKS = {}
+try:
+    if os.path.exists("live_watchlist.json"):
+        with open("live_watchlist.json", "r", encoding="utf-8") as f:
+            HALAL_STOCKS = json.load(f)
+except Exception as e:
+    print("Error loading live watchlist:", e)
 
-import json
+REVERSE_LOOKUP = {info["name"]: ticker for ticker, info in HALAL_STOCKS.items()}
+if 'UNIVERSE_METRICS_DF' in globals() and not UNIVERSE_METRICS_DF.empty:
+    for _, row in UNIVERSE_METRICS_DF.iterrows():
+        name = row['Company Name']
+        sym = row['Symbol']
+        if pd.notna(name) and pd.notna(sym):
+            sym_ns = sym if str(sym).endswith((".NS", ".BO")) else sym + ".NS"
+            if name not in REVERSE_LOOKUP:
+                REVERSE_LOOKUP[name] = sym_ns
+
 FULL_UNIVERSE = {}
 try:
     if os.path.exists("halal_universe.json"):
@@ -646,26 +585,77 @@ def run_ml_optimizer():
         doc = db.collection("system").document("algo_weights").get()
         weights = doc.to_dict() if doc.exists else DEFAULT_WEIGHTS.copy()
         
-        # Auto-adjust logic based on market regime (Simple Heuristic ML)
-        if market_return < 0:
-            # Bear Market: Increase defense
-            weights["rsi_below_30"] = min(20, weights.get("rsi_below_30", 10) + 2)
-            weights["good_debt"] = min(15, weights.get("good_debt", 10) + 2)
-            weights["good_cash"] = min(15, weights.get("good_cash", 10) + 2)
-            # Decrease momentum
-            weights["macd_crossover"] = max(5, weights.get("macd_crossover", 15) - 3)
-            weights["sma_50_above"] = max(2, weights.get("sma_50_above", 5) - 1)
+        # Determine if we are using Local AI
+        ai_engine = st.session_state.get("ai_engine", "gemini")
+        if ai_engine == "local":
+            local_model = st.session_state.get("local_model", "qwen2.5-coder:3b-instruct")
+            prompt = f"""You are a quantitative financial analyst AI.
+The NIFTY 50 index has returned {market_return:.2f}% over the past 30 days.
+Current algorithmic weights are: {json.dumps(weights)}
+
+Rules for adjustments:
+- If market is BEARISH (< 0%): Increase defensive metrics (good_debt, good_cash, rsi_below_30) and decrease momentum metrics (macd_crossover, sma_50_above).
+- If market is BULLISH (> 0%): Increase momentum metrics and decrease defensive metrics slightly.
+- Weights must stay between 0 and 30, except market_crash which can be negative (0 to -30), and rsi_above_70 (0 to -30).
+
+Return ONLY a valid JSON dictionary of the updated weights. Do not provide explanations.
+"""
+            try:
+                local_url = st.session_state.get("local_api_url", "http://localhost:11434/v1/chat/completions")
+                local_key = st.session_state.get("local_api_key", "")
+                headers = {"Content-Type": "application/json"}
+                if local_key:
+                    headers["Authorization"] = f"Bearer {local_key}"
+                
+                res = requests.post(local_url, json={
+                    "model": local_model,
+                    "messages": [{"role": "user", "content": prompt}],
+                    "temperature": 0.1
+                }, headers=headers, timeout=30)
+                res.raise_for_status()
+                
+                try:
+                    response_json = res.json()
+                except json.JSONDecodeError:
+                    return False, f"Local AI returned an invalid response (HTML instead of JSON). Check the API URL ({local_url}) - you might be pointing to a Web UI port instead of the API port, or you might need an API Key."
+                
+                response_text = response_json["choices"][0]["message"]["content"].strip()
+                if response_text.startswith("```json"):
+                    response_text = response_text.replace("```json", "", 1).replace("```", "")
+                elif response_text.startswith("```"):
+                    response_text = response_text.replace("```", "")
+                
+                new_weights = json.loads(response_text)
+                for k, v in new_weights.items():
+                    if k in weights and isinstance(v, (int, float)):
+                        weights[k] = v
+                
+                db.collection("system").document("algo_weights").set(weights)
+                fetch_algo_weights.clear()
+                return True, f"Local AI ({local_model}) optimized algorithm weights for a {'Bearish' if market_return < 0 else 'Bullish'} market."
+            except Exception as api_e:
+                return False, f"Local AI Connection Failed: {str(api_e)}"
         else:
-            # Bull Market: Increase momentum
-            weights["macd_crossover"] = min(25, weights.get("macd_crossover", 15) + 3)
-            weights["sma_50_above"] = min(10, weights.get("sma_50_above", 5) + 2)
-            weights["sma_200_above"] = min(15, weights.get("sma_200_above", 10) + 2)
-            # Decrease defense slightly
-            weights["rsi_below_30"] = max(5, weights.get("rsi_below_30", 10) - 2)
-            
-        db.collection("system").document("algo_weights").set(weights)
-        fetch_algo_weights.clear()
-        return True, f"Algorithm successfully recalibrated for a {'Bearish' if market_return < 0 else 'Bullish'} market."
+            # Auto-adjust logic based on market regime (Simple Heuristic ML)
+            if market_return < 0:
+                # Bear Market: Increase defense
+                weights["rsi_below_30"] = min(20, weights.get("rsi_below_30", 10) + 2)
+                weights["good_debt"] = min(15, weights.get("good_debt", 10) + 2)
+                weights["good_cash"] = min(15, weights.get("good_cash", 10) + 2)
+                # Decrease momentum
+                weights["macd_crossover"] = max(5, weights.get("macd_crossover", 15) - 3)
+                weights["sma_50_above"] = max(2, weights.get("sma_50_above", 5) - 1)
+            else:
+                # Bull Market: Increase momentum
+                weights["macd_crossover"] = min(25, weights.get("macd_crossover", 15) + 3)
+                weights["sma_50_above"] = min(10, weights.get("sma_50_above", 5) + 2)
+                weights["sma_200_above"] = min(15, weights.get("sma_200_above", 10) + 2)
+                # Decrease defense slightly
+                weights["rsi_below_30"] = max(5, weights.get("rsi_below_30", 10) - 2)
+                
+            db.collection("system").document("algo_weights").set(weights)
+            fetch_algo_weights.clear()
+            return True, f"Algorithm successfully recalibrated for a {'Bearish' if market_return < 0 else 'Bullish'} market."
     except Exception as e:
         return False, str(e)
 
@@ -873,8 +863,15 @@ def fetch_live_and_spark_data():
                 if not market_healthy:
                     score += algo_weights.get("market_crash", -15)
                 
+                company_name = ticker
+                if ticker in HALAL_STOCKS:
+                    company_name = HALAL_STOCKS[ticker]["name"]
+                elif 'UNIVERSE_METRICS_DF' in globals() and not UNIVERSE_METRICS_DF.empty:
+                    m = UNIVERSE_METRICS_DF[UNIVERSE_METRICS_DF['Symbol'] == ticker.replace(".NS", "").replace(".BO", "")]
+                    if not m.empty: company_name = m.iloc[0]['Company Name']
+                
                 data.append({
-                    "Symbol": ticker.replace(".NS", ""), "Company Name": HALAL_STOCKS[ticker]["name"],
+                    "Symbol": ticker.replace(".NS", ""), "Company Name": company_name,
                     "Live Price (₹)": round(current_price, 2), "Change (₹)": round(change, 2),
                     "% Change": round(change_pct, 2), "14D Return": round(return_14d, 2), "Market Cap": market_cap,
                     "RSI": round(current_rsi, 2), "SMA50": round(sma_50, 2), "Buy Score": score
@@ -908,11 +905,11 @@ def calculate_backtest_accuracy(days_ago=30):
                     strong_buys = [p for p in predictions if p["Buy Score"] >= 75][:10]
                     
                     if strong_buys:
-                        tickers_to_fetch = [p["Symbol"] + ".NS" for p in strong_buys]
+                        tickers_to_fetch = [p["Symbol"] if str(p["Symbol"]).endswith((".NS", ".BO")) else p["Symbol"] + ".NS" for p in strong_buys]
                         live_data = yf.download(tickers_to_fetch, period="5d", interval="1d", progress=False)
                         
                         for p in strong_buys:
-                            ticker_ns = p["Symbol"] + ".NS"
+                            ticker_ns = p["Symbol"] if str(p["Symbol"]).endswith((".NS", ".BO")) else p["Symbol"] + ".NS"
                             price_t = p["Live Price (₹)"]
                             try:
                                 if isinstance(live_data, pd.DataFrame) and "Close" in live_data.columns:
@@ -949,7 +946,7 @@ def calculate_backtest_accuracy(days_ago=30):
     if 'UNIVERSE_METRICS_DF' in globals() and not UNIVERSE_METRICS_DF.empty:
         safe_universe = UNIVERSE_METRICS_DF[UNIVERSE_METRICS_DF['market_cap'] >= 15000000000]
         top_100_symbols = safe_universe.sort_values(by='Buy Score', ascending=False).head(100)['Symbol'].tolist()
-        top_100_tickers = [sym + ".NS" for sym in top_100_symbols]
+        top_100_tickers = [sym if str(sym).endswith((".NS", ".BO")) else sym + ".NS" for sym in top_100_symbols]
         tickers = list(set(tickers + top_100_tickers))
     try:
         # Fetch NIFTY for historical market trend
@@ -1718,6 +1715,19 @@ with st.sidebar:
             st.rerun()
             
     st.markdown("### SYSTEM SETTINGS")
+    
+    ai_engine = st.radio("AI Engine", ["Google Gemini (Cloud)", "Local Odysseus Agent"], horizontal=True)
+    if ai_engine == "Local Odysseus Agent":
+        local_model = st.selectbox("Local Model", ["qwen2.5-coder:3b-instruct", "llama3.2:3b"])
+        local_api_url = st.text_input("Local API URL", value="http://localhost:11434/v1/chat/completions")
+        local_api_key = st.text_input("Local API Key (If Required)", type="password")
+        st.session_state.ai_engine = "local"
+        st.session_state.local_model = local_model
+        st.session_state.local_api_url = local_api_url
+        st.session_state.local_api_key = local_api_key
+    else:
+        st.session_state.ai_engine = "gemini"
+        
     api_key = st.text_input("GEMINI API KEY", value=saved_api_key, type="password")
     
     if api_key != saved_api_key:
@@ -1777,8 +1787,9 @@ if not stock_data.empty:
     
     with col1:
         st.markdown("### 🧠 SHAREQ AI CORE")
-        if api_key:
-            model_name = get_best_model(api_key)
+        ai_engine = st.session_state.get("ai_engine", "gemini")
+        if ai_engine == "local" or api_key:
+            model_name = st.session_state.get("local_model", "qwen2.5-coder:3b-instruct") if ai_engine == "local" else get_best_model(api_key)
             top_10 = stock_data.head(10)
             top_pick = top_10.iloc[0]
             if "messages" not in st.session_state:
@@ -1796,7 +1807,7 @@ if not stock_data.empty:
                         <div class='dot yellow'></div>
                         <div class='dot green'></div>
                     </div>
-                    <div class='terminal-title'>Advisor Terminal ({model_name})</div>
+                    <div class='terminal-title'>Advisor Terminal ({model_name} - {'Local' if ai_engine == 'local' else 'Cloud'})</div>
                 </div>
             </div>
             """, unsafe_allow_html=True)
@@ -1814,21 +1825,62 @@ if not stock_data.empty:
                 
                 with st.chat_message("assistant"):
                     with st.spinner("Analyzing market data..."):
+                        import re
+                        import pandas as pd
+                        
+                        query_words = set(re.findall(r'\b[A-Za-z0-9]+\b', user_query.upper()))
+                        
+                        # Find relevant stocks by matching Symbol or words in Company Name
+                        def is_relevant(row):
+                            symbol_match = str(row.get('Symbol', '')).upper() in query_words
+                            name_words = set(re.findall(r'\b[A-Za-z0-9]+\b', str(row.get('Company Name', '')).upper()))
+                            name_match = bool(query_words.intersection(name_words))
+                            return symbol_match or name_match
+                        
+                        relevant_mask = stock_data.apply(is_relevant, axis=1)
+                        relevant_stocks = stock_data[relevant_mask]
+                        
+                        # Combine relevant stocks with Top 10, max ~20 rows to prevent context overflow
+                        context_df = pd.concat([relevant_stocks, top_10]).drop_duplicates(subset=["Symbol"]).head(20)
+                        
+                        context_prompt = (
+                            "You are a clinical Islamic Finance advisor and quantitative stock analyst. "
+                            f"Here is the relevant market data of Shariah-compliant Indian equities (filtered for the user's query):\n{context_df.to_string()}\n\n"
+                            "CRITICAL RULES:\n"
+                            "1. ALL stocks in the provided table are ALREADY strictly vetted and certified as 100% Shariah-compliant by the Shareq Matrix. DO NOT claim any stock in the table is non-compliant or haram.\n"
+                            "2. Do not hallucinate or guess a company's business model (e.g., claiming a company makes firearms or alcohol if you are unsure). If you do not know the exact business model, state that and focus purely on the provided quantitative metrics (RSI, Buy Score, 14D Return, etc.).\n\n"
+                            f"User Question: {user_query}\n\n"
+                            "Respond with concise, high-value, institutional-grade financial insight."
+                        )
                         try:
-                            genai.configure(api_key=api_key)
-                            # Using dynamically found model name
-                            model = genai.GenerativeModel(model_name)
-                            context_prompt = (
-                                "You are a clinical Islamic Finance advisor and quantitative stock analyst. "
-                                f"Here is the top 10 market data of Shariah-compliant Indian equities:\n{top_10.to_string()}\n\n"
-                                f"User Question: {user_query}\n\n"
-                                "Respond with concise, high-value, institutional-grade financial insight."
-                            )
-                            response = model.generate_content(context_prompt).text
+                            if ai_engine == "local":
+                                import requests
+                                local_url = st.session_state.get("local_api_url", "http://localhost:11434/v1/chat/completions")
+                                local_key = st.session_state.get("local_api_key", "")
+                                headers = {"Content-Type": "application/json"}
+                                if local_key:
+                                    headers["Authorization"] = f"Bearer {local_key}"
+                                
+                                res = requests.post(local_url, json={
+                                    "model": model_name,
+                                    "messages": [{"role": "user", "content": context_prompt}],
+                                    "temperature": 0.7
+                                }, headers=headers, timeout=60)
+                                res.raise_for_status()
+                                try:
+                                    response_json = res.json()
+                                except Exception:
+                                    raise Exception(f"Local AI returned HTML instead of JSON. Check the API URL ({local_url}) and API Key.")
+                                response = response_json["choices"][0]["message"]["content"].strip()
+                            else:
+                                genai.configure(api_key=api_key)
+                                model = genai.GenerativeModel(model_name)
+                                response = model.generate_content(context_prompt).text
+                                
                             st.write(response)
                             st.session_state.messages.append({"role": "assistant", "content": response})
                         except Exception as e:
-                            error_msg = f"API Error: {str(e)}. Please check your API Key and network connection."
+                            error_msg = f"AI Connection Error: {str(e)}. Please check your {'Odysseus server' if ai_engine == 'local' else 'Gemini API Key'}."
                             st.error(error_msg)
                             st.session_state.messages.append({"role": "assistant", "content": error_msg})
                 st.rerun()
