@@ -65,54 +65,66 @@ def main():
         query_symbol = symbol.replace(".NS", "").replace(".BO", "")
         
         print(f"Fetching news for {query_symbol}...")
-        try:
-            news = finnhub_client.company_news(query_symbol, _from=start_str, to=end_str)
-            
-            if not news:
-                sentiment_data[symbol] = {"score": 0.0, "news_count": 0, "last_updated": end_date.isoformat()}
-                continue
+        
+        max_retries = 3
+        for attempt in range(max_retries):
+            try:
+                news = finnhub_client.company_news(query_symbol, _from=start_str, to=end_str)
                 
-            total_score = 0.0
-            valid_news = 0
-            
-            for article in news:
-                text = article.get('headline', '') + ". " + article.get('summary', '')
-                if not text.strip() or len(text.strip()) < 10:
-                    continue
+                if not news:
+                    sentiment_data[symbol] = {"score": 0.0, "news_count": 0, "last_updated": end_date.isoformat()}
+                    break
                     
-                # Truncate text to avoid model length errors
-                text = text[:512]
+                total_score = 0.0
+                valid_news = 0
                 
-                result = sentiment_pipeline(text)[0]
-                label = result['label']
+                for article in news:
+                    text = article.get('headline', '') + ". " + article.get('summary', '')
+                    if not text.strip() or len(text.strip()) < 10:
+                        continue
+                        
+                    # Truncate text to avoid model length errors
+                    text = text[:512]
+                    
+                    result = sentiment_pipeline(text)[0]
+                    label = result['label']
+                    
+                    if label == 'positive':
+                        score = 1.0
+                    elif label == 'negative':
+                        score = -1.0
+                    else:
+                        score = 0.0
+                        
+                    total_score += score
+                    valid_news += 1
+                    
+                avg_score = total_score / valid_news if valid_news > 0 else 0.0
                 
-                if label == 'positive':
-                    score = 1.0
-                elif label == 'negative':
-                    score = -1.0
+                sentiment_data[symbol] = {
+                    "score": avg_score,
+                    "news_count": valid_news,
+                    "last_updated": end_date.isoformat()
+                }
+                break # Success, break out of retry loop
+                
+            except Exception as e:
+                print(f"Error fetching news for {symbol}: {e}")
+                if "429" in str(e) or "limit" in str(e).lower():
+                    if attempt < max_retries - 1:
+                        print("Rate limit reached. Sleeping for 60 seconds before retrying...")
+                        time.sleep(60)
+                    else:
+                        print("Max retries reached for this symbol.")
                 else:
-                    score = 0.0
-                    
-                total_score += score
-                valid_news += 1
-                
-            avg_score = total_score / valid_news if valid_news > 0 else 0.0
-            
-            sentiment_data[symbol] = {
-                "score": avg_score,
-                "news_count": valid_news,
-                "last_updated": end_date.isoformat()
-            }
-            
-        except Exception as e:
-            print(f"Error fetching news for {symbol}: {e}")
+                    break # Break on other errors
             
         count += 1
         if count % 10 == 0:
             print(f"Processed {count}/{len(universe)} stocks.")
             
-        # Finnhub free tier limit is usually 30-60 calls per minute
-        time.sleep(1.5)
+        # Finnhub free tier limit is usually 30 calls per minute
+        time.sleep(2.1)
 
     with open("sentiment_data.json", "w", encoding="utf-8") as f:
         json.dump(sentiment_data, f, indent=4)

@@ -1039,6 +1039,105 @@ def calculate_backtest_accuracy(days_ago=30):
     except Exception:
         return pd.DataFrame()
 
+@st.cache_data(ttl=3600)
+def calculate_ml_backtest_accuracy(days_ago=30, sample_size=20):
+    """Simulates the LSTM PyTorch model dynamically in the past to see its accuracy."""
+    try:
+        import torch
+        import numpy as np
+        from sklearn.preprocessing import MinMaxScaler
+        from ml_model import StockPredictorLSTM
+        
+        if not os.path.exists("best_model.pth"):
+            return pd.DataFrame()
+            
+        device = torch.device('cpu')
+        model = StockPredictorLSTM(input_dim=6, hidden_dim=64, num_layers=2, output_dim=1).to(device)
+        model.load_state_dict(torch.load("best_model.pth", map_location=device))
+        model.eval()
+        
+        sentiment_data = {}
+        if os.path.exists("sentiment_data.json"):
+            with open("sentiment_data.json", "r", encoding="utf-8") as f:
+                sentiment_data = json.load(f)
+                
+        if 'UNIVERSE_METRICS_DF' in globals() and not UNIVERSE_METRICS_DF.empty:
+            top_picks = UNIVERSE_METRICS_DF.sort_values(by='Buy Score', ascending=False).head(sample_size)
+            tickers = top_picks['Symbol'].tolist()
+            tickers = [t if str(t).endswith((".NS", ".BO")) else t + ".NS" for t in tickers]
+        else:
+            tickers = list(HALAL_STOCKS.keys())[:sample_size]
+            
+        hist_data = yf.download(tickers, period="100d", interval="1d", progress=False, group_by="ticker")
+        
+        results = []
+        seq_length = 30
+        
+        for ticker in tickers:
+            try:
+                sym_sent = sentiment_data.get(ticker, {}).get("score", 0.0)
+                
+                if isinstance(hist_data.columns, pd.MultiIndex):
+                    if ticker not in hist_data.columns.levels[0]: continue
+                    df = hist_data[ticker][['Open', 'High', 'Low', 'Close', 'Volume']].dropna()
+                else:
+                    if ticker != tickers[0]: continue
+                    df = hist_data[['Open', 'High', 'Low', 'Close', 'Volume']].dropna()
+                    
+                if len(df) < seq_length + days_ago + 1:
+                    continue
+                    
+                t_target_idx = -days_ago
+                t_next_idx = t_target_idx + 1 if t_target_idx < -1 else None
+                
+                df_ml = df.iloc[t_target_idx - seq_length : t_target_idx].copy()
+                if len(df_ml) < seq_length: continue
+                
+                df_ml['Sentiment'] = sym_sent
+                
+                scaler = MinMaxScaler()
+                scaled_data = scaler.fit_transform(df_ml.values)
+                x_tensor = torch.tensor(scaled_data, dtype=torch.float32).unsqueeze(0)
+                
+                with torch.no_grad():
+                    pred_scaled = model(x_tensor).item()
+                    
+                dummy = np.zeros((1, 6))
+                dummy[0, 3] = pred_scaled
+                pred_price = scaler.inverse_transform(dummy)[0, 3]
+                
+                price_t = float(df['Close'].iloc[t_target_idx - 1])
+                if t_next_idx is not None:
+                    actual_price_next = float(df['Close'].iloc[t_next_idx])
+                else:
+                    actual_price_next = float(df['Close'].iloc[-1])
+                
+                predicted_change = pred_price - price_t
+                actual_change = actual_price_next - price_t
+                
+                if predicted_change > 0 and actual_change > 0:
+                    success = "WIN"
+                elif predicted_change < 0 and actual_change < 0:
+                    success = "WIN"
+                else:
+                    success = "LOSS"
+                    
+                results.append({
+                    "Asset": ticker.replace(".NS", ""),
+                    "Pred Direction": "UP" if predicted_change > 0 else "DOWN",
+                    "Actual Direction": "UP" if actual_change > 0 else "DOWN",
+                    "Predicted Price": pred_price,
+                    "Actual Price": actual_price_next,
+                    "Outcome": success
+                })
+            except Exception:
+                pass
+                
+        return pd.DataFrame(results)
+    except Exception as e:
+        print(f"ML Backtest Error: {e}")
+        return pd.DataFrame()
+
 @st.cache_data(ttl=600)
 def fetch_stock_history(ticker, period="90d", interval="1d"):
     try:
@@ -1265,8 +1364,24 @@ import hashlib
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
+def _save_session(user_dict):
+    try:
+        with open(".session_cache.json", "w") as f:
+            # Only save serializable parts of user
+            json.dump({"email": user_dict.get("email"), "gemini_api_key": user_dict.get("gemini_api_key")}, f)
+    except Exception:
+        pass
+
 if 'user' not in st.session_state:
     st.session_state.user = None
+    if os.path.exists(".session_cache.json"):
+        try:
+            with open(".session_cache.json", "r") as f:
+                cached_user = json.load(f)
+                if isinstance(cached_user, dict) and "email" in cached_user:
+                    st.session_state.user = cached_user
+        except Exception:
+            pass
 
 if 'auth_action' not in st.session_state:
     st.session_state.auth_action = 'Login'
@@ -1549,6 +1664,7 @@ if st.session_state.user is None:
             elif db is None:
                 auth_container.empty()
                 st.session_state.user = {"email": email_val, "gemini_api_key": ""}
+                _save_session(st.session_state.user)
                 st.rerun()
             else:
                 users_ref = db.collection("users").document(email_val)
@@ -1565,6 +1681,7 @@ if st.session_state.user is None:
                         })
                         auth_container.empty()
                         st.session_state.user = {"email": email_val, "gemini_api_key": ""}
+                        _save_session(st.session_state.user)
                         st.rerun()
                 else:
                     if not doc.exists:
@@ -1574,6 +1691,7 @@ if st.session_state.user is None:
                         if user_data.get("password_hash") == hash_password(password_val):
                             auth_container.empty()
                             st.session_state.user = user_data
+                            _save_session(st.session_state.user)
                             st.rerun()
                         else:
                             st.error("Incorrect password.")
@@ -1712,6 +1830,9 @@ with st.sidebar:
         st.markdown(f"<div style='font-size: 0.8rem; color: #00F0FF; margin-bottom: 15px;'>Logged in: {st.session_state.user['email']}</div>", unsafe_allow_html=True)
         if st.button("Logout", key="logout_btn"):
             st.session_state.user = None
+            if os.path.exists(".session_cache.json"):
+                try: os.remove(".session_cache.json")
+                except Exception: pass
             st.rerun()
             
     st.markdown("### SYSTEM SETTINGS")
@@ -2281,6 +2402,31 @@ if not stock_data.empty:
             else:
                 st.info("No 'Strong Buy' signals were triggered 30 days ago by the algorithm parameters.")
                 
+            st.markdown("---")
+            st.markdown("### LSTM AI Model Backtest")
+            st.write("Simulates the LSTM PyTorch model dynamically 30 days in the past on a random sample to see if its directional prediction was correct.")
+            with st.spinner("Simulating ML forward-predictions..."):
+                ml_backtest_df = calculate_ml_backtest_accuracy(days_ago=30, sample_size=20)
+                if not ml_backtest_df.empty:
+                    ml_wins = len(ml_backtest_df[ml_backtest_df['Outcome'] == 'WIN'])
+                    ml_total = len(ml_backtest_df)
+                    ml_win_rate = (ml_wins / ml_total) * 100 if ml_total > 0 else 0
+                    
+                    ml_color = "#00F0FF" if ml_win_rate > 50 else "#FF0055"
+                    st.markdown(f"<div style='margin: 20px 0; padding: 20px; background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(148, 163, 184, 0.1); border-left: 3px solid {ml_color}; border-radius: 12px;'> <h3 style='margin:0; font-weight: 300; font-family: \"Space Grotesk\", sans-serif; color: var(--text-color);'>ML Win Rate: <span style='color:{ml_color}'>{ml_win_rate:.1f}%</span></h3> <p style='margin: 5px 0 0 0; color: var(--text-color); opacity: 0.6;'>{ml_wins} correct directional predictions out of {ml_total} sampled stocks exactly 30 days ago.</p> </div>", unsafe_allow_html=True)
+                    
+                    ml_styled_df = ml_backtest_df.style.map(style_outcome, subset=['Outcome'])
+                    
+                    st.dataframe(
+                        ml_styled_df,
+                        column_config={
+                            "Predicted Price": st.column_config.NumberColumn(format="₹%.2f"),
+                            "Actual Price": st.column_config.NumberColumn(format="₹%.2f"),
+                        }, hide_index=True, width="stretch"
+                    )
+                else:
+                    st.info("No ML predictions could be simulated for the target date. Check if best_model.pth is available.")
+
     with tab_portfolios:
         st.markdown("### 2,700-Stock Universal AI Screener & SIP Projections")
         st.write("These algorithmic portfolios mathematically filter the **entire 2,700+ Shariah-compliant universe** based on your specific risk profile and SIP budget.")
