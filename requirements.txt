@@ -11,3 +11,4 @@ torch
 transformers
 finnhub-python
 scikit-learn
+streamlit-option-menu
