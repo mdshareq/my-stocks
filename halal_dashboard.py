@@ -2171,11 +2171,11 @@ if not stock_data.empty:
         orientation="horizontal",
         styles={
             "container": {
-                "padding": "15px 10px", # Increased vertical padding to prevent clipping
+                "padding": "10px", 
                 "background-color": "#000000", 
                 "border-radius": "50px",
                 "max-width": "800px",
-                "margin": "20px auto",
+                "margin": "0 auto",
                 "border": "1px solid #333"
             },
             "icon": {
