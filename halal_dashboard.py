@@ -716,6 +716,21 @@ def get_user_portfolio(email):
     except Exception:
         return []
 
+def update_portfolio(email, symbol, price, qty):
+    from firebase_admin import firestore
+    if db is None: return False, "Firebase is offline."
+    try:
+        if qty <= 0: return False, "Quantity must be greater than 0."
+        portfolio_ref = db.collection("users").document(email).collection("portfolio").document(symbol)
+        portfolio_ref.update({
+            "buy_price": float(price),
+            "quantity": int(qty),
+            "updated_at": firestore.SERVER_TIMESTAMP
+        })
+        return True, f"Successfully updated {symbol}."
+    except Exception as e:
+        return False, str(e)
+
 def remove_from_portfolio(email, symbol):
     if db is None: return False, "Firebase is offline."
     try:
@@ -899,6 +914,55 @@ def fetch_live_and_spark_data():
     df = pd.DataFrame(data)
     if not df.empty: df = df.sort_values(by="Buy Score", ascending=False).reset_index(drop=True)
     return df, pd.DataFrame(sparklines)
+
+@st.cache_data(ttl=3600)
+def get_ml_prediction_for_symbol(symbol):
+    import os
+    if not os.path.exists("best_model.pth"): return None
+    try:
+        import torch
+        import numpy as np
+        import json
+        import yfinance as yf
+        from sklearn.preprocessing import MinMaxScaler
+        from ml_model import StockPredictorLSTM
+        
+        sym_sent = 0.0
+        if os.path.exists("sentiment_data.json"):
+            with open("sentiment_data.json", "r", encoding="utf-8") as f:
+                sent_data = json.load(f)
+                sym_sent = sent_data.get(symbol, {}).get("score", 0.0)
+                
+        hist = yf.Ticker(symbol).history(period="2mo")
+        if hist.empty or len(hist) < 30: return None
+        
+        df_ml = hist[['Open', 'High', 'Low', 'Close', 'Volume']].tail(30).copy()
+        if isinstance(df_ml.columns, pd.MultiIndex):
+            df_ml.columns = df_ml.columns.get_level_values(0)
+        df_ml['Sentiment'] = sym_sent
+        
+        scaler = MinMaxScaler()
+        scaled_data = scaler.fit_transform(df_ml.values)
+        x_tensor = torch.tensor(scaled_data, dtype=torch.float32).unsqueeze(0)
+        
+        device = torch.device('cpu')
+        model = StockPredictorLSTM(input_dim=6, hidden_dim=64, num_layers=2, output_dim=1).to(device)
+        model.load_state_dict(torch.load("best_model.pth", map_location=device))
+        model.eval()
+        
+        with torch.no_grad():
+            pred_scaled = model(x_tensor).item()
+            
+        dummy = np.zeros((1, 6))
+        dummy[0, 3] = pred_scaled
+        pred_price = scaler.inverse_transform(dummy)[0, 3]
+        
+        current_px = df_ml['Close'].iloc[-1]
+        pred_change = ((pred_price - current_px) / current_px) * 100
+        
+        return {"price": pred_price, "change": pred_change, "sentiment": sym_sent}
+    except Exception:
+        return None
 
 @st.cache_data(ttl=3600)
 def calculate_backtest_accuracy(days_ago=30):
@@ -2156,32 +2220,35 @@ if not stock_data.empty:
             
             with st.expander("➕ Add Asset to Portfolio", expanded=False):
                 with st.form("add_portfolio_form", clear_on_submit=True):
-                    cols = st.columns(3)
+                    cols = st.columns([3, 1.5, 1.5, 1.5])
                     with cols[0]:
                         sel_stock = st.selectbox("Select Asset from 2700+ Universe", options=sorted(list(FULL_UNIVERSE.values())))
                     with cols[1]:
                         qty = st.number_input("Quantity", min_value=1, step=1)
                     with cols[2]:
+                        user_price = st.number_input("Purchase Price (₹)", min_value=0.0, format="%.2f", help="Leave 0.0 to use Live Price")
+                    with cols[3]:
                         st.markdown("<br>", unsafe_allow_html=True)
                         submit_add = st.form_submit_button("Add to Portfolio", width="stretch")
                     
                     if submit_add:
                         symbol = REVERSE_FULL_UNIVERSE.get(sel_stock, "")
                         
-                        # Try to get live price from existing data first (fast)
-                        live_row = stock_data[stock_data["Symbol"] == symbol]
-                        if not live_row.empty:
-                            live_price = float(live_row.iloc[0]["Live Price (₹)"])
+                        if user_price > 0.0:
+                            final_price = user_price
                         else:
-                            # Fetch live price dynamically for small-caps
-                            try:
-                                import yfinance as yf
-                                tkr = yf.Ticker(symbol)
-                                live_price = float(tkr.fast_info.last_price)
-                            except Exception:
-                                live_price = 0.0
+                            live_row = stock_data[stock_data["Symbol"] == symbol]
+                            if not live_row.empty:
+                                final_price = float(live_row.iloc[0]["Live Price (₹)"])
+                            else:
+                                try:
+                                    import yfinance as yf
+                                    tkr = yf.Ticker(symbol)
+                                    final_price = float(tkr.fast_info.last_price)
+                                except Exception:
+                                    final_price = 0.0
                                 
-                        success, msg = add_to_portfolio(email, symbol, sel_stock, live_price, qty)
+                        success, msg = add_to_portfolio(email, symbol, sel_stock, final_price, qty)
                         if success:
                             st.success(msg)
                         else:
@@ -2264,11 +2331,51 @@ if not stock_data.empty:
                     width="stretch"
                 )
                 
+                st.markdown("### AI Predictions for Your Holdings")
+                pred_cols = st.columns(3)
+                col_idx = 0
+                for h in holdings:
+                    sym = h["symbol"]
+                    pred = get_ml_prediction_for_symbol(sym)
+                    if pred:
+                        pred_color = "#10b981" if pred['change'] > 0 else "#ef4444"
+                        pred_sign = "+" if pred['change'] > 0 else ""
+                        with pred_cols[col_idx % 3]:
+                            st.markdown(f"<div style='border-left: 3px solid {pred_color}; padding: 12px; background: rgba(0,0,0,0.15); border-radius: 6px; margin-bottom: 10px;'>", unsafe_allow_html=True)
+                            st.markdown(f"<div style='font-size:0.85rem; color:#64748b;'>{sym}</div>", unsafe_allow_html=True)
+                            st.markdown(f"<h5 style='margin-top:2px; margin-bottom:4px;'>Forecast: <span style='color: {pred_color};'>₹{pred['price']:.2f}</span></h5>", unsafe_allow_html=True)
+                            st.markdown(f"<div style='font-size:0.8rem; color: #94a3b8;'>Change: <strong style='color: {pred_color};'>{pred_sign}{pred['change']:.2f}%</strong></div>", unsafe_allow_html=True)
+                            st.markdown("</div>", unsafe_allow_html=True)
+                        col_idx += 1
+                        
+                if col_idx == 0:
+                    st.info("No ML predictions available for your current holdings.")
+                
                 st.markdown("<br>", unsafe_allow_html=True)
-                with st.expander("Manage Holdings (Remove Asset)"):
-                    del_sym = st.selectbox("Select Asset to Remove", options=[h["Symbol"] for h in portfolio_display])
+                with st.expander("Manage Holdings (Edit or Remove)"):
+                    manage_sym = st.selectbox("Select Asset to Manage", options=[h["Symbol"] for h in portfolio_display])
+                    
+                    # Find current qty and price for the selected asset
+                    current_asset = next((h for h in portfolio_display if h["Symbol"] == manage_sym), None)
+                    if current_asset:
+                        edit_cols = st.columns(3)
+                        with edit_cols[0]:
+                            new_qty = st.number_input("Update Quantity", min_value=1, step=1, value=int(current_asset["Shares"]))
+                        with edit_cols[1]:
+                            new_price = st.number_input("Update Purchase Price (₹)", min_value=0.0, format="%.2f", value=float(current_asset["Avg Buy (₹)"]))
+                        with edit_cols[2]:
+                            st.markdown("<br>", unsafe_allow_html=True)
+                            if st.button("Save Changes", type="secondary", use_container_width=True):
+                                suc, m = update_portfolio(email, manage_sym, new_price, new_qty)
+                                if suc:
+                                    st.success(m)
+                                    st.rerun()
+                                else:
+                                    st.error(m)
+                    
+                    st.markdown("---")
                     if st.button("Remove Selected Asset", type="primary"):
-                        suc, m = remove_from_portfolio(email, del_sym)
+                        suc, m = remove_from_portfolio(email, manage_sym)
                         if suc:
                             st.success(m)
                             st.rerun()
