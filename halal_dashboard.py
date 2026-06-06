@@ -2159,9 +2159,51 @@ if not stock_data.empty:
     st.markdown("<hr style='border: 1px solid #111; margin: 30px 0;'>", unsafe_allow_html=True)
 
     # --- TABS SYSTEM ---
-    tab_tracker, tab_my_portfolio, tab_portfolios, tab_accuracy, tab_charts, tab_news, tab_guide = st.tabs(["📊 LIVE TRACKER", "💼 MY PORTFOLIO", "🤖 PORTFOLIO COMBOS", "🎯 ALGO ACCURACY", "📈 ADVANCED CHARTS", "📰 NEWS RADAR", "📖 APP GUIDE"])
+    from streamlit_option_menu import option_menu
     
-    with tab_tracker:
+    st.markdown("<style>#MainMenu {visibility: hidden;} footer {visibility: hidden;}</style>", unsafe_allow_html=True)
+    
+    selected_tab = option_menu(
+        menu_title=None,
+        options=["Tracker", "Portfolio", "Combos", "Accuracy", "Charts", "News", "Guide"],
+        icons=["activity", "briefcase", "robot", "bullseye", "graph-up", "newspaper", "compass"],
+        default_index=0,
+        orientation="horizontal",
+        styles={
+            "container": {
+                "padding": "10px", 
+                "background-color": "#000000", 
+                "border-radius": "50px",
+                "max-width": "800px",
+                "margin": "20px auto",
+                "border": "1px solid #333"
+            },
+            "icon": {
+                "color": "#64748b", 
+                "font-size": "20px"
+            }, 
+            "nav-link": {
+                "font-size": "0px", # Hides the text, leaving only the icon
+                "text-align": "center", 
+                "margin": "0 5px", 
+                "--hover-color": "#111111",
+                "border-radius": "50%",
+                "width": "50px",
+                "height": "50px",
+                "display": "flex",
+                "justify-content": "center",
+                "align-items": "center"
+            },
+            "nav-link-selected": {
+                "background-color": "#000000", 
+                "icon-color": "#FFD700",
+                "border-bottom": "3px solid #FFD700",
+                "border-radius": "0px"
+            }
+        }
+    )
+    
+    if selected_tab == "Tracker":
         filtered_data = stock_data[
             (stock_data["Buy Score"] >= min_score) & 
             (stock_data["RSI"] <= max_rsi) & 
@@ -2210,7 +2252,7 @@ if not stock_data.empty:
                 render_cards_html(rest_data)
 
 
-    with tab_my_portfolio:
+    if selected_tab == "Portfolio":
         st.markdown("### My Personal Portfolio")
         if not st.session_state.user:
             st.warning("🔒 You must be logged in to view and manage your personal portfolio.")
@@ -2383,7 +2425,7 @@ if not stock_data.empty:
                         else:
                             st.error(m)
 
-    with tab_charts:
+    if selected_tab == "Charts":
         st.markdown("### Technical Price Action & Shariah Compliance")
         
         if not UNIVERSE_METRICS_DF.empty:
@@ -2490,7 +2532,7 @@ if not stock_data.empty:
                 else:
                     st.info("The ML Model hasn't been trained yet. Run `python train_model.py` to activate predictions.")
 
-    with tab_news:
+    if selected_tab == "News":
         st.markdown("### Algorithmic News Radar")
         selected_news_stock = st.selectbox("Scan Headlines For:", options=stock_data["Company Name"].tolist(), key="news_select")
         with st.spinner("Scanning global feeds..."):
@@ -2502,7 +2544,7 @@ if not stock_data.empty:
             else:
                 st.info("No actionable intelligence found for this asset in the last 24 hours.")
                 
-    with tab_accuracy:
+    if selected_tab == "Accuracy":
         st.markdown("### 30-Day Predictive Backtest")
         st.write("This engine simulates applying the Shareq algorithm 30 days in the past to see if its 'Strong Buy' recommendations (Score ≥ 85) successfully predicted a price increase.")
         
@@ -2560,7 +2602,7 @@ if not stock_data.empty:
                 else:
                     st.info("No ML predictions could be simulated for the target date. Check if best_model.pth is available.")
 
-    with tab_portfolios:
+    if selected_tab == "Combos":
         st.markdown("### 2,700-Stock Universal AI Screener & SIP Projections")
         st.write("These algorithmic portfolios mathematically filter the **entire 2,700+ Shariah-compliant universe** based on your specific risk profile and SIP budget.")
         
@@ -2659,7 +2701,7 @@ if not stock_data.empty:
 </div>
 """, unsafe_allow_html=True)
 
-    with tab_guide:
+    if selected_tab == "Guide":
         st.markdown("""
         ### 📖 How Shareq Equities Works
         
