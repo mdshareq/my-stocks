@@ -216,6 +216,20 @@ st.markdown(
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(16, 185, 129, 0.1);
         }
+        .metric-card.momentum {
+            border-left: 3px solid #00F0FF !important;
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.04) 0%, rgba(10, 11, 18, 0.6) 100%) !important;
+        }
+        .metric-card.momentum:hover {
+            box-shadow: 0 8px 25px rgba(0, 240, 255, 0.15) !important;
+        }
+        .metric-card.drawdown {
+            border-left: 3px solid #FF0055 !important;
+            background: linear-gradient(135deg, rgba(255, 0, 85, 0.04) 0%, rgba(10, 11, 18, 0.6) 100%) !important;
+        }
+        .metric-card.drawdown:hover {
+            box-shadow: 0 8px 25px rgba(255, 0, 85, 0.15) !important;
+        }
         
         .symbol {
             font-family: 'Space Grotesk', sans-serif;
@@ -1903,13 +1917,23 @@ if not stock_data.empty:
     best = stock_data.sort_values("% Change", ascending=False).iloc[0]
     worst = stock_data.sort_values("% Change").iloc[0]
 
+    best_ticker = REVERSE_LOOKUP.get(best['Company Name'], best['Symbol'])
+    best_spark = ""
+    if not sparkline_data.empty and best_ticker in sparkline_data.columns:
+        best_spark = generate_svg_sparkline(sparkline_data[best_ticker].dropna(), "#00F0FF")
+        
+    worst_ticker = REVERSE_LOOKUP.get(worst['Company Name'], worst['Symbol'])
+    worst_spark = ""
+    if not sparkline_data.empty and worst_ticker in sparkline_data.columns:
+        worst_spark = generate_svg_sparkline(sparkline_data[worst_ticker].dropna(), "#FF0055")
+
     mc1, mc2, mc3 = st.columns(3)
     with mc1:
-        st.markdown(f"<div class='metric-card'><h4>Market Breadth</h4><div class='metric-value'>{'Bullish' if gainers >= losers else 'Bearish'}</div><div style='color:#64748b; font-size: 0.78rem; margin-top:5px;'>{gainers} Advancing | {losers} Declining</div></div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='metric-card' style='height:100%; display:flex; flex-direction:column; justify-content:space-between;'><div><h4>Market Breadth</h4><div class='metric-value'>{'Bullish' if gainers >= losers else 'Bearish'}</div><div style='color:#64748b; font-size: 0.78rem; margin-top:5px;'>{gainers} Advancing | {losers} Declining</div></div></div>", unsafe_allow_html=True)
     with mc2:
-        st.markdown(f"<div class='metric-card' style='border-left-color: #00F0FF !important; background: linear-gradient(135deg, rgba(0, 240, 255, 0.04) 0%, rgba(10, 11, 18, 0.6) 100%) !important;'><h4>Top Momentum (24H)</h4><div class='metric-value' style='color:#00F0FF;'>{best['Symbol']} +{best['% Change']:.2f}%</div><div style='color:#64748b; font-size: 0.78rem; margin-top:5px;'>{best['Company Name']}</div></div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='metric-card momentum' style='height:100%; display:flex; flex-direction:column; justify-content:space-between;'><div><h4>Top Momentum (24H)</h4><div class='metric-value' style='color:#00F0FF;'>{best['Symbol']} +{best['% Change']:.2f}%</div><div style='color:#64748b; font-size: 0.78rem; margin-top:5px; margin-bottom: 10px;'>{best['Company Name']}</div></div><div>{best_spark}</div></div>", unsafe_allow_html=True)
     with mc3:
-        st.markdown(f"<div class='metric-card' style='border-left-color: #FF0055 !important; background: linear-gradient(135deg, rgba(255, 0, 85, 0.04) 0%, rgba(10, 11, 18, 0.6) 100%) !important;'><h4>Max Drawdown (24H)</h4><div class='metric-value' style='color:#FF0055;'>{worst['Symbol']} {worst['% Change']:.2f}%</div><div style='color:#64748b; font-size: 0.78rem; margin-top:5px;'>{worst['Company Name']}</div></div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='metric-card drawdown' style='height:100%; display:flex; flex-direction:column; justify-content:space-between;'><div><h4>Max Drawdown (24H)</h4><div class='metric-value' style='color:#FF0055;'>{worst['Symbol']} {worst['% Change']:.2f}%</div><div style='color:#64748b; font-size: 0.78rem; margin-top:5px; margin-bottom: 10px;'>{worst['Company Name']}</div></div><div>{worst_spark}</div></div>", unsafe_allow_html=True)
 
     # --- ADVANCED AI ADVISOR (INTERACTIVE TERMINAL) ---
     col1, col2 = st.columns([1.1, 0.9])
