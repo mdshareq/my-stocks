@@ -2171,7 +2171,7 @@ if not stock_data.empty:
         orientation="horizontal",
         styles={
             "container": {
-                "padding": "10px", 
+                "padding": "15px 10px", # Increased vertical padding to prevent clipping
                 "background-color": "#000000", 
                 "border-radius": "50px",
                 "max-width": "800px",
@@ -2179,25 +2179,20 @@ if not stock_data.empty:
                 "border": "1px solid #333"
             },
             "icon": {
-                "color": "#64748b", 
-                "font-size": "20px"
+                "font-size": "22px" # Removed hardcoded color so it inherits
             }, 
             "nav-link": {
+                "color": "#64748b", # Inactive icon color
                 "font-size": "0px", # Hides the text, leaving only the icon
                 "text-align": "center", 
                 "margin": "0 5px", 
                 "--hover-color": "#111111",
-                "border-radius": "50%",
-                "width": "50px",
-                "height": "50px",
-                "display": "flex",
-                "justify-content": "center",
-                "align-items": "center"
+                "padding": "10px 0" # Natural height instead of fixed 50px
             },
             "nav-link-selected": {
                 "background-color": "#000000", 
-                "icon-color": "#FFD700",
-                "border-bottom": "3px solid #FFD700",
+                "color": "#FFD700", # Active icon color
+                "border-bottom": "2px solid #FFD700",
                 "border-radius": "0px"
             }
         }
