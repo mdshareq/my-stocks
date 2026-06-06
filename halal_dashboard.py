@@ -2159,9 +2159,38 @@ if not stock_data.empty:
     st.markdown("<hr style='border: 1px solid #111; margin: 30px 0;'>", unsafe_allow_html=True)
 
     # --- TABS SYSTEM ---
-    tab_tracker, tab_my_portfolio, tab_portfolios, tab_accuracy, tab_charts, tab_news, tab_guide = st.tabs(["📊 LIVE TRACKER", "💼 MY PORTFOLIO", "🤖 PORTFOLIO COMBOS", "🎯 ALGO ACCURACY", "📈 ADVANCED CHARTS", "📰 NEWS RADAR", "📖 APP GUIDE"])
+    st.markdown('''
+        <style>
+        [data-testid="stSidebar"] {
+            background-color: #0f172a;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        [data-testid="stSidebar"] .stRadio label {
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding: 10px 0;
+            cursor: pointer;
+        }
+        /* Hide radio circles */
+        [data-testid="stSidebar"] div[role="radiogroup"] > label > div:first-child {
+            display: none;
+        }
+        </style>
+    ''', unsafe_allow_html=True)
     
-    with tab_tracker:
+    with st.sidebar:
+        st.markdown("<h2 style='text-align: center; color: #00F0FF; margin-bottom: 20px;'>SHAREQ MATRIX</h2>", unsafe_allow_html=True)
+        page = st.radio("Navigation", [
+            "📊 LIVE TRACKER", 
+            "💼 MY PORTFOLIO", 
+            "🤖 PORTFOLIO COMBOS", 
+            "🎯 ALGO ACCURACY", 
+            "📈 ADVANCED CHARTS", 
+            "📰 NEWS RADAR", 
+            "🧭 APP GUIDE"
+        ], label_visibility="collapsed")
+    
+    if page == "📊 LIVE TRACKER":
         filtered_data = stock_data[
             (stock_data["Buy Score"] >= min_score) & 
             (stock_data["RSI"] <= max_rsi) & 
@@ -2210,7 +2239,7 @@ if not stock_data.empty:
                 render_cards_html(rest_data)
 
 
-    with tab_my_portfolio:
+    if page == "💼 MY PORTFOLIO":
         st.markdown("### My Personal Portfolio")
         if not st.session_state.user:
             st.warning("🔒 You must be logged in to view and manage your personal portfolio.")
@@ -2383,7 +2412,7 @@ if not stock_data.empty:
                         else:
                             st.error(m)
 
-    with tab_charts:
+    if page == "📈 ADVANCED CHARTS":
         st.markdown("### Technical Price Action & Shariah Compliance")
         
         if not UNIVERSE_METRICS_DF.empty:
@@ -2490,7 +2519,7 @@ if not stock_data.empty:
                 else:
                     st.info("The ML Model hasn't been trained yet. Run `python train_model.py` to activate predictions.")
 
-    with tab_news:
+    if page == "📰 NEWS RADAR":
         st.markdown("### Algorithmic News Radar")
         selected_news_stock = st.selectbox("Scan Headlines For:", options=stock_data["Company Name"].tolist(), key="news_select")
         with st.spinner("Scanning global feeds..."):
@@ -2502,7 +2531,7 @@ if not stock_data.empty:
             else:
                 st.info("No actionable intelligence found for this asset in the last 24 hours.")
                 
-    with tab_accuracy:
+    if page == "🎯 ALGO ACCURACY":
         st.markdown("### 30-Day Predictive Backtest")
         st.write("This engine simulates applying the Shareq algorithm 30 days in the past to see if its 'Strong Buy' recommendations (Score ≥ 85) successfully predicted a price increase.")
         
@@ -2560,7 +2589,7 @@ if not stock_data.empty:
                 else:
                     st.info("No ML predictions could be simulated for the target date. Check if best_model.pth is available.")
 
-    with tab_portfolios:
+    if page == "🤖 PORTFOLIO COMBOS":
         st.markdown("### 2,700-Stock Universal AI Screener & SIP Projections")
         st.write("These algorithmic portfolios mathematically filter the **entire 2,700+ Shariah-compliant universe** based on your specific risk profile and SIP budget.")
         
@@ -2659,7 +2688,7 @@ if not stock_data.empty:
 </div>
 """, unsafe_allow_html=True)
 
-    with tab_guide:
+    if page == "🧭 APP GUIDE":
         st.markdown("""
         ### 📖 How Shareq Equities Works
         
