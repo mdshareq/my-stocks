@@ -1206,6 +1206,7 @@ def calculate_ml_backtest_accuracy(days_ago=30, sample_size=20):
                     "Actual Direction": "UP" if actual_change > 0 else "DOWN",
                     "Predicted Price": pred_price,
                     "Actual Price": actual_price_next,
+                    "Diff (₹)": pred_price - actual_price_next,
                     "Outcome": success
                 })
             except Exception:
@@ -2029,8 +2030,8 @@ if not stock_data.empty:
             </div>
             """, unsafe_allow_html=True)
             
-            # Display chat messages from history
-            for msg in st.session_state.messages:
+            # Display chat messages from history (only show the recent exchange)
+            for msg in st.session_state.messages[-2:]:
                 with st.chat_message(msg["role"]):
                     st.write(msg["content"])
             
@@ -2553,6 +2554,7 @@ if not stock_data.empty:
                         column_config={
                             "Predicted Price": st.column_config.NumberColumn(format="₹%.2f"),
                             "Actual Price": st.column_config.NumberColumn(format="₹%.2f"),
+                            "Diff (₹)": st.column_config.NumberColumn(format="₹%.2f"),
                         }, hide_index=True, width="stretch"
                     )
                 else:
