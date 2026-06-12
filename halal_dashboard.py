@@ -739,6 +739,59 @@ def remove_from_portfolio(email, symbol):
     except Exception as e:
         return False, str(e)
 
+def parse_groww_portfolio(file):
+    try:
+        if file.name.endswith('.csv'):
+            df = pd.read_csv(file)
+        elif file.name.endswith('.xlsx'):
+            df = pd.read_excel(file)
+        else:
+            return False, [], "Unsupported file format."
+            
+        df.columns = df.columns.str.lower().str.strip()
+        
+        # Groww/CAS fuzzy column matching
+        symbol_col = next((c for c in df.columns if 'symbol' in c or 'instrument' in c or 'stock' in c or 'name' in c), None)
+        qty_col = next((c for c in df.columns if 'qty' in c or 'quantity' in c or 'shares' in c or 'balance' in c), None)
+        price_col = next((c for c in df.columns if 'avg' in c or 'average' in c or 'buy price' in c or 'cost' in c or 'price' in c), None)
+        
+        if not symbol_col or not qty_col or not price_col:
+            return False, [], f"Could not map columns. Found: {list(df.columns)}"
+            
+        parsed_holdings = []
+        for _, row in df.iterrows():
+            raw_sym = str(row[symbol_col]).strip()
+            if not raw_sym or str(row[symbol_col]).lower() == 'nan':
+                continue
+                
+            qty = row[qty_col]
+            price = row[price_col]
+            
+            sym = raw_sym.upper()
+            if not sym.endswith('.NS') and not sym.endswith('.BO'):
+                # Handle possible spaces or weird characters
+                sym = sym.replace(" ", "") + ".NS"
+                
+            try:
+                # Remove commas from strings representing numbers
+                if isinstance(qty, str): qty = qty.replace(',', '')
+                if isinstance(price, str): price = price.replace(',', '')
+                qty = float(qty)
+                price = float(price)
+                if qty > 0 and price > 0:
+                    parsed_holdings.append({
+                        "symbol": sym,
+                        "company_name": raw_sym,
+                        "qty": int(qty),
+                        "price": price
+                    })
+            except ValueError:
+                continue
+                
+        return True, parsed_holdings, "Success"
+    except Exception as e:
+        return False, [], f"Error parsing file: {e}"
+
 @st.cache_data(ttl=86400)
 def fetch_fundamentals(ticker):
     # 1. Try Firestore Cache (7-day TTL)
@@ -2064,9 +2117,19 @@ if not stock_data.empty:
                         # Combine relevant stocks with Top 10, max ~20 rows to prevent context overflow
                         context_df = pd.concat([relevant_stocks, top_10]).drop_duplicates(subset=["Symbol"]).head(20)
                         
+                        # Fetch user portfolio context if logged in
+                        portfolio_context = ""
+                        if st.session_state.get("user"):
+                            user_email = st.session_state.user["email"]
+                            user_portfolio = get_user_portfolio(user_email)
+                            if user_portfolio:
+                                port_df = pd.DataFrame(user_portfolio)
+                                portfolio_context = f"The user's CURRENT PORTFOLIO is as follows:\n{port_df.to_string()}\n\nAnalyze this portfolio and cross-reference with the market data if the user asks for portfolio advice.\n\n"
+
                         context_prompt = (
                             "You are a clinical Islamic Finance advisor and quantitative stock analyst. "
                             f"Here is the relevant market data of Shariah-compliant Indian equities (filtered for the user's query):\n{context_df.to_string()}\n\n"
+                            f"{portfolio_context}"
                             "CRITICAL RULES:\n"
                             "1. ALL stocks in the provided table are ALREADY strictly vetted and certified as 100% Shariah-compliant by the Shareq Matrix. DO NOT claim any stock in the table is non-compliant or haram.\n"
                             "2. Do not hallucinate or guess a company's business model (e.g., claiming a company makes firearms or alcohol if you are unsure). If you do not know the exact business model, state that and focus purely on the provided quantitative metrics (RSI, Buy Score, 14D Return, etc.).\n\n"
@@ -2366,6 +2429,24 @@ if not stock_data.empty:
             email = st.session_state.user["email"]
             st.markdown(f"<p style='color: #94a3b8;'>Logged in as: <strong>{email}</strong></p>", unsafe_allow_html=True)
             
+            with st.expander("📥 Auto-Sync Groww Portfolio", expanded=False):
+                st.markdown("Upload your **Groww Order History** or **Portfolio Holdings** export (CSV or Excel) to automatically sync your holdings.")
+                groww_file = st.file_uploader("Upload Groww Export", type=["csv", "xlsx"])
+                if groww_file is not None:
+                    if st.button("Sync Now", type="primary", use_container_width=True):
+                        with st.spinner("Parsing Groww portfolio..."):
+                            suc, holdings, msg = parse_groww_portfolio(groww_file)
+                            if suc:
+                                count = 0
+                                for h in holdings:
+                                    s_res, s_msg = add_to_portfolio(email, h["symbol"], h["company_name"], h["price"], h["qty"])
+                                    if s_res: count += 1
+                                st.success(f"Successfully synced {count} assets from Groww!")
+                                st.rerun()
+                            else:
+                                st.error(msg)
+            
+            st.markdown("<br>", unsafe_allow_html=True)
             with st.expander("➕ Add Asset to Portfolio", expanded=False):
                 with st.form("add_portfolio_form", clear_on_submit=True):
                     cols = st.columns([3, 1.5, 1.5, 1.5])
