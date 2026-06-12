@@ -1360,7 +1360,10 @@ def generate_dynamic_portfolios(stock_data, monthly_sip, risk_profile="Balanced"
             filtered_df = universe_df[(universe_df['beta'] >= 0.8) & (universe_df['beta'] <= 1.2) & (universe_df['market_cap'] >= 15000000000)]
             title_prefix = "⚖️ Balanced"
             
-        if "Value" in strategy:
+        if "Fundamental Score 90+" in strategy:
+            filtered_df = filtered_df[filtered_df['Fundamental Score'] >= 90]
+            filtered_df = filtered_df.sort_values('Fundamental Score', ascending=False)
+        elif "Value" in strategy:
             filtered_df = filtered_df[(filtered_df['pe'] > 0) & (filtered_df['pe'] < 25)]
             filtered_df = filtered_df.sort_values('pe', ascending=True)
         elif "Income" in strategy:
@@ -2198,6 +2201,113 @@ if not stock_data.empty:
         }
     )
     
+    st.components.v1.html("""
+    <script>
+    (function() {
+
+        const CSS = `
+            /* All transitions use only opacity + transform — GPU-accelerated, zero layout reflow */
+            .nav-link {
+                position: relative !important;
+                overflow: visible !important;
+            }
+
+            /* Icon: smooth fade + shrink on hover */
+            .nav-link i, .nav-link svg {
+                transition: opacity 0.22s ease, transform 0.22s ease !important;
+                opacity: 1;
+                transform: scale(1);
+            }
+            .nav-link:hover i, .nav-link:hover svg {
+                opacity: 0 !important;
+                transform: scale(0.5) !important;
+            }
+
+            /* Label span: absolutely centred, always at correct font-size, just invisible */
+            .nav-label {
+                position: absolute !important;
+                top: 50% !important;
+                left: 50% !important;
+                transform: translate(-50%, -50%) !important;
+                font-size: 12px !important;
+                font-weight: 500 !important;
+                opacity: 0 !important;
+                transition: opacity 0.22s ease !important;
+                white-space: nowrap !important;
+                color: #e2e8f0 !important;
+                font-family: 'Space Grotesk', sans-serif !important;
+                pointer-events: none !important;
+                letter-spacing: 0.4px !important;
+            }
+            .nav-link:hover .nav-label {
+                opacity: 1 !important;
+            }
+
+            /* Active tab: icon gone, label gold */
+            .nav-link-selected i, .nav-link-selected svg {
+                opacity: 0 !important;
+                transform: scale(0.5) !important;
+            }
+            .nav-link-selected .nav-label {
+                opacity: 1 !important;
+                color: #FFD700 !important;
+                font-weight: 600 !important;
+            }
+        `;
+
+        function processIframe(iframe) {
+            try {
+                const doc = iframe.contentDocument;
+                if (!doc || !doc.body) return;
+
+                const links = doc.querySelectorAll('.nav-link');
+                if (!links.length) return;
+
+                // Inject CSS once
+                if (!doc.head.querySelector('#sq-nav-css')) {
+                    const s = doc.createElement('style');
+                    s.id = 'sq-nav-css';
+                    s.textContent = CSS;
+                    doc.head.appendChild(s);
+                }
+
+                // Wrap bare text nodes in .nav-label spans (idempotent)
+                links.forEach(link => {
+                    if (link.querySelector('.nav-label')) return;
+                    const textNode = Array.from(link.childNodes)
+                        .find(n => n.nodeType === 3 && n.textContent.trim().length > 0);
+                    if (textNode) {
+                        const span = doc.createElement('span');
+                        span.className = 'nav-label';
+                        span.textContent = textNode.textContent.trim();
+                        textNode.replaceWith(span);
+                    }
+                });
+
+            } catch (e) {}
+        }
+
+        function scanAll() {
+            parent.document.querySelectorAll('iframe').forEach(f => {
+                if (f.contentDocument && f.contentDocument.readyState === 'complete') {
+                    processIframe(f);
+                } else {
+                    f.addEventListener('load', () => processIframe(f), { once: true });
+                }
+            });
+        }
+
+        // Watch for iframes being dynamically added by Streamlit
+        new MutationObserver(scanAll)
+            .observe(parent.document.body, { childList: true, subtree: true });
+
+        // Retries with increasing delays to handle all load timings
+        [0, 150, 400, 900, 1800].forEach(t => setTimeout(scanAll, t));
+
+    })();
+    </script>
+    """, height=0)
+    
     if selected_tab == "Tracker":
         filtered_data = stock_data[
             (stock_data["Buy Score"] >= min_score) & 
@@ -2558,16 +2668,39 @@ if not stock_data.empty:
                     color = '#22c55e' if val == 'WIN' else '#ef4444' if val == 'LOSS' else 'inherit'
                     return f'color: {color}; font-weight: bold;'
                 
-                styled_df = backtest_df.style.map(style_outcome, subset=['Outcome'])
+                # --- Pagination ---
+                page_size = 10
+                total_rows = len(backtest_df)
+                total_pages = max(1, (total_rows - 1) // page_size + 1)
+                
+                if "bt_page" not in st.session_state:
+                    st.session_state.bt_page = 1
+                st.session_state.bt_page = min(st.session_state.bt_page, total_pages)
+                
+                start_idx = (st.session_state.bt_page - 1) * page_size
+                end_idx = start_idx + page_size
+                paginated_df = backtest_df.iloc[start_idx:end_idx].style.map(style_outcome, subset=['Outcome'])
                 
                 st.dataframe(
-                    styled_df,
+                    paginated_df,
                     column_config={
                         "Price 30d Ago": st.column_config.NumberColumn(format="₹%.2f"),
                         "Price Today": st.column_config.NumberColumn(format="₹%.2f"),
                         "Return (%)": st.column_config.NumberColumn(format="%.2f%%"),
                     }, hide_index=True, width="stretch"
                 )
+                
+                pc1, pc2, pc3 = st.columns([1, 2, 1])
+                with pc1:
+                    if st.button("⬅️ Previous", key="bt_prev", disabled=(st.session_state.bt_page <= 1), use_container_width=True):
+                        st.session_state.bt_page -= 1
+                        st.rerun()
+                with pc2:
+                    st.markdown(f"<div style='text-align: center; padding: 5px; color: #94a3b8; font-size: 0.9rem;'>Page {st.session_state.bt_page} of {total_pages} (Showing {start_idx+1}-{min(end_idx, total_rows)} of {total_rows})</div>", unsafe_allow_html=True)
+                with pc3:
+                    if st.button("Next ➡️", key="bt_next", disabled=(st.session_state.bt_page >= total_pages), use_container_width=True):
+                        st.session_state.bt_page += 1
+                        st.rerun()
             else:
                 st.info("No 'Strong Buy' signals were triggered 30 days ago by the algorithm parameters.")
                 
@@ -2584,16 +2717,39 @@ if not stock_data.empty:
                     ml_color = "#00F0FF" if ml_win_rate > 50 else "#FF0055"
                     st.markdown(f"<div style='margin: 20px 0; padding: 20px; background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(148, 163, 184, 0.1); border-left: 3px solid {ml_color}; border-radius: 12px;'> <h3 style='margin:0; font-weight: 300; font-family: \"Space Grotesk\", sans-serif; color: var(--text-color);'>ML Win Rate: <span style='color:{ml_color}'>{ml_win_rate:.1f}%</span></h3> <p style='margin: 5px 0 0 0; color: var(--text-color); opacity: 0.6;'>{ml_wins} correct directional predictions out of {ml_total} sampled stocks exactly 30 days ago.</p> </div>", unsafe_allow_html=True)
                     
-                    ml_styled_df = ml_backtest_df.style.map(style_outcome, subset=['Outcome'])
+                    # --- Pagination for ML Backtest ---
+                    ml_page_size = 10
+                    ml_total_rows = len(ml_backtest_df)
+                    ml_total_pages = max(1, (ml_total_rows - 1) // ml_page_size + 1)
+                    
+                    if "ml_bt_page" not in st.session_state:
+                        st.session_state.ml_bt_page = 1
+                    st.session_state.ml_bt_page = min(st.session_state.ml_bt_page, ml_total_pages)
+                    
+                    ml_start_idx = (st.session_state.ml_bt_page - 1) * ml_page_size
+                    ml_end_idx = ml_start_idx + ml_page_size
+                    ml_paginated_df = ml_backtest_df.iloc[ml_start_idx:ml_end_idx].style.map(style_outcome, subset=['Outcome'])
                     
                     st.dataframe(
-                        ml_styled_df,
+                        ml_paginated_df,
                         column_config={
                             "Predicted Price": st.column_config.NumberColumn(format="₹%.2f"),
                             "Actual Price": st.column_config.NumberColumn(format="₹%.2f"),
                             "Diff (₹)": st.column_config.NumberColumn(format="₹%.2f"),
                         }, hide_index=True, width="stretch"
                     )
+                    
+                    mpc1, mpc2, mpc3 = st.columns([1, 2, 1])
+                    with mpc1:
+                        if st.button("⬅️ Previous", key="ml_bt_prev", disabled=(st.session_state.ml_bt_page <= 1), use_container_width=True):
+                            st.session_state.ml_bt_page -= 1
+                            st.rerun()
+                    with mpc2:
+                        st.markdown(f"<div style='text-align: center; padding: 5px; color: #94a3b8; font-size: 0.9rem;'>Page {st.session_state.ml_bt_page} of {ml_total_pages} (Showing {ml_start_idx+1}-{min(ml_end_idx, ml_total_rows)} of {ml_total_rows})</div>", unsafe_allow_html=True)
+                    with mpc3:
+                        if st.button("Next ➡️", key="ml_bt_next", disabled=(st.session_state.ml_bt_page >= ml_total_pages), use_container_width=True):
+                            st.session_state.ml_bt_page += 1
+                            st.rerun()
                 else:
                     st.info("No ML predictions could be simulated for the target date. Check if best_model.pth is available.")
 
@@ -2601,18 +2757,25 @@ if not stock_data.empty:
         st.markdown("### 2,700-Stock Universal AI Screener & SIP Projections")
         st.write("These algorithmic portfolios mathematically filter the **entire 2,700+ Shariah-compliant universe** based on your specific risk profile and SIP budget.")
         
+        if st.button("🌟 1-Click: Best FUNDAMENTAL SCORE 90+ Portfolios", use_container_width=True):
+            st.session_state["sip_input"] = 10000
+            st.session_state["risk_input"] = "Balanced"
+            st.session_state["strat_input"] = "Fundamental Score 90+ (Quality)"
+            st.session_state["force_run_combos"] = True
+            
         with st.form("universal_screener_form"):
             col1, col2, col3 = st.columns(3)
             with col1:
-                monthly_sip = st.number_input("Monthly SIP (₹)", min_value=1000, max_value=500000, value=10000, step=1000)
+                monthly_sip = st.number_input("Monthly SIP (₹)", min_value=1000, max_value=500000, value=10000, step=1000, key="sip_input")
             with col2:
-                risk_profile = st.selectbox("Risk Tolerance", ["Balanced", "Conservative (Low Risk)", "Aggressive (High Risk)"])
+                risk_profile = st.selectbox("Risk Tolerance", ["Balanced", "Conservative (Low Risk)", "Aggressive (High Risk)"], key="risk_input")
             with col3:
-                strategy = st.selectbox("Strategy Goal", ["Growth (Momentum)", "Value (Low P/E)", "Income (Dividends)"])
+                strategy = st.selectbox("Strategy Goal", ["Growth (Momentum)", "Value (Low P/E)", "Income (Dividends)", "Fundamental Score 90+ (Quality)"], key="strat_input")
                 
             submitted = st.form_submit_button("Execute Global Market Scan", use_container_width=True)
             
-        if submitted:
+        if submitted or st.session_state.get("force_run_combos"):
+            st.session_state["force_run_combos"] = False
             with st.spinner("Synthesizing algorithmic portfolios..."):
                 portfolios = generate_dynamic_portfolios(stock_data, monthly_sip, risk_profile, strategy)
             
