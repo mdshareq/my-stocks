@@ -1325,7 +1325,7 @@ def fetch_portfolio_cagr(tickers):
 
 def calculate_future_value(monthly_sip, cagr, years):
     """Calculates the Future Value of a SIP (Systematic Investment Plan)"""
-    if cagr <= 0: return monthly_sip * 12 * years
+    if cagr == 0: return monthly_sip * 12 * years
     monthly_rate = cagr / 12
     months = int(years * 12)
     fv = monthly_sip * (((1 + monthly_rate)**months - 1) / monthly_rate) * (1 + monthly_rate)
