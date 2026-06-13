@@ -2088,16 +2088,17 @@ if not stock_data.empty:
             
             # Display chat messages from history (only show the recent exchange)
             for msg in st.session_state.messages[-2:]:
-                with st.chat_message(msg["role"]):
+                avatar_path = "user_data/bot.png" if msg["role"] == "assistant" else "user_data/user.png"
+                with st.chat_message(msg["role"], avatar=avatar_path):
                     st.write(msg["content"])
             
             # React to user input
             if user_query := st.chat_input("Query advisor core (e.g. 'Analyze TCS')"):
                 st.session_state.messages.append({"role": "user", "content": user_query})
-                with st.chat_message("user"):
+                with st.chat_message("user", avatar="user_data/user.png"):
                     st.write(user_query)
                 
-                with st.chat_message("assistant"):
+                with st.chat_message("assistant", avatar="user_data/bot.png"):
                     with st.spinner("Analyzing market data..."):
                         import re
                         import pandas as pd
