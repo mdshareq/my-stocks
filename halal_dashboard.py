@@ -2232,8 +2232,8 @@ if not stock_data.empty:
     
     selected_tab = option_menu(
         menu_title=None,
-        options=["Tracker", "Portfolio", "Combos", "Accuracy", "Charts", "News", "Guide"],
-        icons=["activity", "briefcase", "robot", "bullseye", "graph-up", "newspaper", "compass"],
+        options=["Tracker", "Portfolio", "Combos", "Accuracy", "Charts", "News", "Guide", "WC fifa 26"],
+        icons=["activity", "briefcase", "robot", "bullseye", "graph-up", "newspaper", "compass", "trophy"],
         default_index=0,
         orientation="horizontal",
         styles={
@@ -2963,3 +2963,121 @@ if not stock_data.empty:
         The Shareq AI Core acts as your personal, institutional-grade quantitative analyst.
         - **How to use it:** Enter your free Google Gemini API Key into the left sidebar to unlock the AI terminal. You can ask it to analyze any stock on the dashboard (e.g., "Give me a breakdown of TCS financials"), and it will instantly respond with deep, context-aware insights.
         """)
+
+    if selected_tab == "WC fifa 26":
+        st.markdown("### 🏆 FIFA World Cup 2026 - Group Stage Fixtures (IST)")
+        
+        today_date = datetime.now().date()
+        
+        fifa_matches = [
+            {"date": "2026-06-14", "time": "12:30 AM", "matchup": "Qatar vs Switzerland", "venue": "Santa Clara", "matchday": "1"},
+            {"date": "2026-06-14", "time": "3:30 AM", "matchup": "Brazil vs Morocco", "venue": "New Jersey", "matchday": "1"},
+            {"date": "2026-06-14", "time": "6:30 AM", "matchup": "Haiti vs Scotland", "venue": "Foxborough", "matchday": "1"},
+            {"date": "2026-06-14", "time": "9:30 AM", "matchup": "Australia vs Turkey", "venue": "Vancouver", "matchday": "1"},
+            {"date": "2026-06-14", "time": "10:30 PM", "matchup": "Germany vs Curaçao", "venue": "Houston", "matchday": "1"},
+            {"date": "2026-06-15", "time": "1:30 AM", "matchup": "Netherlands vs Japan", "venue": "Arlington", "matchday": "1"},
+            {"date": "2026-06-15", "time": "4:30 AM", "matchup": "Ivory Coast vs Ecuador", "venue": "Philadelphia", "matchday": "1"},
+            {"date": "2026-06-15", "time": "7:30 AM", "matchup": "Sweden vs Tunisia", "venue": "Guadalajara", "matchday": "1"},
+            {"date": "2026-06-15", "time": "9:30 PM", "matchup": "Spain vs Cape Verde", "venue": "Atlanta", "matchday": "1"},
+            {"date": "2026-06-16", "time": "12:30 AM", "matchup": "Belgium vs Egypt", "venue": "Seattle", "matchday": "1"},
+            {"date": "2026-06-16", "time": "3:30 AM", "matchup": "Saudi Arabia vs Uruguay", "venue": "Miami", "matchday": "1"},
+            {"date": "2026-06-16", "time": "6:30 AM", "matchup": "Iran vs New Zealand", "venue": "Los Angeles", "matchday": "1"},
+            {"date": "2026-06-17", "time": "12:30 AM", "matchup": "France vs Senegal", "venue": "New Jersey", "matchday": "1"},
+            {"date": "2026-06-17", "time": "3:30 AM", "matchup": "Iraq vs Norway", "venue": "Foxborough", "matchday": "1"},
+            {"date": "2026-06-17", "time": "6:30 AM", "matchup": "Argentina vs Algeria", "venue": "Kansas City", "matchday": "1"},
+            {"date": "2026-06-17", "time": "9:30 AM", "matchup": "Austria vs Jordan", "venue": "Santa Clara", "matchday": "1"},
+            
+            {"date": "2026-06-17", "time": "10:30 PM", "matchup": "Portugal vs DR Congo", "venue": "Houston", "matchday": "2"},
+            {"date": "2026-06-18", "time": "1:30 AM", "matchup": "England vs Croatia", "venue": "Arlington", "matchday": "2"},
+            {"date": "2026-06-18", "time": "4:30 AM", "matchup": "Ghana vs Panama", "venue": "Toronto", "matchday": "2"},
+            {"date": "2026-06-18", "time": "7:30 AM", "matchup": "Uzbekistan vs Colombia", "venue": "Mexico City", "matchday": "2"},
+            {"date": "2026-06-18", "time": "9:30 PM", "matchup": "Czechia vs South Africa", "venue": "Atlanta", "matchday": "2"},
+            {"date": "2026-06-19", "time": "12:30 AM", "matchup": "Switzerland vs Bosnia & Herzegovina", "venue": "Los Angeles", "matchday": "2"},
+            {"date": "2026-06-19", "time": "3:30 AM", "matchup": "Canada vs Qatar", "venue": "Vancouver", "matchday": "2"},
+            {"date": "2026-06-19", "time": "6:30 AM", "matchup": "Mexico vs South Korea", "venue": "Zapopan", "matchday": "2"},
+            {"date": "2026-06-20", "time": "12:30 AM", "matchup": "USA vs Australia", "venue": "Seattle", "matchday": "2"},
+            {"date": "2026-06-20", "time": "3:30 AM", "matchup": "Scotland vs Morocco", "venue": "Foxborough", "matchday": "2"},
+            {"date": "2026-06-20", "time": "6:00 AM", "matchup": "Brazil vs Haiti", "venue": "Philadelphia", "matchday": "2"},
+            {"date": "2026-06-20", "time": "8:30 AM", "matchup": "Turkey vs Paraguay", "venue": "Santa Clara", "matchday": "2"},
+            {"date": "2026-06-20", "time": "10:30 PM", "matchup": "Netherlands vs Sweden", "venue": "Houston", "matchday": "2"},
+            {"date": "2026-06-21", "time": "1:30 AM", "matchup": "Germany vs Ivory Coast", "venue": "Toronto", "matchday": "2"},
+            {"date": "2026-06-21", "time": "5:30 AM", "matchup": "Ecuador vs Curaçao", "venue": "Kansas City", "matchday": "2"},
+            {"date": "2026-06-21", "time": "9:30 AM", "matchup": "Tunisia vs Japan", "venue": "Guadalajara", "matchday": "2"},
+            {"date": "2026-06-21", "time": "9:30 PM", "matchup": "Spain vs Saudi Arabia", "venue": "Atlanta", "matchday": "2"},
+            {"date": "2026-06-22", "time": "12:30 AM", "matchup": "Belgium vs Iran", "venue": "Los Angeles", "matchday": "2"},
+            {"date": "2026-06-22", "time": "3:30 AM", "matchup": "Uruguay vs Cape Verde", "venue": "Miami", "matchday": "2"},
+            {"date": "2026-06-22", "time": "6:30 AM", "matchup": "New Zealand vs Egypt", "venue": "Vancouver", "matchday": "2"},
+            {"date": "2026-06-22", "time": "10:30 PM", "matchup": "Argentina vs Austria", "venue": "Arlington", "matchday": "2"},
+            {"date": "2026-06-23", "time": "2:30 AM", "matchup": "France vs Iraq", "venue": "Philadelphia", "matchday": "2"},
+            {"date": "2026-06-23", "time": "5:30 AM", "matchup": "Norway vs Senegal", "venue": "Toronto", "matchday": "2"},
+            {"date": "2026-06-23", "time": "8:30 AM", "matchup": "Jordan vs Algeria", "venue": "Santa Clara", "matchday": "2"},
+
+            {"date": "2026-06-23", "time": "10:30 PM", "matchup": "Portugal vs Uzbekistan", "venue": "Houston", "matchday": "3"},
+            {"date": "2026-06-24", "time": "1:30 AM", "matchup": "England vs Ghana", "venue": "Foxborough", "matchday": "3"},
+            {"date": "2026-06-24", "time": "4:30 AM", "matchup": "Panama vs Croatia", "venue": "Foxborough", "matchday": "3"},
+            {"date": "2026-06-24", "time": "7:30 AM", "matchup": "Colombia vs DR Congo", "venue": "Zapopan", "matchday": "3"},
+            {"date": "2026-06-25", "time": "12:30 AM", "matchup": "Switzerland vs Canada", "venue": "Vancouver", "matchday": "3"},
+            {"date": "2026-06-25", "time": "12:30 AM", "matchup": "Bosnia & Herzegovina vs Qatar", "venue": "Seattle", "matchday": "3"},
+            {"date": "2026-06-25", "time": "3:30 AM", "matchup": "Morocco vs Haiti", "venue": "Atlanta", "matchday": "3"},
+            {"date": "2026-06-25", "time": "3:30 AM", "matchup": "Scotland vs Brazil", "venue": "Miami", "matchday": "3"},
+            {"date": "2026-06-25", "time": "6:30 AM", "matchup": "South Africa vs South Korea", "venue": "Guadalajara", "matchday": "3"},
+            {"date": "2026-06-25", "time": "6:30 AM", "matchup": "Czechia vs Mexico", "venue": "Mexico City", "matchday": "3"},
+            {"date": "2026-06-26", "time": "1:30 AM", "matchup": "Curaçao vs Ivory Coast", "venue": "Philadelphia", "matchday": "3"},
+            {"date": "2026-06-26", "time": "1:30 AM", "matchup": "Ecuador vs Germany", "venue": "New Jersey", "matchday": "3"},
+            {"date": "2026-06-26", "time": "4:30 AM", "matchup": "Tunisia vs Netherlands", "venue": "Kansas City", "matchday": "3"},
+            {"date": "2026-06-26", "time": "4:30 AM", "matchup": "Japan vs Sweden", "venue": "Arlington", "matchday": "3"},
+            {"date": "2026-06-26", "time": "7:30 AM", "matchup": "Turkey vs USA", "venue": "Los Angeles", "matchday": "3"},
+            {"date": "2026-06-26", "time": "7:30 AM", "matchup": "Paraguay vs Australia", "venue": "Santa Clara", "matchday": "3"},
+            {"date": "2026-06-27", "time": "12:30 AM", "matchup": "Norway vs France", "venue": "Foxborough", "matchday": "3"},
+            {"date": "2026-06-27", "time": "12:30 AM", "matchup": "Senegal vs Iraq", "venue": "Toronto", "matchday": "3"},
+            {"date": "2026-06-27", "time": "5:30 AM", "matchup": "Cape Verde vs Saudi Arabia", "venue": "Houston", "matchday": "3"},
+            {"date": "2026-06-27", "time": "5:30 AM", "matchup": "Uruguay vs Spain", "venue": "Zapopan", "matchday": "3"},
+            {"date": "2026-06-27", "time": "8:30 AM", "matchup": "New Zealand vs Belgium", "venue": "Vancouver", "matchday": "3"},
+            {"date": "2026-06-27", "time": "8:30 AM", "matchup": "Egypt vs Iran", "venue": "Seattle", "matchday": "3"},
+            {"date": "2026-06-28", "time": "2:30 AM", "matchup": "Panama vs England", "venue": "New Jersey", "matchday": "3"},
+            {"date": "2026-06-28", "time": "2:30 AM", "matchup": "Croatia vs Ghana", "venue": "Philadelphia", "matchday": "3"},
+            {"date": "2026-06-28", "time": "5:00 AM", "matchup": "Colombia vs Portugal", "venue": "Miami", "matchday": "3"},
+            {"date": "2026-06-28", "time": "5:00 AM", "matchup": "DR Congo vs Uzbekistan", "venue": "Atlanta", "matchday": "3"},
+            {"date": "2026-06-28", "time": "7:30 AM", "matchup": "Algeria vs Austria", "venue": "Kansas City", "matchday": "3"},
+            {"date": "2026-06-28", "time": "7:30 AM", "matchup": "Jordan vs Argentina", "venue": "Arlington", "matchday": "3"},
+        ]
+        
+        st.markdown("<div class='card-grid' style='display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px;'>", unsafe_allow_html=True)
+        html = ""
+        for m in fifa_matches:
+            m_date = datetime.strptime(m["date"], "%Y-%m-%d").date()
+            if m_date < today_date:
+                status_class = "opacity: 0.4; filter: grayscale(100%); border-left: 3px solid #555;"
+                badge = "COMPLETED"
+                badge_color = "#888"
+            elif m_date == today_date:
+                status_class = "border-left: 3px solid #10b981; background: rgba(16, 185, 129, 0.05); box-shadow: 0 0 15px rgba(16, 185, 129, 0.1);"
+                badge = "LIVE TODAY"
+                badge_color = "#10b981"
+            else:
+                status_class = "border-left: 3px solid #00F0FF; background: rgba(0, 240, 255, 0.02);"
+                badge = "UPCOMING"
+                badge_color = "#00F0FF"
+                
+            formatted_date = m_date.strftime("%b %d, %Y")
+                
+            html += f"""
+            <div style="border-radius: 12px; padding: 18px; border: 1px solid rgba(255, 255, 255, 0.08); {status_class}">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                    <div style="font-family: 'Space Grotesk', sans-serif; font-size: 0.75rem; letter-spacing: 1px; color: {badge_color}; font-weight: 600;">
+                        MATCHDAY {m['matchday']} • {badge}
+                    </div>
+                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #94a3b8;">
+                        {formatted_date} | {m['time']}
+                    </div>
+                </div>
+                <div style="font-size: 1.15rem; font-weight: 600; color: #f0f4f8; margin-bottom: 6px;">
+                    {m['matchup']}
+                </div>
+                <div style="font-size: 0.85rem; color: #94a3b8; display: flex; align-items: center; gap: 5px;">
+                    🏟️ {m['venue']}
+                </div>
+            </div>
+            """
+        html += "</div>"
+        st.markdown(html, unsafe_allow_html=True)
