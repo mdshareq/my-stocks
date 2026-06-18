@@ -739,6 +739,57 @@ def remove_from_portfolio(email, symbol):
     except Exception as e:
         return False, str(e)
 
+def sell_from_portfolio(email, symbol, sell_price, qty):
+    from firebase_admin import firestore
+    if db is None: return False, "Firebase is offline."
+    try:
+        if qty <= 0: return False, "Quantity must be greater than 0."
+        portfolio_ref = db.collection("users").document(email).collection("portfolio").document(symbol)
+        doc = portfolio_ref.get()
+        if not doc.exists:
+            return False, "Asset not found in portfolio."
+            
+        data = doc.to_dict()
+        current_qty = data.get("quantity", 0)
+        buy_price = data.get("buy_price", 0.0)
+        
+        if qty > current_qty:
+            return False, "Not enough shares to sell."
+            
+        realized_pl = (sell_price - buy_price) * qty
+        
+        sales_ref = db.collection("users").document(email).collection("sales").document()
+        sales_ref.set({
+            "symbol": symbol,
+            "company_name": data.get("company_name", symbol),
+            "sell_price": float(sell_price),
+            "buy_price": float(buy_price),
+            "quantity": int(qty),
+            "realized_pl": float(realized_pl),
+            "sold_at": firestore.SERVER_TIMESTAMP
+        })
+        
+        new_qty = current_qty - qty
+        if new_qty == 0:
+            portfolio_ref.delete()
+        else:
+            portfolio_ref.update({
+                "quantity": int(new_qty),
+                "updated_at": firestore.SERVER_TIMESTAMP
+            })
+            
+        return True, f"Successfully sold {qty} shares of {symbol}. Realized P/L: ₹{realized_pl:.2f}"
+    except Exception as e:
+        return False, str(e)
+
+def get_user_sales(email):
+    if db is None: return []
+    try:
+        docs = db.collection("users").document(email).collection("sales").stream()
+        return [doc.to_dict() for doc in docs]
+    except Exception:
+        return []
+
 def parse_groww_portfolio(file):
     try:
         if file.name.endswith('.csv'):
@@ -1016,6 +1067,35 @@ def get_ml_prediction_for_symbol(symbol):
         return {"price": pred_price, "change": pred_change, "sentiment": sym_sent}
     except Exception:
         return None
+
+@st.cache_data(ttl=3600)
+def get_llm_portfolio_advice(symbol, current_qty, buy_px, live_px, ml_pred, api_key, ai_engine, local_url, local_key, local_model):
+    if ai_engine != "local" and not api_key: return "⚠️ Authentication Required: Add Gemini API key for AI advice."
+    
+    profit_pct = ((live_px - buy_px) / buy_px) * 100 if buy_px > 0 else 0
+    ml_context = f"ML model predicts a {ml_pred['change']:.2f}% change to ₹{ml_pred['price']:.2f}." if ml_pred else "No ML prediction available."
+    
+    prompt = (
+        f"You are an expert Islamic financial advisor. The user holds {current_qty} shares of {symbol} bought at ₹{buy_px:.2f}. "
+        f"The current price is ₹{live_px:.2f} ({profit_pct:.2f}% return). {ml_context}\n"
+        "Provide a strict 1-2 sentence recommendation: Should the user BUY MORE, HOLD, or SELL? "
+        "Do not hallucinate facts. Start your response with [BUY MORE], [HOLD], or [SELL]."
+    )
+    
+    try:
+        if ai_engine == "local":
+            import requests
+            headers = {"Content-Type": "application/json"}
+            if local_key: headers["Authorization"] = f"Bearer {local_key}"
+            res = requests.post(local_url, json={"model": local_model, "messages": [{"role": "user", "content": prompt}], "temperature": 0.5}, headers=headers, timeout=15)
+            res.raise_for_status()
+            return res.json()["choices"][0]["message"]["content"].strip()
+        else:
+            genai.configure(api_key=api_key)
+            model = genai.GenerativeModel(get_best_model(api_key))
+            return model.generate_content(prompt).text.strip()
+    except Exception as e:
+        return f"⚠️ Analysis failed: {e}"
 
 @st.cache_data(ttl=3600)
 def calculate_backtest_accuracy(days_ago=30):
@@ -1992,12 +2072,13 @@ with st.sidebar:
     else:
         st.session_state.ai_engine = "gemini"
         
-    api_key = st.text_input("GEMINI API KEY", value=saved_api_key, type="password")
+    api_key = st.text_input("GEMINI API KEY", value=saved_api_key, type="password").strip()
     
     if api_key != saved_api_key:
         if st.session_state.user and db:
             db.collection("users").document(st.session_state.user["email"]).update({"gemini_api_key": api_key})
             st.session_state.user["gemini_api_key"] = api_key
+            _save_session(st.session_state.user)
             st.success("API Key securely saved to Cloud Profile.")
         else:
             save_key(api_key)
@@ -2232,8 +2313,8 @@ if not stock_data.empty:
     
     selected_tab = option_menu(
         menu_title=None,
-        options=["Tracker", "Portfolio", "Combos", "Accuracy", "Charts", "News", "Guide", "WC fifa 26"],
-        icons=["activity", "briefcase", "robot", "bullseye", "graph-up", "newspaper", "compass", "trophy"],
+        options=["Tracker", "Portfolio", "Combos", "Accuracy", "Charts", "News", "Guide"],
+        icons=["activity", "briefcase", "robot", "bullseye", "graph-up", "newspaper", "compass"],
         default_index=0,
         orientation="horizontal",
         styles={
@@ -2530,11 +2611,15 @@ if not stock_data.empty:
                         "P&L (%)": profit_pct
                     })
                 
+                # Fetch Sales for Realized P/L
+                sales_history = get_user_sales(email)
+                total_realized_pl = sum(s.get("realized_pl", 0) for s in sales_history)
+                
                 # Summary Cards
                 total_profit = current_value - total_invested
                 total_profit_pct = (total_profit / total_invested) * 100 if total_invested > 0 else 0
                 
-                mc1, mc2, mc3 = st.columns(3)
+                mc1, mc2, mc3, mc4 = st.columns(4)
                 with mc1:
                     st.markdown(f"<div class='metric-card'><h4>Total Invested</h4><div class='metric-value'>₹{total_invested:,.2f}</div></div>", unsafe_allow_html=True)
                 with mc2:
@@ -2542,7 +2627,11 @@ if not stock_data.empty:
                 with mc3:
                     color = "#00F0FF" if total_profit >= 0 else "#FF0055"
                     sign = "+" if total_profit >= 0 else ""
-                    st.markdown(f"<div class='metric-card' style='border-left-color: {color} !important;'><h4>Overall P&L</h4><div class='metric-value' style='color:{color};'>{sign}₹{total_profit:,.2f} ({sign}{total_profit_pct:.2f}%)</div></div>", unsafe_allow_html=True)
+                    st.markdown(f"<div class='metric-card' style='border-left-color: {color} !important;'><h4>Unrealized P&L</h4><div class='metric-value' style='color:{color};'>{sign}₹{total_profit:,.2f} ({sign}{total_profit_pct:.2f}%)</div></div>", unsafe_allow_html=True)
+                with mc4:
+                    realized_color = "#00F0FF" if total_realized_pl >= 0 else "#FF0055"
+                    realized_sign = "+" if total_realized_pl >= 0 else ""
+                    st.markdown(f"<div class='metric-card' style='border-left-color: {realized_color} !important;'><h4>Realized P&L</h4><div class='metric-value' style='color:{realized_color};'>{realized_sign}₹{total_realized_pl:,.2f}</div></div>", unsafe_allow_html=True)
                 
                 st.markdown("<br>", unsafe_allow_html=True)
                 
@@ -2561,33 +2650,33 @@ if not stock_data.empty:
                     width="stretch"
                 )
                 
-                st.markdown("### AI Predictions for Your Holdings")
-                pred_cols = st.columns(3)
-                col_idx = 0
-                for h in holdings:
-                    sym = h["symbol"]
-                    pred = get_ml_prediction_for_symbol(sym)
-                    if pred:
-                        pred_color = "#10b981" if pred['change'] > 0 else "#ef4444"
-                        pred_sign = "+" if pred['change'] > 0 else ""
-                        with pred_cols[col_idx % 3]:
-                            st.markdown(f"<div style='border-left: 3px solid {pred_color}; padding: 12px; background: rgba(0,0,0,0.15); border-radius: 6px; margin-bottom: 10px;'>", unsafe_allow_html=True)
-                            st.markdown(f"<div style='font-size:0.85rem; color:#64748b;'>{sym}</div>", unsafe_allow_html=True)
-                            st.markdown(f"<h5 style='margin-top:2px; margin-bottom:4px;'>Forecast: <span style='color: {pred_color};'>₹{pred['price']:.2f}</span></h5>", unsafe_allow_html=True)
-                            st.markdown(f"<div style='font-size:0.8rem; color: #94a3b8;'>Change: <strong style='color: {pred_color};'>{pred_sign}{pred['change']:.2f}%</strong></div>", unsafe_allow_html=True)
-                            st.markdown("</div>", unsafe_allow_html=True)
-                        col_idx += 1
-                        
-                if col_idx == 0:
-                    st.info("No ML predictions available for your current holdings.")
-                
                 st.markdown("<br>", unsafe_allow_html=True)
-                with st.expander("Manage Holdings (Edit or Remove)"):
+                with st.expander("Manage Holdings (Sell, Edit, or Remove)", expanded=True):
                     manage_sym = st.selectbox("Select Asset to Manage", options=[h["Symbol"] for h in portfolio_display])
                     
-                    # Find current qty and price for the selected asset
                     current_asset = next((h for h in portfolio_display if h["Symbol"] == manage_sym), None)
                     if current_asset:
+                        st.markdown("#### Sell Asset")
+                        with st.form(f"sell_form_{manage_sym}", clear_on_submit=True):
+                            sell_cols = st.columns(3)
+                            with sell_cols[0]:
+                                sell_qty = st.number_input("Quantity to Sell", min_value=1, max_value=int(current_asset["Shares"]), step=1, value=int(current_asset["Shares"]))
+                            with sell_cols[1]:
+                                sell_px = st.number_input("Selling Price (₹)", min_value=0.0, format="%.2f", value=float(current_asset["Live Price (₹)"]))
+                            with sell_cols[2]:
+                                st.markdown("<br>", unsafe_allow_html=True)
+                                submit_sell = st.form_submit_button("Confirm Sale", type="primary", use_container_width=True)
+                            
+                            if submit_sell:
+                                suc, m = sell_from_portfolio(email, manage_sym, sell_px, sell_qty)
+                                if suc:
+                                    st.success(m)
+                                    st.rerun()
+                                else:
+                                    st.error(m)
+                        
+                        st.markdown("---")
+                        st.markdown("#### Advanced: Edit / Remove Record")
                         edit_cols = st.columns(3)
                         with edit_cols[0]:
                             new_qty = st.number_input("Update Quantity", min_value=1, step=1, value=int(current_asset["Shares"]))
@@ -2602,15 +2691,61 @@ if not stock_data.empty:
                                     st.rerun()
                                 else:
                                     st.error(m)
-                    
-                    st.markdown("---")
-                    if st.button("Remove Selected Asset", type="primary"):
-                        suc, m = remove_from_portfolio(email, manage_sym)
-                        if suc:
-                            st.success(m)
-                            st.rerun()
-                        else:
-                            st.error(m)
+                        
+                        if st.button("Delete Entire Asset Record", type="secondary"):
+                            suc, m = remove_from_portfolio(email, manage_sym)
+                            if suc:
+                                st.success(m)
+                                st.rerun()
+                            else:
+                                st.error(m)
+                
+                st.markdown("<br>", unsafe_allow_html=True)
+                st.markdown("### AI Predictions & Recommendations")
+                
+                # Pre-fetch required variables for AI advisor
+                ai_engine_setting = st.session_state.get("ai_engine", "gemini")
+                local_model_setting = st.session_state.get("local_model", "")
+                local_url_setting = st.session_state.get("local_api_url", "")
+                local_key_setting = st.session_state.get("local_api_key", "")
+                user_api_key = api_key  # Using the freshly inputted key from the sidebar
+                
+                if not holdings:
+                    st.info("Your portfolio is currently empty.")
+                else:
+                    for h in portfolio_display:
+                        sym = h["Symbol"]
+                        qty = h["Shares"]
+                        buy_px = h["Avg Buy (₹)"]
+                        live_px = h["Live Price (₹)"]
+                        
+                        pred = get_ml_prediction_for_symbol(sym)
+                        
+                        with st.spinner(f"Generating AI advice for {sym}..."):
+                            advice_text = get_llm_portfolio_advice(
+                                sym, qty, buy_px, live_px, pred, 
+                                user_api_key, ai_engine_setting, local_url_setting, local_key_setting, local_model_setting
+                            )
+                        
+                        badge_color = "#94a3b8"
+                        if "[BUY MORE]" in advice_text.upper():
+                            badge_color = "#00F0FF"
+                        elif "[HOLD]" in advice_text.upper():
+                            badge_color = "#f59e0b"
+                        elif "[SELL]" in advice_text.upper():
+                            badge_color = "#FF0055"
+                            
+                        clean_advice = advice_text.replace("[BUY MORE]", "").replace("[HOLD]", "").replace("[SELL]", "").replace("[Buy More]", "").replace("[Hold]", "").replace("[Sell]", "").strip()
+                        
+                        st.markdown(f"""
+                        <div style='border-left: 4px solid {badge_color}; padding: 16px; background: rgba(0,0,0,0.2); border-radius: 8px; margin-bottom: 12px;'>
+                            <div style='display: flex; justify-content: space-between; margin-bottom: 8px;'>
+                                <strong style='font-size:1.1rem; color:#f8fafc;'>{sym}</strong>
+                                <span style='background: {badge_color}22; color: {badge_color}; padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: bold; letter-spacing: 1px;'>ADVICE</span>
+                            </div>
+                            <div style='font-size:0.9rem; color: #cbd5e1; line-height: 1.5;'>{clean_advice}</div>
+                        </div>
+                        """, unsafe_allow_html=True)
 
     if selected_tab == "Charts":
         st.markdown("### Technical Price Action & Shariah Compliance")
@@ -2963,121 +3098,4 @@ if not stock_data.empty:
         The Shareq AI Core acts as your personal, institutional-grade quantitative analyst.
         - **How to use it:** Enter your free Google Gemini API Key into the left sidebar to unlock the AI terminal. You can ask it to analyze any stock on the dashboard (e.g., "Give me a breakdown of TCS financials"), and it will instantly respond with deep, context-aware insights.
         """)
-
-    if selected_tab == "WC fifa 26":
-        st.markdown("### 🏆 FIFA World Cup 2026 - Group Stage Fixtures (IST)")
-        
-        today_date = datetime.now().date()
-        
-        fifa_matches = [
-            {"date": "2026-06-14", "time": "12:30 AM", "matchup": "Qatar vs Switzerland", "venue": "Santa Clara", "matchday": "1"},
-            {"date": "2026-06-14", "time": "3:30 AM", "matchup": "Brazil vs Morocco", "venue": "New Jersey", "matchday": "1"},
-            {"date": "2026-06-14", "time": "6:30 AM", "matchup": "Haiti vs Scotland", "venue": "Foxborough", "matchday": "1"},
-            {"date": "2026-06-14", "time": "9:30 AM", "matchup": "Australia vs Turkey", "venue": "Vancouver", "matchday": "1"},
-            {"date": "2026-06-14", "time": "10:30 PM", "matchup": "Germany vs Curaçao", "venue": "Houston", "matchday": "1"},
-            {"date": "2026-06-15", "time": "1:30 AM", "matchup": "Netherlands vs Japan", "venue": "Arlington", "matchday": "1"},
-            {"date": "2026-06-15", "time": "4:30 AM", "matchup": "Ivory Coast vs Ecuador", "venue": "Philadelphia", "matchday": "1"},
-            {"date": "2026-06-15", "time": "7:30 AM", "matchup": "Sweden vs Tunisia", "venue": "Guadalajara", "matchday": "1"},
-            {"date": "2026-06-15", "time": "9:30 PM", "matchup": "Spain vs Cape Verde", "venue": "Atlanta", "matchday": "1"},
-            {"date": "2026-06-16", "time": "12:30 AM", "matchup": "Belgium vs Egypt", "venue": "Seattle", "matchday": "1"},
-            {"date": "2026-06-16", "time": "3:30 AM", "matchup": "Saudi Arabia vs Uruguay", "venue": "Miami", "matchday": "1"},
-            {"date": "2026-06-16", "time": "6:30 AM", "matchup": "Iran vs New Zealand", "venue": "Los Angeles", "matchday": "1"},
-            {"date": "2026-06-17", "time": "12:30 AM", "matchup": "France vs Senegal", "venue": "New Jersey", "matchday": "1"},
-            {"date": "2026-06-17", "time": "3:30 AM", "matchup": "Iraq vs Norway", "venue": "Foxborough", "matchday": "1"},
-            {"date": "2026-06-17", "time": "6:30 AM", "matchup": "Argentina vs Algeria", "venue": "Kansas City", "matchday": "1"},
-            {"date": "2026-06-17", "time": "9:30 AM", "matchup": "Austria vs Jordan", "venue": "Santa Clara", "matchday": "1"},
-            
-            {"date": "2026-06-17", "time": "10:30 PM", "matchup": "Portugal vs DR Congo", "venue": "Houston", "matchday": "2"},
-            {"date": "2026-06-18", "time": "1:30 AM", "matchup": "England vs Croatia", "venue": "Arlington", "matchday": "2"},
-            {"date": "2026-06-18", "time": "4:30 AM", "matchup": "Ghana vs Panama", "venue": "Toronto", "matchday": "2"},
-            {"date": "2026-06-18", "time": "7:30 AM", "matchup": "Uzbekistan vs Colombia", "venue": "Mexico City", "matchday": "2"},
-            {"date": "2026-06-18", "time": "9:30 PM", "matchup": "Czechia vs South Africa", "venue": "Atlanta", "matchday": "2"},
-            {"date": "2026-06-19", "time": "12:30 AM", "matchup": "Switzerland vs Bosnia & Herzegovina", "venue": "Los Angeles", "matchday": "2"},
-            {"date": "2026-06-19", "time": "3:30 AM", "matchup": "Canada vs Qatar", "venue": "Vancouver", "matchday": "2"},
-            {"date": "2026-06-19", "time": "6:30 AM", "matchup": "Mexico vs South Korea", "venue": "Zapopan", "matchday": "2"},
-            {"date": "2026-06-20", "time": "12:30 AM", "matchup": "USA vs Australia", "venue": "Seattle", "matchday": "2"},
-            {"date": "2026-06-20", "time": "3:30 AM", "matchup": "Scotland vs Morocco", "venue": "Foxborough", "matchday": "2"},
-            {"date": "2026-06-20", "time": "6:00 AM", "matchup": "Brazil vs Haiti", "venue": "Philadelphia", "matchday": "2"},
-            {"date": "2026-06-20", "time": "8:30 AM", "matchup": "Turkey vs Paraguay", "venue": "Santa Clara", "matchday": "2"},
-            {"date": "2026-06-20", "time": "10:30 PM", "matchup": "Netherlands vs Sweden", "venue": "Houston", "matchday": "2"},
-            {"date": "2026-06-21", "time": "1:30 AM", "matchup": "Germany vs Ivory Coast", "venue": "Toronto", "matchday": "2"},
-            {"date": "2026-06-21", "time": "5:30 AM", "matchup": "Ecuador vs Curaçao", "venue": "Kansas City", "matchday": "2"},
-            {"date": "2026-06-21", "time": "9:30 AM", "matchup": "Tunisia vs Japan", "venue": "Guadalajara", "matchday": "2"},
-            {"date": "2026-06-21", "time": "9:30 PM", "matchup": "Spain vs Saudi Arabia", "venue": "Atlanta", "matchday": "2"},
-            {"date": "2026-06-22", "time": "12:30 AM", "matchup": "Belgium vs Iran", "venue": "Los Angeles", "matchday": "2"},
-            {"date": "2026-06-22", "time": "3:30 AM", "matchup": "Uruguay vs Cape Verde", "venue": "Miami", "matchday": "2"},
-            {"date": "2026-06-22", "time": "6:30 AM", "matchup": "New Zealand vs Egypt", "venue": "Vancouver", "matchday": "2"},
-            {"date": "2026-06-22", "time": "10:30 PM", "matchup": "Argentina vs Austria", "venue": "Arlington", "matchday": "2"},
-            {"date": "2026-06-23", "time": "2:30 AM", "matchup": "France vs Iraq", "venue": "Philadelphia", "matchday": "2"},
-            {"date": "2026-06-23", "time": "5:30 AM", "matchup": "Norway vs Senegal", "venue": "Toronto", "matchday": "2"},
-            {"date": "2026-06-23", "time": "8:30 AM", "matchup": "Jordan vs Algeria", "venue": "Santa Clara", "matchday": "2"},
-
-            {"date": "2026-06-23", "time": "10:30 PM", "matchup": "Portugal vs Uzbekistan", "venue": "Houston", "matchday": "3"},
-            {"date": "2026-06-24", "time": "1:30 AM", "matchup": "England vs Ghana", "venue": "Foxborough", "matchday": "3"},
-            {"date": "2026-06-24", "time": "4:30 AM", "matchup": "Panama vs Croatia", "venue": "Foxborough", "matchday": "3"},
-            {"date": "2026-06-24", "time": "7:30 AM", "matchup": "Colombia vs DR Congo", "venue": "Zapopan", "matchday": "3"},
-            {"date": "2026-06-25", "time": "12:30 AM", "matchup": "Switzerland vs Canada", "venue": "Vancouver", "matchday": "3"},
-            {"date": "2026-06-25", "time": "12:30 AM", "matchup": "Bosnia & Herzegovina vs Qatar", "venue": "Seattle", "matchday": "3"},
-            {"date": "2026-06-25", "time": "3:30 AM", "matchup": "Morocco vs Haiti", "venue": "Atlanta", "matchday": "3"},
-            {"date": "2026-06-25", "time": "3:30 AM", "matchup": "Scotland vs Brazil", "venue": "Miami", "matchday": "3"},
-            {"date": "2026-06-25", "time": "6:30 AM", "matchup": "South Africa vs South Korea", "venue": "Guadalajara", "matchday": "3"},
-            {"date": "2026-06-25", "time": "6:30 AM", "matchup": "Czechia vs Mexico", "venue": "Mexico City", "matchday": "3"},
-            {"date": "2026-06-26", "time": "1:30 AM", "matchup": "Curaçao vs Ivory Coast", "venue": "Philadelphia", "matchday": "3"},
-            {"date": "2026-06-26", "time": "1:30 AM", "matchup": "Ecuador vs Germany", "venue": "New Jersey", "matchday": "3"},
-            {"date": "2026-06-26", "time": "4:30 AM", "matchup": "Tunisia vs Netherlands", "venue": "Kansas City", "matchday": "3"},
-            {"date": "2026-06-26", "time": "4:30 AM", "matchup": "Japan vs Sweden", "venue": "Arlington", "matchday": "3"},
-            {"date": "2026-06-26", "time": "7:30 AM", "matchup": "Turkey vs USA", "venue": "Los Angeles", "matchday": "3"},
-            {"date": "2026-06-26", "time": "7:30 AM", "matchup": "Paraguay vs Australia", "venue": "Santa Clara", "matchday": "3"},
-            {"date": "2026-06-27", "time": "12:30 AM", "matchup": "Norway vs France", "venue": "Foxborough", "matchday": "3"},
-            {"date": "2026-06-27", "time": "12:30 AM", "matchup": "Senegal vs Iraq", "venue": "Toronto", "matchday": "3"},
-            {"date": "2026-06-27", "time": "5:30 AM", "matchup": "Cape Verde vs Saudi Arabia", "venue": "Houston", "matchday": "3"},
-            {"date": "2026-06-27", "time": "5:30 AM", "matchup": "Uruguay vs Spain", "venue": "Zapopan", "matchday": "3"},
-            {"date": "2026-06-27", "time": "8:30 AM", "matchup": "New Zealand vs Belgium", "venue": "Vancouver", "matchday": "3"},
-            {"date": "2026-06-27", "time": "8:30 AM", "matchup": "Egypt vs Iran", "venue": "Seattle", "matchday": "3"},
-            {"date": "2026-06-28", "time": "2:30 AM", "matchup": "Panama vs England", "venue": "New Jersey", "matchday": "3"},
-            {"date": "2026-06-28", "time": "2:30 AM", "matchup": "Croatia vs Ghana", "venue": "Philadelphia", "matchday": "3"},
-            {"date": "2026-06-28", "time": "5:00 AM", "matchup": "Colombia vs Portugal", "venue": "Miami", "matchday": "3"},
-            {"date": "2026-06-28", "time": "5:00 AM", "matchup": "DR Congo vs Uzbekistan", "venue": "Atlanta", "matchday": "3"},
-            {"date": "2026-06-28", "time": "7:30 AM", "matchup": "Algeria vs Austria", "venue": "Kansas City", "matchday": "3"},
-            {"date": "2026-06-28", "time": "7:30 AM", "matchup": "Jordan vs Argentina", "venue": "Arlington", "matchday": "3"},
-        ]
-        
-        st.markdown("<div class='card-grid' style='display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px;'>", unsafe_allow_html=True)
-        html = ""
-        for m in fifa_matches:
-            m_date = datetime.strptime(m["date"], "%Y-%m-%d").date()
-            if m_date < today_date:
-                status_class = "opacity: 0.4; filter: grayscale(100%); border-left: 3px solid #555;"
-                badge = "COMPLETED"
-                badge_color = "#888"
-            elif m_date == today_date:
-                status_class = "border-left: 3px solid #10b981; background: rgba(16, 185, 129, 0.05); box-shadow: 0 0 15px rgba(16, 185, 129, 0.1);"
-                badge = "LIVE TODAY"
-                badge_color = "#10b981"
-            else:
-                status_class = "border-left: 3px solid #00F0FF; background: rgba(0, 240, 255, 0.02);"
-                badge = "UPCOMING"
-                badge_color = "#00F0FF"
-                
-            formatted_date = m_date.strftime("%b %d, %Y")
-                
-            html += f"""
-            <div style="border-radius: 12px; padding: 18px; border: 1px solid rgba(255, 255, 255, 0.08); {status_class}">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
-                    <div style="font-family: 'Space Grotesk', sans-serif; font-size: 0.75rem; letter-spacing: 1px; color: {badge_color}; font-weight: 600;">
-                        MATCHDAY {m['matchday']} • {badge}
-                    </div>
-                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #94a3b8;">
-                        {formatted_date} | {m['time']}
-                    </div>
-                </div>
-                <div style="font-size: 1.15rem; font-weight: 600; color: #f0f4f8; margin-bottom: 6px;">
-                    {m['matchup']}
-                </div>
-                <div style="font-size: 0.85rem; color: #94a3b8; display: flex; align-items: center; gap: 5px;">
-                    🏟️ {m['venue']}
-                </div>
-            </div>
-            """
-        html += "</div>"
-        st.markdown(html, unsafe_allow_html=True)
+
