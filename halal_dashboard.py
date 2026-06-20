@@ -1069,16 +1069,23 @@ def get_ml_prediction_for_symbol(symbol):
         return None
 
 @st.cache_data(ttl=3600)
-def get_llm_portfolio_advice(symbol, current_qty, buy_px, live_px, ml_pred, api_key, ai_engine, local_url, local_key, local_model):
+def get_llm_portfolio_advice(symbol, current_qty, buy_px, live_px, ml_pred, algo_score, compliance, api_key, ai_engine, local_url, local_key, local_model):
     if ai_engine != "local" and not api_key: return "⚠️ Authentication Required: Add Gemini API key for AI advice."
     
     profit_pct = ((live_px - buy_px) / buy_px) * 100 if buy_px > 0 else 0
-    ml_context = f"ML model predicts a {ml_pred['change']:.2f}% change to ₹{ml_pred['price']:.2f}." if ml_pred else "No ML prediction available."
+    ml_context = f"ML model 10-day price prediction is ₹{ml_pred['price']:.2f} ({ml_pred['change']:.2f}% change)." if ml_pred else "No ML prediction available."
+    score_context = f"Shareq Algorithmic Technical Rating Score is {algo_score}/100." if algo_score is not None else "No algorithmic rating score available."
+    compliance_context = f"Shariah Compliance Status: {compliance}." if compliance else "Compliance status: Non-Compliant/Unknown."
     
     prompt = (
         f"You are an expert Islamic financial advisor. The user holds {current_qty} shares of {symbol} bought at ₹{buy_px:.2f}. "
-        f"The current price is ₹{live_px:.2f} ({profit_pct:.2f}% return). {ml_context}\n"
+        f"The current price is ₹{live_px:.2f} ({profit_pct:.2f}% return).\n"
+        f"- {compliance_context}\n"
+        f"- {score_context}\n"
+        f"- {ml_context}\n\n"
         "Provide a strict 1-2 sentence recommendation: Should the user BUY MORE, HOLD, or SELL? "
+        "Base your decision on: 1. Shariah Compliance (only buy/hold compliant, if non-compliant, recommend sell). "
+        "2. Algorithmic technical score (higher is bullish). 3. ML 10-day price target. "
         "Do not hallucinate facts. Start your response with [BUY MORE], [HOLD], or [SELL]."
     )
     
@@ -1098,14 +1105,14 @@ def get_llm_portfolio_advice(symbol, current_qty, buy_px, live_px, ml_pred, api_
         return f"⚠️ Analysis failed: {e}"
 
 @st.cache_data(ttl=3600)
-def calculate_backtest_accuracy(days_ago=30):
-    """Fetches real 30-day algorithmic accuracy from Firebase, falling back to simulated logic if unavailable."""
+def calculate_backtest_accuracy(days_ago=10):
+    """Fetches real 10-day algorithmic accuracy from Firebase, falling back to simulated logic if unavailable."""
     results = []
     
     # --- FIREBASE REAL-WORLD BACKTEST ---
     if db is not None:
         target_date = datetime.now() - timedelta(days=days_ago)
-        # Search backward up to 10 days if no snapshot exactly 30 days ago exists
+        # Search backward up to 10 days if no snapshot exactly 10 days ago exists
         for i in range(10):
             search_date = (target_date - timedelta(days=i)).strftime("%Y-%m-%d")
             try:
@@ -1131,12 +1138,15 @@ def calculate_backtest_accuracy(days_ago=30):
                                 else:
                                     price_now = float(live_data.iloc[-1])
                                     
+                                if pd.isna(price_now) or pd.isna(price_t) or price_t == 0:
+                                    continue
+                                    
                                 actual_return = ((price_now - price_t) / price_t) * 100
                                 success = "WIN" if actual_return > 0 else "LOSS"
                                 results.append({
                                     "Asset": p["Symbol"],
                                     "Historical Score": p["Buy Score"],
-                                    "Price 30d Ago": price_t,
+                                    "Price 10d Ago": price_t,
                                     "Price Today": price_now,
                                     "Return (%)": actual_return,
                                     "Outcome": success
@@ -1198,6 +1208,9 @@ def calculate_backtest_accuracy(days_ago=30):
                 price_t = df['Close'].iloc[t_target_idx]
                 price_now = df['Close'].iloc[t_now_idx]
                 
+                if pd.isna(price_t) or pd.isna(price_now) or price_t == 0:
+                    continue
+                
                 # Check broader market on t_target
                 market_healthy = True
                 if not nifty.empty and len(nifty) >= abs(t_target_idx):
@@ -1238,7 +1251,7 @@ def calculate_backtest_accuracy(days_ago=30):
                     results.append({
                         "Asset": ticker.replace(".NS", ""),
                         "Historical Score": score,
-                        "Price 30d Ago": price_t,
+                        "Price 10d Ago": price_t,
                         "Price Today": price_now,
                         "Return (%)": actual_return,
                         "Outcome": success
@@ -1251,7 +1264,7 @@ def calculate_backtest_accuracy(days_ago=30):
         return pd.DataFrame()
 
 @st.cache_data(ttl=3600)
-def calculate_ml_backtest_accuracy(days_ago=30, sample_size=20):
+def calculate_ml_backtest_accuracy(days_ago=10, sample_size=20):
     """Simulates the LSTM PyTorch model dynamically in the past to see its accuracy."""
     try:
         import torch
@@ -1299,7 +1312,6 @@ def calculate_ml_backtest_accuracy(days_ago=30, sample_size=20):
                     continue
                     
                 t_target_idx = -days_ago
-                t_next_idx = t_target_idx + 1 if t_target_idx < -1 else None
                 
                 df_ml = df.iloc[t_target_idx - seq_length : t_target_idx].copy()
                 if len(df_ml) < seq_length: continue
@@ -1317,14 +1329,14 @@ def calculate_ml_backtest_accuracy(days_ago=30, sample_size=20):
                 dummy[0, 3] = pred_scaled
                 pred_price = scaler.inverse_transform(dummy)[0, 3]
                 
-                price_t = float(df['Close'].iloc[t_target_idx - 1])
-                if t_next_idx is not None:
-                    actual_price_next = float(df['Close'].iloc[t_next_idx])
-                else:
-                    actual_price_next = float(df['Close'].iloc[-1])
+                price_t = float(df['Close'].iloc[t_target_idx - 1]) # Close price 10 days ago (index -11)
+                actual_price_target = float(df['Close'].iloc[-1]) # Close price today (index -1)
+                
+                if pd.isna(price_t) or pd.isna(actual_price_target) or price_t == 0:
+                    continue
                 
                 predicted_change = pred_price - price_t
-                actual_change = actual_price_next - price_t
+                actual_change = actual_price_target - price_t
                 
                 if predicted_change > 0 and actual_change > 0:
                     success = "WIN"
@@ -1338,8 +1350,8 @@ def calculate_ml_backtest_accuracy(days_ago=30, sample_size=20):
                     "Pred Direction": "UP" if predicted_change > 0 else "DOWN",
                     "Actual Direction": "UP" if actual_change > 0 else "DOWN",
                     "Predicted Price": pred_price,
-                    "Actual Price": actual_price_next,
-                    "Diff (₹)": pred_price - actual_price_next,
+                    "Actual Price": actual_price_target,
+                    "Diff (₹)": pred_price - actual_price_target,
                     "Outcome": success
                 })
             except Exception:
@@ -2601,6 +2613,18 @@ if not stock_data.empty:
                     profit = curr_val - invested
                     profit_pct = (profit / invested) * 100 if invested > 0 else 0
                     
+                    # Get compliance from UNIVERSE_METRICS_DF
+                    compliance_status = "Compliant"
+                    if 'UNIVERSE_METRICS_DF' in globals() and not UNIVERSE_METRICS_DF.empty:
+                        m_row = UNIVERSE_METRICS_DF[UNIVERSE_METRICS_DF['Symbol'] == sym.replace(".NS", "").replace(".BO", "")]
+                        if not m_row.empty:
+                            is_comp = m_row.iloc[0].get('is_compliant', True)
+                            compliance_status = "Compliant" if is_comp else "Non-Compliant"
+                    
+                    buy_score = None
+                    if not live_row.empty:
+                        buy_score = float(live_row.iloc[0]["Buy Score"]) if "Buy Score" in live_row.columns else None
+
                     portfolio_display.append({
                         "Symbol": sym,
                         "Company": h.get("company_name", sym),
@@ -2608,7 +2632,9 @@ if not stock_data.empty:
                         "Avg Buy (₹)": buy_px,
                         "Live Price (₹)": live_px,
                         "P&L (₹)": profit,
-                        "P&L (%)": profit_pct
+                        "P&L (%)": profit_pct,
+                        "Buy Score": buy_score,
+                        "Compliance": compliance_status
                     })
                 
                 # Fetch Sales for Realized P/L
@@ -2720,10 +2746,12 @@ if not stock_data.empty:
                         live_px = h["Live Price (₹)"]
                         
                         pred = get_ml_prediction_for_symbol(sym)
+                        algo_score = h.get("Buy Score", None)
+                        comp_status = h.get("Compliance", "Compliant")
                         
                         with st.spinner(f"Generating AI advice for {sym}..."):
                             advice_text = get_llm_portfolio_advice(
-                                sym, qty, buy_px, live_px, pred, 
+                                sym, qty, buy_px, live_px, pred, algo_score, comp_status,
                                 user_api_key, ai_engine_setting, local_url_setting, local_key_setting, local_model_setting
                             )
                         
@@ -2844,8 +2872,8 @@ if not stock_data.empty:
                             pred_sign = "+" if pred_change > 0 else ""
                             
                             st.markdown(f"<div style='border-left: 4px solid {pred_color}; padding: 15px; background: rgba(0,0,0,0.15); border-radius: 6px;'>", unsafe_allow_html=True)
-                            st.markdown(f"<h4 style='margin-top:0;'>Next Day Forecast: <span style='color: {pred_color};'>₹{pred_price:.2f}</span></h4>", unsafe_allow_html=True)
-                            st.markdown(f"<p style='margin-bottom:0; color: #94a3b8;'>Predicted Change: <strong style='color: {pred_color};'>{pred_sign}{pred_change:.2f}%</strong> (Based on 30-day technicals & FinBERT sentiment score: {sym_sent:.2f})</p>", unsafe_allow_html=True)
+                            st.markdown(f"<h4 style='margin-top:0;'>10-Day Forecast: <span style='color: {pred_color};'>₹{pred_price:.2f}</span></h4>", unsafe_allow_html=True)
+                            st.markdown(f"<p style='margin-bottom:0; color: #94a3b8;'>Predicted Change (10-Day Horizon): <strong style='color: {pred_color};'>{pred_sign}{pred_change:.2f}%</strong> (Based on 30-day technicals & FinBERT sentiment score: {sym_sent:.2f})</p>", unsafe_allow_html=True)
                             st.markdown("</div>", unsafe_allow_html=True)
                         else:
                             st.warning("Not enough historical data to generate ML prediction.")
@@ -2867,11 +2895,11 @@ if not stock_data.empty:
                 st.info("No actionable intelligence found for this asset in the last 24 hours.")
                 
     if selected_tab == "Accuracy":
-        st.markdown("### 30-Day Predictive Backtest")
-        st.write("This engine simulates applying the Shareq algorithm 30 days in the past to see if its 'Strong Buy' recommendations (Score ≥ 85) successfully predicted a price increase.")
+        st.markdown("### 10-Day Predictive Backtest")
+        st.write("This engine simulates applying the Shareq algorithm 10 days in the past to see if its 'Strong Buy' recommendations (Score ≥ 85) successfully predicted a price increase.")
         
         with st.spinner("Simulating historical algorithm telemetry..."):
-            backtest_df = calculate_backtest_accuracy(days_ago=30)
+            backtest_df = calculate_backtest_accuracy(days_ago=10)
             
             if not backtest_df.empty:
                 wins = len(backtest_df[backtest_df['Outcome'] == 'WIN'])
@@ -2879,7 +2907,7 @@ if not stock_data.empty:
                 win_rate = (wins / total) * 100 if total > 0 else 0
                 
                 color = "#00F0FF" if win_rate > 50 else "#FF0055"
-                st.markdown(f"<div style='margin: 20px 0; padding: 20px; background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(148, 163, 184, 0.1); border-left: 3px solid {color}; border-radius: 12px;'> <h3 style='margin:0; font-weight: 300; font-family: \"Space Grotesk\", sans-serif; color: var(--text-color);'>Win Rate: <span style='color:{color}'>{win_rate:.1f}%</span></h3> <p style='margin: 5px 0 0 0; color: var(--text-color); opacity: 0.6;'>{wins} successful predictions out of {total} strong buy signals triggered across the Universal Database exactly 30 days ago.</p> </div>", unsafe_allow_html=True)
+                st.markdown(f"<div style='margin: 20px 0; padding: 20px; background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(148, 163, 184, 0.1); border-left: 3px solid {color}; border-radius: 12px;'> <h3 style='margin:0; font-weight: 300; font-family: \"Space Grotesk\", sans-serif; color: var(--text-color);'>Win Rate: <span style='color:{color}'>{win_rate:.1f}%</span></h3> <p style='margin: 5px 0 0 0; color: var(--text-color); opacity: 0.6;'>{wins} successful predictions out of {total} strong buy signals triggered across the Universal Database exactly 10 days ago.</p> </div>", unsafe_allow_html=True)
                 
                 def style_outcome(val):
                     color = '#22c55e' if val == 'WIN' else '#ef4444' if val == 'LOSS' else 'inherit'
@@ -2901,7 +2929,7 @@ if not stock_data.empty:
                 st.dataframe(
                     paginated_df,
                     column_config={
-                        "Price 30d Ago": st.column_config.NumberColumn(format="₹%.2f"),
+                        "Price 10d Ago": st.column_config.NumberColumn(format="₹%.2f"),
                         "Price Today": st.column_config.NumberColumn(format="₹%.2f"),
                         "Return (%)": st.column_config.NumberColumn(format="%.2f%%"),
                     }, hide_index=True, width="stretch"
@@ -2919,20 +2947,20 @@ if not stock_data.empty:
                         st.session_state.bt_page += 1
                         st.rerun()
             else:
-                st.info("No 'Strong Buy' signals were triggered 30 days ago by the algorithm parameters.")
+                st.info("No 'Strong Buy' signals were triggered 10 days ago by the algorithm parameters.")
                 
             st.markdown("---")
             st.markdown("### LSTM AI Model Backtest")
-            st.write("Simulates the LSTM PyTorch model dynamically 30 days in the past on a random sample to see if its directional prediction was correct.")
+            st.write("Simulates the LSTM PyTorch model dynamically 10 days in the past on a random sample to see if its directional prediction was correct.")
             with st.spinner("Simulating ML forward-predictions..."):
-                ml_backtest_df = calculate_ml_backtest_accuracy(days_ago=30, sample_size=20)
+                ml_backtest_df = calculate_ml_backtest_accuracy(days_ago=10, sample_size=20)
                 if not ml_backtest_df.empty:
                     ml_wins = len(ml_backtest_df[ml_backtest_df['Outcome'] == 'WIN'])
                     ml_total = len(ml_backtest_df)
                     ml_win_rate = (ml_wins / ml_total) * 100 if ml_total > 0 else 0
                     
                     ml_color = "#00F0FF" if ml_win_rate > 50 else "#FF0055"
-                    st.markdown(f"<div style='margin: 20px 0; padding: 20px; background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(148, 163, 184, 0.1); border-left: 3px solid {ml_color}; border-radius: 12px;'> <h3 style='margin:0; font-weight: 300; font-family: \"Space Grotesk\", sans-serif; color: var(--text-color);'>ML Win Rate: <span style='color:{ml_color}'>{ml_win_rate:.1f}%</span></h3> <p style='margin: 5px 0 0 0; color: var(--text-color); opacity: 0.6;'>{ml_wins} correct directional predictions out of {ml_total} sampled stocks exactly 30 days ago.</p> </div>", unsafe_allow_html=True)
+                    st.markdown(f"<div style='margin: 20px 0; padding: 20px; background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(148, 163, 184, 0.1); border-left: 3px solid {ml_color}; border-radius: 12px;'> <h3 style='margin:0; font-weight: 300; font-family: \"Space Grotesk\", sans-serif; color: var(--text-color);'>ML Win Rate: <span style='color:{ml_color}'>{ml_win_rate:.1f}%</span></h3> <p style='margin: 5px 0 0 0; color: var(--text-color); opacity: 0.6;'>{ml_wins} correct directional predictions out of {ml_total} sampled stocks exactly 10 days ago.</p> </div>", unsafe_allow_html=True)
                     
                     # --- Pagination for ML Backtest ---
                     ml_page_size = 10

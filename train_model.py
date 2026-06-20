@@ -10,13 +10,14 @@ from sklearn.preprocessing import MinMaxScaler
 from ml_model import StockPredictorLSTM
 
 # Hyperparameters
-SEQ_LENGTH = 30 # Use 30 days of history to predict next day
+SEQ_LENGTH = 30 # Use 30 days of history
+PRED_HORIZON = 10 # Predict price 10 days in the future
 BATCH_SIZE = 64
-EPOCHS = 10
+EPOCHS = 15
 LEARNING_RATE = 0.001
 HIDDEN_DIM = 64
 NUM_LAYERS = 2
-OUTPUT_DIM = 1 # Predict next day return or scaled price
+OUTPUT_DIM = 1 # Predict scaled close price
 
 def load_sentiment():
     if os.path.exists("sentiment_data.json"):
@@ -25,6 +26,7 @@ def load_sentiment():
     return {}
 
 def prepare_data():
+    import time
     with open("halal_universe.json", "r", encoding="utf-8") as f:
         universe = json.load(f)
         
@@ -33,22 +35,46 @@ def prepare_data():
     all_x = []
     all_y = []
     
-    print("Fetching historical data for training...")
-    count = 0
     symbols = list(universe.keys())
+    print(f"Loaded {len(symbols)} symbols. Preparing batch download...")
     
-    # Just train on a subset to keep it fast for now
-    for symbol in symbols[:50]:
+    # Download symbols in batches to keep it extremely fast and avoid rate limits
+    batch_size = 150
+    all_dfs = {}
+    
+    for idx in range(0, len(symbols), batch_size):
+        chunk = symbols[idx : idx + batch_size]
+        print(f"Downloading batch of {len(chunk)} symbols (progress: {idx}/{len(symbols)})...")
         try:
-            df = yf.download(symbol, period="2y", progress=False)
-            if df.empty or len(df) < SEQ_LENGTH + 1:
+            df_batch = yf.download(chunk, period="2y", progress=False, group_by="ticker")
+            if df_batch.empty:
                 continue
                 
-            df = df[['Open', 'High', 'Low', 'Close', 'Volume']].copy()
-            # Flatten multi-index columns if present
-            if isinstance(df.columns, pd.MultiIndex):
-                df.columns = df.columns.get_level_values(0)
-                
+            if isinstance(df_batch.columns, pd.MultiIndex):
+                active_symbols = df_batch.columns.levels[0]
+                for symbol in chunk:
+                    if symbol in active_symbols:
+                        try:
+                            df_sym = df_batch[symbol][['Open', 'High', 'Low', 'Close', 'Volume']].dropna().copy()
+                            if len(df_sym) >= SEQ_LENGTH + PRED_HORIZON:
+                                all_dfs[symbol] = df_sym
+                        except Exception:
+                            pass
+            else:
+                if len(chunk) == 1:
+                    symbol = chunk[0]
+                    df_sym = df_batch[['Open', 'High', 'Low', 'Close', 'Volume']].dropna().copy()
+                    if len(df_sym) >= SEQ_LENGTH + PRED_HORIZON:
+                        all_dfs[symbol] = df_sym
+        except Exception as e:
+            print(f"Error downloading batch starting at {idx}: {e}")
+        time.sleep(0.5)
+        
+    print(f"Successfully downloaded {len(all_dfs)} active stocks. Preparing sequences...")
+    count = 0
+    
+    for symbol, df in all_dfs.items():
+        try:
             df.ffill(inplace=True)
             df.bfill(inplace=True)
             
@@ -56,20 +82,25 @@ def prepare_data():
             sym_sent = sentiment_data.get(symbol, {}).get("score", 0.0)
             df['Sentiment'] = sym_sent
             
-            scaler = MinMaxScaler()
-            scaled_data = scaler.fit_transform(df.values)
-            
-            for i in range(len(scaled_data) - SEQ_LENGTH):
-                x = scaled_data[i:i+SEQ_LENGTH]
-                # Predict the next day's close price (column index 3)
-                y = scaled_data[i+SEQ_LENGTH, 3] 
+            # Process sequences using local window MinMaxScaler
+            for i in range(len(df) - SEQ_LENGTH - PRED_HORIZON + 1):
+                window_df = df.iloc[i : i + SEQ_LENGTH].copy()
                 
-                all_x.append(x)
+                # Fit MinMaxScaler on the 30-day input features
+                scaler = MinMaxScaler()
+                scaled_x = scaler.fit_transform(window_df.values)
+                
+                # Scale the target row (at index i + SEQ_LENGTH + PRED_HORIZON - 1) using the same scaler
+                target_row = df.iloc[i + SEQ_LENGTH + PRED_HORIZON - 1].copy()
+                scaled_target_row = scaler.transform(target_row.values.reshape(1, -1))
+                y = scaled_target_row[0, 3] # Close is index 3
+                
+                all_x.append(scaled_x)
                 all_y.append(y)
                 
             count += 1
-            if count % 10 == 0:
-                print(f"Processed {count} symbols...")
+            if count % 100 == 0:
+                print(f"Processed sequences for {count} symbols...")
                 
         except Exception as e:
             pass
