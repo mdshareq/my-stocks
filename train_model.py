@@ -38,37 +38,45 @@ def prepare_data():
     symbols = list(universe.keys())
     print(f"Loaded {len(symbols)} symbols. Preparing batch download...")
     
-    # Download symbols in batches to keep it extremely fast and avoid rate limits
-    batch_size = 150
+    # Download symbols in batches to avoid rate limits
+    batch_size = 50
     all_dfs = {}
     
     for idx in range(0, len(symbols), batch_size):
         chunk = symbols[idx : idx + batch_size]
         print(f"Downloading batch of {len(chunk)} symbols (progress: {idx}/{len(symbols)})...")
-        try:
-            df_batch = yf.download(chunk, period="2y", progress=False, group_by="ticker")
-            if df_batch.empty:
-                continue
+        
+        max_retries = 3
+        for attempt in range(max_retries):
+            try:
+                df_batch = yf.download(chunk, period="2y", progress=False, group_by="ticker")
+                if df_batch.empty:
+                    break
+                    
+                if isinstance(df_batch.columns, pd.MultiIndex):
+                    active_symbols = df_batch.columns.levels[0]
+                    for symbol in chunk:
+                        if symbol in active_symbols:
+                            try:
+                                df_sym = df_batch[symbol][['Open', 'High', 'Low', 'Close', 'Volume']].dropna().copy()
+                                if len(df_sym) >= SEQ_LENGTH + PRED_HORIZON:
+                                    all_dfs[symbol] = df_sym
+                            except Exception:
+                                pass
+                else:
+                    if len(chunk) == 1:
+                        symbol = chunk[0]
+                        df_sym = df_batch[['Open', 'High', 'Low', 'Close', 'Volume']].dropna().copy()
+                        if len(df_sym) >= SEQ_LENGTH + PRED_HORIZON:
+                            all_dfs[symbol] = df_sym
                 
-            if isinstance(df_batch.columns, pd.MultiIndex):
-                active_symbols = df_batch.columns.levels[0]
-                for symbol in chunk:
-                    if symbol in active_symbols:
-                        try:
-                            df_sym = df_batch[symbol][['Open', 'High', 'Low', 'Close', 'Volume']].dropna().copy()
-                            if len(df_sym) >= SEQ_LENGTH + PRED_HORIZON:
-                                all_dfs[symbol] = df_sym
-                        except Exception:
-                            pass
-            else:
-                if len(chunk) == 1:
-                    symbol = chunk[0]
-                    df_sym = df_batch[['Open', 'High', 'Low', 'Close', 'Volume']].dropna().copy()
-                    if len(df_sym) >= SEQ_LENGTH + PRED_HORIZON:
-                        all_dfs[symbol] = df_sym
-        except Exception as e:
-            print(f"Error downloading batch starting at {idx}: {e}")
-        time.sleep(0.5)
+                # Success
+                break
+            except Exception as e:
+                print(f"Error downloading batch starting at {idx} (attempt {attempt+1}): {e}")
+                time.sleep(10)
+                
+        time.sleep(3)
         
     print(f"Successfully downloaded {len(all_dfs)} active stocks. Preparing sequences...")
     count = 0

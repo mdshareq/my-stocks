@@ -2,8 +2,10 @@ name: Shareq ML Automation Pipeline
 
 on:
   schedule:
-    # Run data ingestion every day at 12:30 UTC (6:00 PM IST)
-    - cron: '30 12 * * *'
+    # Run data ingestion Monday-Saturday at 12:30 UTC (6:00 PM IST)
+    - cron: '30 12 * * 1-6'
+    # Run data ingestion AND model training on Sunday at 12:30 UTC
+    - cron: '30 12 * * 0'
   
   # Allow manual triggering from the GitHub Actions tab
   workflow_dispatch:
@@ -51,8 +53,8 @@ jobs:
           python ingest_sentiment.py
 
       - name: Run Model Training (Weekly or Manual)
-        # We only train if manually requested OR if it's Sunday (day 0)
-        if: ${{ github.event.inputs.run_training == 'true' || github.event.schedule == '0 18 * * 0' }}
+        # We only train if manually requested OR if it's Sunday
+        if: ${{ github.event.inputs.run_training == 'true' || github.event.schedule == '30 12 * * 0' }}
         run: |
           echo "Training PyTorch LSTM Model..."
           python train_model.py
