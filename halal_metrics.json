@@ -4915,7 +4915,22 @@
     },
     "ANUBHAV.BO": {
         "symbol": "ANUBHAV.BO",
-        "error": "transient_failed"
+        "name": "ANUBHAV INFRASTRUCTURE LTD",
+        "price": 65.16999816894531,
+        "market_cap": null,
+        "beta": 1.0,
+        "pe": 0.0,
+        "sector": "",
+        "industry": "",
+        "dividend_yield": 0.0,
+        "total_assets": 0.0,
+        "total_debt": 0.0,
+        "cash_and_equivalents": 0.0,
+        "net_receivables": 0.0,
+        "debt_ratio": 0.0,
+        "liquidity_ratio": 0.0,
+        "receivables_ratio": 0.0,
+        "is_compliant": true
     },
     "ANYA.NS": {
         "symbol": "ANYA.NS",
